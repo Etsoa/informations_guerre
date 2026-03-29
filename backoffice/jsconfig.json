@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "baseUrl": "backoffice/src",
+    "paths": {
+      "@controller/*": ["controller/*"],
+      "@middleware/*": ["middleware/*"],
+      "@model/*": ["model/*"],
+      "@route/*": ["route/*"],
+      "@service/*": ["service/*"],
+      "@util/*": ["util/*"]
+    }
+  },
+  "include": ["backoffice/src/**/*"]
+}
