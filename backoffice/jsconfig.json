@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    "baseUrl": "backoffice/src",
+    "baseUrl": "./src",
     "paths": {
       "@controller/*": ["controller/*"],
       "@middleware/*": ["middleware/*"],
@@ -12,5 +12,5 @@
       "@util/*": ["util/*"]
     }
   },
-  "include": ["backoffice/src/**/*"]
+  "include": ["src/**/*"]
 }
