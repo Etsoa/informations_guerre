@@ -14,10 +14,10 @@ require __DIR__ . '/layouts/header.php';
         <?php if (count($articles) > 0): ?>
             <?php foreach ($articles as $article): ?>
                 <article class="article-card">
-                    <h3><a href="<?= BASE_URL ?>index.php?action=article&id=<?= $article['id'] ?>"><?= sanitize($article['titre']) ?></a></h3>
+                    <h3><a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>"><?= sanitize($article['titre']) ?></a></h3>
                     <p class="date"><?= formatDate($article['date_publication']) ?></p>
                     <p><?= sanitize(truncate($article['description'], 150)) ?></p>
-                    <a href="<?= BASE_URL ?>index.php?action=article&id=<?= $article['id'] ?>" class="read-more">Lire la suite →</a>
+                    <a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>" class="read-more">Lire la suite →</a>
                 </article>
             <?php endforeach; ?>
         <?php else: ?>

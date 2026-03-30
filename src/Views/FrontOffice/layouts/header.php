@@ -16,6 +16,7 @@
                 </div>
                 <ul class="nav-links">
                     <li><a href="<?= BASE_URL ?>">Accueil</a></li>
+                    <li><a href="<?= BASE_URL ?>infos">Dossiers</a></li>
                     <li><a href="<?= ADMIN_URL ?>?page=login">Admin</a></li>
                 </ul>
             </div>
