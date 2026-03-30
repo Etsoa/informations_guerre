@@ -59,7 +59,24 @@ class Article {
         return $this->pdo->lastInsertId();
     }
 
-    public function update($id, $data) {
+    public function update($id, $data, $userId = null, $changelog = null) {
+        // Si userId est fourni, créer une version avant la modification
+        if ($userId !== null) {
+            $current = $this->getById($id);
+            if ($current) {
+                require_once __DIR__ . '/ArticleVersion.php';
+                $versionModel = new ArticleVersion($this->pdo);
+                $versionModel->create(
+                    $id,
+                    $current['titre'],
+                    $current['description'],
+                    $current['contenu'],
+                    $userId,
+                    $changelog
+                );
+            }
+        }
+
         $sql = "UPDATE articles SET titre = ?, description = ?, contenu = ? WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
