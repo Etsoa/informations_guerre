@@ -12,18 +12,8 @@ require __DIR__ . '/layouts/header.php';
     </div>
     <form method="GET" action="<?= BASE_URL ?>infos" class="filter-form">
         <div class="form-group">
-            <label for="categorie_id" class="form-label">Categorie</label>
-            <select name="categorie_id" id="categorie_id" class="form-control">
-                <option value="">Toutes</option>
-                <?php foreach ($categories as $cat): ?>
-                    <option value="<?= $cat['id'] ?>" <?= (!empty($activeCategory) && $activeCategory['id'] === $cat['id']) ? 'selected' : '' ?>>
-                        <?= sanitize($cat['nom']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Filtrer</button>
+            <label for="q" class="form-label">Recherche</label>
+            <input type="text" id="q" name="q" value="<?= sanitize($_GET['q'] ?? '') ?>" class="form-control" placeholder="Mot cle (titre ou resume)">
         </div>
     </form>
 </section>
@@ -32,6 +22,15 @@ require __DIR__ . '/layouts/header.php';
     <h3 class="section-title"><?= !empty($activeCategory) ? 'Articles : ' . sanitize($activeCategory['nom']) : 'Tous les articles' ?></h3>
 
     <?php if (!empty($articles)): ?>
+        <div class="chip-row">
+            <a class="chip <?= empty($activeCategory) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos">Toutes</a>
+            <?php foreach ($categories as $cat): ?>
+                <a class="chip <?= (!empty($activeCategory) && $activeCategory['id'] === $cat['id']) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos/categorie/<?= $cat['id'] ?>">
+                    <?= sanitize($cat['nom']) ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
+
         <div class="article-grid">
             <?php foreach ($articles as $article): ?>
                 <?php $thumb = firstImageSrc($article['contenu'] ?? ''); ?>
