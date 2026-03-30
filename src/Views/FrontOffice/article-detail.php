@@ -13,7 +13,7 @@ require __DIR__ . '/layouts/header.php';
     </div>
 
     <div class="article-actions">
-        <a href="<?= BASE_URL ?>" class="btn btn-secondary">← Retour</a>
+        <a href="<?= BASE_URL ?>infos" class="btn btn-secondary">← Retour</a>
     </div>
 </article>
 
