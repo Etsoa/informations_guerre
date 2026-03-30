@@ -52,6 +52,26 @@ switch($page) {
         $controller->delete($id);
         break;
 
+    case 'article-historique':
+        require_once '../src/Controllers/BackOffice/ArticleController.php';
+        $controller = new AdminArticleController($pdo);
+        $controller->VoirHistorique($id);
+        break;
+
+    case 'article-version':
+        $versionNumber = $_GET['version'] ?? null;
+        require_once '../src/Controllers/BackOffice/ArticleController.php';
+        $controller = new AdminArticleController($pdo);
+        $controller->AfficherVersion($id, $versionNumber);
+        break;
+
+    case 'article-restaurer':
+        $versionNumber = $_GET['version'] ?? null;
+        require_once '../src/Controllers/BackOffice/ArticleController.php';
+        $controller = new AdminArticleController($pdo);
+        $controller->restaurer($id, $versionNumber);
+        break;
+
     default:
         require_once '../src/Controllers/BackOffice/AuthController.php';
         $controller = new AuthController($pdo);
