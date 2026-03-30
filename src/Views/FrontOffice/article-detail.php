@@ -11,6 +11,13 @@ require __DIR__ . '/layouts/header.php';
     <h1><?= sanitize($article['titre']) ?></h1>
     <p class="meta">Publie le <?= formatDate($article['date_publication']) ?></p>
 
+    <?php $hero = firstImageSrc($article['contenu'] ?? ''); ?>
+    <?php if ($hero): ?>
+        <div class="article-hero">
+            <img src="<?= $hero ?>" alt="Illustration article">
+        </div>
+    <?php endif; ?>
+
     <div class="article-content">
         <h2><?= sanitize($article['description']) ?></h2>
         <?= $article['contenu'] // TinyMCE HTML ?>
