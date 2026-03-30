@@ -105,14 +105,37 @@ INSERT INTO sources (article_id, nom, url) VALUES
 (5, 'France24', 'https://www.france24.com');
 
 -- =========================
--- IMAGES
+-- IMAGES (min 3 par article, pool de 5 fichiers)
 -- =========================
 INSERT INTO images (nom, article_id) VALUES
+-- Article 1
 ('tensions-moyen-orient.jpg', 1),
-('sanctions-economiques.jpg', 2),
-('desescalade-diplomatie.jpg', 3),
-('crise-humanitaire.jpg', 4),
-('renforcement-militaire.jpg', 5);
+('impact-economique.jpg', 1),
+('explosion-base.jpg', 1),
+-- Article 2
+('explosion-base.jpg', 2),
+('desescalade-diplomatie.jpg', 2),
+('crise-humanitaire.jpg', 2),
+-- Article 3
+('impact-economique.jpg', 3),
+('sanctions-economiques.jpg', 3),
+('renforcement-militaire.jpg', 3),
+-- Article 4
+('desescalade-diplomatie.jpg', 4),
+('tensions-moyen-orient.jpg', 4),
+('impact-economique.jpg', 4),
+-- Article 5
+('crise-humanitaire.jpg', 5),
+('explosion-base.jpg', 5),
+('renforcement-militaire.jpg', 5),
+-- Article 6
+('sanctions-economiques.jpg', 6),
+('impact-economique.jpg', 6),
+('desescalade-diplomatie.jpg', 6),
+-- Article 7
+('renforcement-militaire.jpg', 7),
+('tensions-moyen-orient.jpg', 7),
+('crise-humanitaire.jpg', 7);
 
 -- =========================
 -- ARTICLE_VERSIONS
