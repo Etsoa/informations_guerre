@@ -128,14 +128,7 @@ INSERT INTO images (nom, article_id) VALUES
 ('crise-humanitaire.jpg', 5),
 ('explosion-base.jpg', 5),
 ('renforcement-militaire.jpg', 5),
--- Article 6
-('sanctions-economiques.jpg', 6),
-('impact-economique.jpg', 6),
-('desescalade-diplomatie.jpg', 6),
--- Article 7
-('renforcement-militaire.jpg', 7),
-('tensions-moyen-orient.jpg', 7),
-('crise-humanitaire.jpg', 7);
+;
 
 -- =========================
 -- ARTICLE_VERSIONS
