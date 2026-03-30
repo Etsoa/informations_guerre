@@ -57,33 +57,39 @@ require __DIR__ . '/../layouts/header.php';
 </div>
 <?php endif; ?>
 
-<div class="admin-card">
+<div class="admin-card" style="margin-top: 30px;">
     <div class="admin-card-header">
-        Données archivées (Lecture seule)
+        <i class="fas fa-archive"></i> Contenu de la Version archivée (v<?= $version['version_number'] ?>)
     </div>
-    <div class="admin-card-body">
-        
-        <div class="version-content">
-            <div class="version-label">Titre en v<?= $version['version_number'] ?></div>
-            <div class="version-value" style="font-size: 1.2em; font-weight: bold; color: var(--primary-color);">
-                <?= htmlspecialchars($version['titre']) ?>
-            </div>
-        </div>
-
-        <div class="version-content">
-            <div class="version-label">Description (Chapeau)</div>
-            <div class="version-value">
-                <?= nl2br(htmlspecialchars($version['description'])) ?>
-            </div>
-        </div>
-
-        <div class="version-content">
-            <div class="version-label">Contenu complet</div>
-            <div class="version-value" style="white-space: pre-wrap; word-wrap: break-word; font-family: 'Merriweather', serif; line-height: 1.8;">
-                <?= nl2br(htmlspecialchars($version['contenu'])) ?>
-            </div>
-        </div>
-        
+    <div class="admin-card-body" style="padding: 0;">
+        <table class="admin-table" style="margin: 0; box-shadow: none;">
+            <tbody>
+                <tr>
+                    <td style="width: 25%; font-weight: 600; color: var(--text-muted); background: var(--bg-body); border-right: 1px solid var(--border-color); vertical-align: top; padding: 20px;">
+                        <i class="fas fa-heading" style="margin-right: 8px;"></i> Titre de l'article
+                    </td>
+                    <td style="padding: 20px; font-size: 1.3rem; font-weight: 700; color: var(--primary-color);">
+                        <?= htmlspecialchars($version['titre']) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600; color: var(--text-muted); background: var(--bg-body); border-right: 1px solid var(--border-color); vertical-align: top; padding: 20px;">
+                        <i class="fas fa-align-left" style="margin-right: 8px;"></i> Description (Chapeau)
+                    </td>
+                    <td style="padding: 20px; font-size: 1.1rem; line-height: 1.6; color: var(--text-main);">
+                        <?= nl2br(htmlspecialchars($version['description'])) ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 600; color: var(--text-muted); background: var(--bg-body); border-right: 1px solid var(--border-color); vertical-align: top; padding: 20px;">
+                        <i class="fas fa-paragraph" style="margin-right: 8px;"></i> Contenu complet
+                    </td>
+                    <td style="padding: 20px; white-space: pre-wrap; word-wrap: break-word; font-family: 'Merriweather', serif; line-height: 1.8; color: var(--text-main); font-size: 1.05rem;">
+<?= htmlspecialchars($version['contenu']) ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
