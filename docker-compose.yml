@@ -1,69 +1,58 @@
-version: "3.8"
+version: '3.8'
 
 services:
-  # ========================
-  # PostgreSQL
-  # ========================
-  db:
-    image: postgres:16-alpine
-    container_name: ig_postgres
-    restart: unless-stopped
+  # Service PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: info_guerre_db
     environment:
-      POSTGRES_DB: ${DB_NAME:-informations_guerre}
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: informations_guerre
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
     ports:
-      - "${DB_PORT:-5432}:5432"
+      - "5432:5432"
     volumes:
-      - pg_data:/var/lib/postgresql/data
-      - ./database/script.sql:/docker-entrypoint-initdb.d/script.sql:ro
-      - ./database/data.sql:/docker-entrypoint-initdb.d/data.sql:ro
+      # Montrer les scripts SQL pour initialisation
+      - ./database/script.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./database/data.sql:/docker-entrypoint-initdb.d/02-data.sql
+      # Volume de persistance des données
+      - postgres_data:/var/lib/postgresql/data
     networks:
-      - app-network
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # ========================
-  # Backend API (Node.js + Express)
-  # ========================
-  api:
+  # Service PHP/Apache
+  php:
     build:
-      context: ./backoffice
+      context: .
       dockerfile: Dockerfile
-    container_name: ig_api
-    restart: unless-stopped
-    environment:
-      NODE_ENV: development
-      PORT: 3000
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: ${DB_NAME:-informations_guerre}
-      DB_USER: ${DB_USER:-postgres}
-      DB_PASSWORD: ${DB_PASSWORD:-postgres}
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
-    networks:
-      - app-network
-
-  # ========================
-  # Frontend (React + Apache)
-  # ========================
-  frontend:
-    build:
-      context: ./frontoffice
-      dockerfile: Dockerfile
-    container_name: ig_frontend
-    restart: unless-stopped
+    container_name: info_guerre_app
     ports:
       - "80:80"
+    volumes:
+      # Montrer le code source en direct (pour développement)
+      - .:/var/www/html
+      - ./public/uploads:/var/www/html/public/uploads
+    environment:
+      - DB_HOST=postgres
+      - DB_NAME=informations_guerre
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_PORT=5432
     depends_on:
-      - api
+      postgres:
+        condition: service_healthy
     networks:
-      - app-network
+      - app_network
+    restart: unless-stopped
 
 volumes:
-  pg_data:
+  postgres_data:
 
 networks:
-  app-network:
+  app_network:
     driver: bridge
