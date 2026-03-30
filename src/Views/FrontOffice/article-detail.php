@@ -3,6 +3,10 @@ $pageTitle = sanitize($article['titre'] ?? 'Article');
 require __DIR__ . '/layouts/header.php';
 ?>
 
+<div class="detail-spacer">
+    <p class="breadcrumb">Infos Guerre / Dossiers / Detail</p>
+</div>
+
 <article class="article-detail">
     <h1><?= sanitize($article['titre']) ?></h1>
     <p class="meta">Publie le <?= formatDate($article['date_publication']) ?></p>

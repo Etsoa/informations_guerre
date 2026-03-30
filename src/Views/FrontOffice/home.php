@@ -14,6 +14,10 @@ require __DIR__ . '/layouts/header.php';
         <?php if (count($articles) > 0): ?>
             <?php foreach ($articles as $article): ?>
                 <article class="article-card">
+                    <?php $thumb = firstImageSrc($article['contenu'] ?? ''); ?>
+                    <?php if ($thumb): ?>
+                        <img class="article-thumb" src="<?= $thumb ?>" alt="Illustration article">
+                    <?php endif; ?>
                     <h3><a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>"><?= sanitize($article['titre']) ?></a></h3>
                     <p class="date"><?= formatDate($article['date_publication']) ?></p>
                     <p><?= sanitize(truncate($article['description'], 150)) ?></p>

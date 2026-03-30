@@ -26,3 +26,12 @@ function truncate($text, $length = 150) {
     }
     return $text;
 }
+
+// Extrait le premier src d'une balise <img> dans un contenu HTML
+function firstImageSrc($html) {
+    if (empty($html)) return null;
+    if (preg_match('/<img[^>]+src=[\"\']([^\"\']+)/i', $html, $matches)) {
+        return $matches[1];
+    }
+    return null;
+}
