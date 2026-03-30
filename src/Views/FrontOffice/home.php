@@ -6,6 +6,10 @@ require __DIR__ . '/layouts/header.php';
 <div class="hero">
     <h1>Dernieres Informations sur la Guerre en Iran</h1>
     <p>Restez informe</p>
+    <form class="search-bar" method="GET" action="<?= BASE_URL ?>infos">
+        <input type="text" name="q" placeholder="Rechercher un article" value="<?= sanitize($_GET['q'] ?? '') ?>">
+        <button type="submit">Rechercher</button>
+    </form>
 </div>
 
 <section class="articles">
