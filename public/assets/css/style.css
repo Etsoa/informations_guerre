@@ -142,7 +142,7 @@ body {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 16px;
+        padding: 18px;
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
@@ -178,7 +178,7 @@ body {
 
 .article-thumb {
     object-fit: cover;
-    max-height: 180px;
+        max-height: 200px;
 }
 
 .article-date, .article-authors, .article-tags {
@@ -219,6 +219,17 @@ body {
     flex-direction: column;
     gap: 6px;
 }
+    .article-meta-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+    .separator {
+        color: var(--text-muted);
+    }
 
 .catalog-hero h1 {
     margin: 0;

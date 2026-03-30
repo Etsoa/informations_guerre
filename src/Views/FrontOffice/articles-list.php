@@ -34,37 +34,43 @@ require __DIR__ . '/layouts/header.php';
     <?php if (!empty($articles)): ?>
         <div class="article-grid">
             <?php foreach ($articles as $article): ?>
+                <?php $thumb = firstImageSrc($article['contenu'] ?? ''); ?>
                 <article class="article-card">
+                    <?php if ($thumb): ?>
+                        <img class="article-thumb" src="<?= $thumb ?>" alt="Illustration article">
+                    <?php endif; ?>
+
                     <header class="article-list-header">
-                        <div class="article-meta">
-                            <p class="article-date">Publie le <?= formatDate($article['date_publication']) ?></p>
-                            <?php if (!empty($article['categories'])): ?>
-                                <p class="article-tags">
-                                    <?php foreach ($article['categories'] as $cat): ?>
-                                        <span class="tag">#<?= sanitize($cat['nom']) ?></span>
-                                    <?php endforeach; ?>
-                                </p>
-                            <?php endif; ?>
-                        </div>
                         <h3>
                             <a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>">
                                 <?= sanitize($article['titre']) ?>
                             </a>
                         </h3>
+                        <div class="article-meta-row">
+                            <span class="article-date">Publie le <?= formatDate($article['date_publication']) ?></span>
+                            <?php if (!empty($article['auteurs'])): ?>
+                                <span class="separator">|</span>
+                                <span class="article-authors">
+                                    <?php
+                                        $authorNames = array_map(function($a) {
+                                            return sanitize($a['nom'] . ' ' . $a['prenom']);
+                                        }, $article['auteurs']);
+                                        echo implode(', ', $authorNames);
+                                    ?>
+                                </span>
+                            <?php endif; ?>
+                            <?php if (!empty($article['categories'])): ?>
+                                <span class="separator">|</span>
+                                <span class="article-tags">
+                                    <?php foreach ($article['categories'] as $cat): ?>
+                                        <span class="tag">#<?= sanitize($cat['nom']) ?></span>
+                                    <?php endforeach; ?>
+                                </span>
+                            <?php endif; ?>
+                        </div>
                     </header>
 
                     <p class="article-description"><?= sanitize(truncate($article['description'], 180)) ?></p>
-
-                    <?php if (!empty($article['auteurs'])): ?>
-                        <p class="article-authors">Par
-                            <?php
-                                $authorNames = array_map(function($a) {
-                                    return sanitize($a['nom'] . ' ' . $a['prenom']);
-                                }, $article['auteurs']);
-                                echo implode(', ', $authorNames);
-                            ?>
-                        </p>
-                    <?php endif; ?>
 
                     <div class="card-footer-inline">
                         <a class="btn-link" href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>">Lire l'article</a>
