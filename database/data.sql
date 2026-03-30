@@ -127,8 +127,7 @@ INSERT INTO images (nom, article_id) VALUES
 -- Article 5
 ('crise-humanitaire.jpg', 5),
 ('explosion-base.jpg', 5),
-('renforcement-militaire.jpg', 5),
-;
+('renforcement-militaire.jpg', 5);
 
 -- =========================
 -- ARTICLE_VERSIONS
