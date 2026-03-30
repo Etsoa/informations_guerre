@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /informations_guerre/public/
+    RewriteBase /
     
     # Exclure les fichiers réels et dossiers
     RewriteCond %{REQUEST_FILENAME} !-f

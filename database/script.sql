@@ -1,4 +1,5 @@
-\c informations_guerre;
+-- Base de données: informations_guerre
+-- Les tables seront créées dans la base définie par docker-compose
 
 -- Table utilisateurs
 CREATE TABLE utilisateurs(
