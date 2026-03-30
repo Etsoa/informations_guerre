@@ -6,19 +6,19 @@ require __DIR__ . '/layouts/header.php';
 ?>
 
 <section class="catalog-hero">
-    <h1>Panorama des articles</h1>
-    <p>Consultez l'ensemble des publications disponibles et filtrez par categorie.</p>
-</section>
-
-<section class="catalog-filters">
-    <h2>Categories</h2>
-    <div class="filter-chips">
-        <a class="chip <?= empty($activeCategory) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos">Toutes</a>
-        <?php foreach ($categories as $cat): ?>
-            <a class="chip <?= (!empty($activeCategory) && $activeCategory['id'] === $cat['id']) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos/categorie/<?= $cat['id'] ?>">
-                <?= sanitize($cat['nom']) ?>
-            </a>
-        <?php endforeach; ?>
+    <div class="filter-row">
+        <div>
+            <h1>Panorama des articles</h1>
+            <p>Consultez toutes les publications ou filtrez par categorie.</p>
+        </div>
+        <div class="filter-chips">
+            <a class="chip <?= empty($activeCategory) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos">Toutes</a>
+            <?php foreach ($categories as $cat): ?>
+                <a class="chip <?= (!empty($activeCategory) && $activeCategory['id'] === $cat['id']) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos/categorie/<?= $cat['id'] ?>">
+                    <?= sanitize($cat['nom']) ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
     </div>
 </section>
 
