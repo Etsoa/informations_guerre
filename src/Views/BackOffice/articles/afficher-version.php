@@ -7,7 +7,7 @@ require __DIR__ . '/../layouts/header.php';
 <h3><?= htmlspecialchars($version['titre']) ?></h3>
 
 <div style="margin: 15px 0; padding: 15px; border: 1px solid #17a2b8; background: #d1ecf1; border-radius: 4px;">
-    <p><strong>Article:</strong> <a href="<?= ADMIN_URL ?>?page=article-edit&id=<?= $article['id'] ?>"><?= htmlspecialchars($article['titre']) ?></a></p>
+    <p><strong>Article:</strong> <a href="<?= ADMIN_URL ?>/article-edit/<?= $article['id'] ?>"><?= htmlspecialchars($article['titre']) ?></a></p>
     <p><strong>Version:</strong> v<?= $version['version_number'] ?></p>
     <p><strong>Modifié par:</strong> <?= htmlspecialchars($version['auteur_nom'] ?? 'Système') ?></p>
     <p><strong>Date:</strong> <?= date('d/m/Y H:i:s', strtotime($version['created_at'])) ?></p>
@@ -46,14 +46,14 @@ require __DIR__ . '/../layouts/header.php';
     </button>
     
     <a 
-        href="<?= ADMIN_URL ?>?page=article-historique&id=<?= $article['id'] ?>"
+        href="<?= ADMIN_URL ?>/article-historique/<?= $article['id'] ?>"
         style="display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;"
     >
         ← Retour à l'historique
     </a>
     
     <a 
-        href="<?= ADMIN_URL ?>?page=articles"
+        href="<?= ADMIN_URL ?>/articles"
         style="display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;"
     >
         Retour à la liste
@@ -66,14 +66,10 @@ require __DIR__ . '/../layouts/header.php';
             return;
         }
         
-        ajax('POST', '<?= ADMIN_URL ?>', {
-            page: 'article-restaurer',
-            id: articleId,
-            version: versionNumber
-        }, function(response, status) {
+        ajax('POST', '<?= ADMIN_URL ?>/article-restaurer/' + articleId + '/' + versionNumber, null, function(response, status) {
             if (status === 200) {
                 showAlert('Version restaurée avec succès', 'success');
-                setTimeout(() => location.href = '<?= ADMIN_URL ?>?page=article-historique&id=' + articleId, 1500);
+                setTimeout(() => location.href = '<?= ADMIN_URL ?>/article-historique/' + articleId, 1500);
             } else {
                 showAlert('Erreur lors de la restauration', 'error');
             }

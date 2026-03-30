@@ -20,4 +20,5 @@
     RewriteRule ^admin/?$ admin.php [QSA,L]
     RewriteRule ^admin/([a-z-]+)/?$ admin.php?page=$1 [QSA,L]
     RewriteRule ^admin/([a-z-]+)/([0-9]+)/?$ admin.php?page=$1&id=$2 [QSA,L]
+    RewriteRule ^admin/([a-z-]+)/([0-9]+)/([0-9]+)/?$ admin.php?page=$1&id=$2&version=$3 [QSA,L]
 </IfModule>

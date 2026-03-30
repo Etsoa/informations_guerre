@@ -8,8 +8,8 @@ require_once '../src/Helpers/Functions.php';
 require_once '../src/Helpers/Session.php';
 
 // Redirection si pas connecté
-if (!isset($_SESSION['user_id']) && $_GET['page'] !== 'login') {
-    redirect(ADMIN_URL . '?page=login');
+if (!isset($_SESSION['user_id']) && $page !== 'login') {
+    redirect(ADMIN_URL . '/login');
 }
 
 $page = $_GET['page'] ?? 'login';

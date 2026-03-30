@@ -61,7 +61,7 @@ require __DIR__ . '/../layouts/header.php';
                 ✓ Créer l'article
             </button>
             <a 
-                href="<?= ADMIN_URL ?>?page=articles"
+                href="<?= ADMIN_URL ?>/articles"
                 style="display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;"
             >
                 ✗ Annuler

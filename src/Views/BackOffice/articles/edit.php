@@ -8,7 +8,7 @@ require __DIR__ . '/../layouts/header.php';
     <strong>Article ID:</strong> <?= $article['id'] ?><br>
     <strong>Créé le:</strong> <?= date('d/m/Y H:i', strtotime($article['date_publication'])) ?>
     <div style="margin-top: 10px;">
-        <a href="<?= ADMIN_URL ?>?page=article-historique&id=<?= $article['id'] ?>" style="color: #0c5460; text-decoration: underline;">
+        <a href="<?= ADMIN_URL ?>/article-historique/<?= $article['id'] ?>" style="color: #0c5460; text-decoration: underline;">
             📋 Voir l'historique des versions
         </a>
     </div>
@@ -84,7 +84,7 @@ require __DIR__ . '/../layouts/header.php';
                 ✓ Sauvegarder les modifications
             </button>
             <a 
-                href="<?= ADMIN_URL ?>?page=articles"
+                href="<?= ADMIN_URL ?>/articles"
                 style="display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;"
             >
                 ✗ Annuler

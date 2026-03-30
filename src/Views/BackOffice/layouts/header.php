@@ -12,7 +12,7 @@
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div>
                     <span>Connecté: <?= sanitize($_SESSION['email']) ?></span>
-                    <a href="<?= ADMIN_URL ?>?page=logout">Déconnexion</a>
+                    <a href="<?= ADMIN_URL ?>/logout">Déconnexion</a>
                 </div>
             <?php endif; ?>
         </div>
@@ -22,8 +22,8 @@
         <nav>
             <ul>
                 <li><a href="<?= ADMIN_URL ?>">Tableau de Bord</a></li>
-                <li><a href="<?= ADMIN_URL ?>?page=articles">Articles</a></li>
-                <li><a href="<?= ADMIN_URL ?>?page=article-create">+ Nouvel Article</a></li>
+                <li><a href="<?= ADMIN_URL ?>/articles">Articles</a></li>
+                <li><a href="<?= ADMIN_URL ?>/article-create">+ Nouvel Article</a></li>
             </ul>
         </nav>
     <?php endif; ?>

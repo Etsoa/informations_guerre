@@ -27,7 +27,7 @@ class AdminArticleController {
                 'contenu' => $_POST['contenu']
             ];
             $this->articleModel->create($data);
-            redirect(ADMIN_URL . '?page=articles');
+            redirect(ADMIN_URL . '/articles');
         }
 
         require __DIR__ . '/../../Views/BackOffice/articles/create.php';
@@ -36,7 +36,7 @@ class AdminArticleController {
     public function edit($id) {
         $article = $this->articleModel->getById($id);
         if (!$article) {
-            redirect(ADMIN_URL . '?page=articles');
+            redirect(ADMIN_URL . '/articles');
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -50,7 +50,7 @@ class AdminArticleController {
 
             // Mettre à jour avec versioning
             $this->articleModel->update($id, $data, $userId, $changelog);
-            redirect(ADMIN_URL . '?page=articles');
+            redirect(ADMIN_URL . '/articles');
         }
 
         require __DIR__ . '/../../Views/BackOffice/articles/edit.php';
@@ -58,13 +58,13 @@ class AdminArticleController {
 
     public function delete($id) {
         $this->articleModel->delete($id);
-        redirect(ADMIN_URL . '?page=articles');
+        redirect(ADMIN_URL . '/articles');
     }
 
     public function VoirHistorique($articleId) {
         $article = $this->articleModel->getById($articleId);
         if (!$article) {
-            redirect(ADMIN_URL . '?page=articles');
+            redirect(ADMIN_URL . '/articles');
         }
 
         $versions = $this->versionModel->getByArticleId($articleId);
@@ -74,28 +74,28 @@ class AdminArticleController {
     public function restaurer($articleId, $versionNumber) {
         $userId = $_SESSION['user_id'] ?? null;
         if (!$userId) {
-            redirect(ADMIN_URL . '?page=articles');
+            redirect(ADMIN_URL . '/articles');
         }
 
         $changelog = $_GET['changelog'] ?? "Restaurée depuis version $versionNumber";
         $success = $this->versionModel->restore($articleId, $versionNumber, $userId, $changelog);
 
         if ($success) {
-            redirect(ADMIN_URL . '?page=article-historique&id=' . $articleId);
+            redirect(ADMIN_URL . '/article-historique/' . $articleId);
         }
 
-        redirect(ADMIN_URL . '?page=articles');
+        redirect(ADMIN_URL . '/articles');
     }
 
     public function AfficherVersion($articleId, $versionNumber) {
         $article = $this->articleModel->getById($articleId);
         if (!$article) {
-            redirect(ADMIN_URL . '?page=articles');
+            redirect(ADMIN_URL . '/articles');
         }
 
         $version = $this->versionModel->getSpecificVersion($articleId, $versionNumber);
         if (!$version) {
-            redirect(ADMIN_URL . '?page=article-historique&id=' . $articleId);
+            redirect(ADMIN_URL . '/article-historique/' . $articleId);
         }
 
         $versions = $this->versionModel->getByArticleId($articleId);

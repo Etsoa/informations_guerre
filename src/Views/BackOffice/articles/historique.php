@@ -10,7 +10,7 @@ require __DIR__ . '/../layouts/header.php';
     <p><strong>Article ID:</strong> <?= $article['id'] ?></p>
     <p><strong>Versions enregistrées:</strong> <?= count($versions) ?></p>
     <p>
-        <a href="<?= ADMIN_URL ?>?page=article-edit&id=<?= $article['id'] ?>">
+        <a href="<?= ADMIN_URL ?>/article-edit/<?= $article['id'] ?>">
             ← Retour à l'édition
         </a>
     </p>
@@ -37,7 +37,7 @@ require __DIR__ . '/../layouts/header.php';
                     <td><?= date('d/m/Y H:i', strtotime($version['created_at'])) ?></td>
                     <td><em><?= htmlspecialchars($version['changelog'] ?? '-') ?></em></td>
                     <td>
-                        <a href="<?= ADMIN_URL ?>?page=article-version&id=<?= $article['id'] ?>&version=<?= $version['version_number'] ?>">Voir</a>
+                        <a href="<?= ADMIN_URL ?>/article-version/<?= $article['id'] ?>/<?= $version['version_number'] ?>">Voir</a>
                         |
                         <button 
                             onclick="restoreVersion(<?= $article['id'] ?>, <?= $version['version_number'] ?>)"
@@ -57,7 +57,7 @@ require __DIR__ . '/../layouts/header.php';
 <?php endif; ?>
 
 <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd;">
-    <a href="<?= ADMIN_URL ?>?page=articles">← Retour à la liste des articles</a>
+    <a href="<?= ADMIN_URL ?>/articles">← Retour à la liste des articles</a>
 </div>
 
 <script>
@@ -66,14 +66,10 @@ require __DIR__ . '/../layouts/header.php';
             return;
         }
         
-        ajax('POST', '<?= ADMIN_URL ?>', {
-            page: 'article-restaurer',
-            id: articleId,
-            version: versionNumber
-        }, function(response, status) {
+        ajax('POST', '<?= ADMIN_URL ?>/article-restaurer/' + articleId + '/' + versionNumber, null, function(response, status) {
             if (status === 200) {
                 showAlert('Version restaurée avec succès', 'success');
-                setTimeout(() => location.href = '<?= ADMIN_URL ?>?page=article-historique&id=' + articleId, 1500);
+                setTimeout(() => location.href = '<?= ADMIN_URL ?>/article-historique/' + articleId, 1500);
             } else {
                 showAlert('Erreur lors de la restauration', 'error');
             }

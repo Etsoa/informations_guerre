@@ -20,7 +20,7 @@ class AuthController {
             if ($user) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['email'] = $user['email'];
-                redirect(ADMIN_URL . '?page=dashboard');
+                redirect(ADMIN_URL . '/articles');
             } else {
                 $error = 'Email ou mot de passe incorrect';
             }
