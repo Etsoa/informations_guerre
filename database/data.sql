@@ -32,7 +32,7 @@ INSERT INTO articles (titre, description, contenu, date_publication) VALUES
 ('Tensions croissantes au Moyen-Orient',
  'Les tensions entre plusieurs puissances régionales continuent de s intensifier.',
  '<p>Les tensions entre l Iran et ses voisins continuent de croître.</p>
-  <img src="images/tensions-moyen-orient.jpg"/>
+  <img src="/uploads/tensions-moyen-orient.jpg"/>
   <p>Plusieurs incidents militaires ont été signalés.</p>
   <p><strong>Source :</strong> <a href="https://www.reuters.com">Reuters</a></p>',
  NOW()),
@@ -40,7 +40,7 @@ INSERT INTO articles (titre, description, contenu, date_publication) VALUES
 ('Sanctions économiques renforcées',
  'De nouvelles sanctions impactent fortement l économie iranienne.',
  '<p>Les sanctions internationales ont été renforcées.</p>
-  <img src="images/sanctions-economiques.jpg"/>
+  <img src="/uploads/sanctions-economiques.jpg"/>
   <p>Le secteur pétrolier est fortement touché.</p>
   <p><strong>Source :</strong> <a href="https://www.bbc.com">BBC News</a></p>',
  NOW()),
@@ -48,7 +48,7 @@ INSERT INTO articles (titre, description, contenu, date_publication) VALUES
 ('Négociations diplomatiques en cours',
  'Des discussions sont en cours pour éviter une escalade militaire.',
  '<p>Des discussions diplomatiques sont en cours.</p>
-  <img src="images/desescalade-diplomatie.jpg"/>
+  <img src="/uploads/desescalade-diplomatie.jpg"/>
   <p>Les négociations restent fragiles.</p>
   <p><strong>Source :</strong> <a href="https://www.aljazeera.com">Al Jazeera</a></p>',
  NOW()),
@@ -56,7 +56,7 @@ INSERT INTO articles (titre, description, contenu, date_publication) VALUES
 ('Crise humanitaire émergente',
  'La population civile commence à subir les effets du conflit.',
  '<p>La situation humanitaire se dégrade rapidement.</p>
-  <img src="images/crise-humanitaire.jpg"/>
+  <img src="/uploads/crise-humanitaire.jpg"/>
   <p>Les ONG tirent la sonnette d alarme.</p>
   <p><strong>Source :</strong> <a href="https://news.un.org">UN News</a></p>',
  NOW()),
@@ -64,7 +64,7 @@ INSERT INTO articles (titre, description, contenu, date_publication) VALUES
 ('Renforcement militaire dans la région',
  'Des mouvements de troupes ont été observés.',
  '<p>Plusieurs armées renforcent leur présence.</p>
-  <img src="images/renforcement-militaire.jpg"/>
+  <img src="/uploads/renforcement-militaire.jpg"/>
   <p>Une escalade est possible.</p>
   <p><strong>Source :</strong> <a href="https://www.france24.com">France24</a></p>',
  NOW());
