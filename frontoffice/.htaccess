@@ -1,8 +1,0 @@
-RewriteEngine On
-
-# Ne pas réécrire les fichiers et dossiers existants
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-
-# Rediriger toutes les requêtes vers index.html (SPA React)
-RewriteRule ^ /index.html [QSA,L]
