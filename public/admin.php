@@ -7,13 +7,13 @@ require_once '../config/constants.php';
 require_once '../src/Helpers/Functions.php';
 require_once '../src/Helpers/Session.php';
 
+$page = $_GET['page'] ?? 'login';
+$id = $_GET['id'] ?? null;
+
 // Redirection si pas connecté
 if (!isset($_SESSION['user_id']) && $page !== 'login') {
     redirect(ADMIN_URL . '/login');
 }
-
-$page = $_GET['page'] ?? 'login';
-$id = $_GET['id'] ?? null;
 
 switch($page) {
     case 'login':
