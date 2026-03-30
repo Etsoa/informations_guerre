@@ -101,6 +101,34 @@ body {
     font-weight: 600;
 }
 
+.navbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+}
+
+.logo a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-badge {
+    background: var(--navy-700);
+    color: #fff;
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
 .nav-links {
     list-style: none;
     display: flex;

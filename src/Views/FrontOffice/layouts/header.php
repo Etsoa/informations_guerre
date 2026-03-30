@@ -12,7 +12,7 @@
         <nav class="navbar">
             <div class="container">
                 <div class="logo">
-                    <h1><a href="<?= BASE_URL ?>">Infos Guerre</a></h1>
+                    <h1><a href="<?= BASE_URL ?>"><span class="logo-badge">IG</span> Infos Guerre</a></h1>
                 </div>
                 <ul class="nav-links">
                     <li><a href="<?= BASE_URL ?>">Accueil</a></li>
