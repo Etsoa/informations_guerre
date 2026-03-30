@@ -1,7 +1,7 @@
     </main>
 
-    <footer>
-        <p>&copy; 2026 - Informations Guerre - BackOffice</p>
+    <footer class="admin-footer">
+        <p>&copy; <?= date('Y') ?> - Informations Guerre - BackOffice</p>
     </footer>
 
     <script>
