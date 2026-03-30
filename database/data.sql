@@ -32,7 +32,9 @@ INSERT INTO articles (titre, description, contenu, date_publication) VALUES
 ('Tensions croissantes au Moyen-Orient',
  'Les tensions entre plusieurs puissances régionales continuent de s intensifier.',
  '<p>Les tensions entre l Iran et ses voisins continuent de croître.</p>
-  <img src="/uploads/tensions-moyen-orient.jpg"/>
+    <img src="/uploads/tensions-moyen-orient.jpg"/>
+    <img src="/uploads/crise-humanitaire.jpg"/>
+    <img src="/uploads/renforcement-militaire.jpg"/>
   <p>Plusieurs incidents militaires ont été signalés.</p>
   <p><strong>Source :</strong> <a href="https://www.reuters.com">Reuters</a></p>',
  NOW()),
@@ -40,7 +42,9 @@ INSERT INTO articles (titre, description, contenu, date_publication) VALUES
 ('Sanctions économiques renforcées',
  'De nouvelles sanctions impactent fortement l économie iranienne.',
  '<p>Les sanctions internationales ont été renforcées.</p>
-  <img src="/uploads/sanctions-economiques.jpg"/>
+    <img src="/uploads/sanctions-economiques.jpg"/>
+    <img src="/uploads/crise-humanitaire.jpg"/>
+    <img src="/uploads/desescalade-diplomatie.jpg"/>
   <p>Le secteur pétrolier est fortement touché.</p>
   <p><strong>Source :</strong> <a href="https://www.bbc.com">BBC News</a></p>',
  NOW()),
@@ -48,7 +52,9 @@ INSERT INTO articles (titre, description, contenu, date_publication) VALUES
 ('Négociations diplomatiques en cours',
  'Des discussions sont en cours pour éviter une escalade militaire.',
  '<p>Des discussions diplomatiques sont en cours.</p>
-  <img src="/uploads/desescalade-diplomatie.jpg"/>
+    <img src="/uploads/desescalade-diplomatie.jpg"/>
+    <img src="/uploads/tensions-moyen-orient.jpg"/>
+    <img src="/uploads/crise-humanitaire.jpg"/>
   <p>Les négociations restent fragiles.</p>
   <p><strong>Source :</strong> <a href="https://www.aljazeera.com">Al Jazeera</a></p>',
  NOW()),
@@ -56,7 +62,9 @@ INSERT INTO articles (titre, description, contenu, date_publication) VALUES
 ('Crise humanitaire émergente',
  'La population civile commence à subir les effets du conflit.',
  '<p>La situation humanitaire se dégrade rapidement.</p>
-  <img src="/uploads/crise-humanitaire.jpg"/>
+    <img src="/uploads/crise-humanitaire.jpg"/>
+    <img src="/uploads/sanctions-economiques.jpg"/>
+    <img src="/uploads/renforcement-militaire.jpg"/>
   <p>Les ONG tirent la sonnette d alarme.</p>
   <p><strong>Source :</strong> <a href="https://news.un.org">UN News</a></p>',
  NOW()),
@@ -64,7 +72,9 @@ INSERT INTO articles (titre, description, contenu, date_publication) VALUES
 ('Renforcement militaire dans la région',
  'Des mouvements de troupes ont été observés.',
  '<p>Plusieurs armées renforcent leur présence.</p>
-  <img src="/uploads/renforcement-militaire.jpg"/>
+    <img src="/uploads/renforcement-militaire.jpg"/>
+    <img src="/uploads/tensions-moyen-orient.jpg"/>
+    <img src="/uploads/crise-humanitaire.jpg"/>
   <p>Une escalade est possible.</p>
   <p><strong>Source :</strong> <a href="https://www.france24.com">France24</a></p>',
  NOW());
@@ -111,7 +121,7 @@ INSERT INTO images (nom, article_id) VALUES
 -- Article 1
 ('tensions-moyen-orient.jpg', 1),
 ('impact-economique.jpg', 1),
-('explosion-base.jpg', 1),
+('renforcement-militaire.jpg', 1),
 -- Article 2
 ('explosion-base.jpg', 2),
 ('desescalade-diplomatie.jpg', 2),
