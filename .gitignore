@@ -1,0 +1,72 @@
+# Environment
+.env
+.env.local
+.env.*.local
+.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build artifacts
+/dist/
+/build/
+*.min.js
+*.min.css
+
+# Logs
+*.log
+logs/
+
+# Dependencies
+/vendor/
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Git
+.gitkeep
+
+# Uploads (user generated content - optional to ignore)
+# Décommentez si vous voulez ignorer
+# public/uploads/*
+
+# Tests coverage
+coverage/
+.coverage/
+htmlcov/
+
+# Cache
+*.cache
+.cache/
+
+# Temporaires
+tmp/
+temp/
+*.tmp
+
+# Sensitive files
+*.pem
+*.key
+*.cert
+ssh_keys/
+
+# Database dumps (optionnel)
+*.sql.zip
+*.sql.gz
