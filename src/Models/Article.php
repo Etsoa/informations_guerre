@@ -24,13 +24,14 @@ class Article {
 
     public function create($data) {
         $sql = "INSERT INTO articles (titre, description, contenu, date_publication) 
-                VALUES (?, ?, ?, NOW())";
+                VALUES (?, ?, ?, NOW()) RETURNING id";
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([
+        $stmt->execute([
             $data['titre'],
             $data['description'],
             $data['contenu']
         ]);
+        return $stmt->fetchColumn();
     }
 
     public function update($id, $data, $userId = null, $changelog = null) {

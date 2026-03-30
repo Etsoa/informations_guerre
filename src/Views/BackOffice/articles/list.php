@@ -12,6 +12,7 @@ require __DIR__ . '/../layouts/header.php';
     <thead>
         <tr>
             <th>ID</th>
+            <th>Image</th>
             <th>Titre</th>
             <th>Description</th>
             <th>Date</th>
@@ -23,6 +24,13 @@ require __DIR__ . '/../layouts/header.php';
             <?php foreach ($articles as $article): ?>
                 <tr>
                     <td><?= $article['id'] ?></td>
+                    <td>
+                        <?php if (!empty($article['images'])): ?>
+                            <img src="<?= UPLOADS_URL . htmlspecialchars($article['images'][0]['nom']) ?>" alt="Aperçu" style="max-width: 80px; max-height: 60px;">
+                        <?php else: ?>
+                            <span style="color: #999; font-size: 0.9em;">Aucune</span>
+                        <?php endif; ?>
+                    </td>
                     <td><strong><?= htmlspecialchars(substr($article['titre'], 0, 50)) ?></strong></td>
                     <td><?= htmlspecialchars(substr($article['description'], 0, 50)) ?>...</td>
                     <td><?= date('d/m/Y H:i', strtotime($article['date_publication'])) ?></td>
@@ -37,7 +45,7 @@ require __DIR__ . '/../layouts/header.php';
             <?php endforeach; ?>
         <?php else: ?>
             <tr>
-                <td colspan="5" style="text-align: center; padding: 20px; font-style: italic;">
+                <td colspan="6" style="text-align: center; padding: 20px; font-style: italic;">
                     Aucun article trouvé
                 </td>
             </tr>

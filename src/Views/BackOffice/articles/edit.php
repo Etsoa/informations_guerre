@@ -14,7 +14,7 @@ require __DIR__ . '/../layouts/header.php';
     </div>
 </div>
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     <fieldset>
         <legend>Modification d'Article</legend>
         
@@ -62,6 +62,36 @@ require __DIR__ . '/../layouts/header.php';
         </div>
 
         <div style="margin: 15px 0;">
+            <label><strong>Images Actuelles:</strong></label>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+                <?php if (!empty($images)): ?>
+                    <?php foreach ($images as $img): ?>
+                        <div id="image-<?= $img['id'] ?>" style="position: relative; border: 1px solid #ddd; padding: 5px; border-radius: 4px;">
+                            <img src="<?= UPLOADS_URL . htmlspecialchars($img['nom']) ?>" alt="Image" style="max-height: 100px; display: block;">
+                            <button type="button" onclick="deleteImage(<?= $img['id'] ?>)" style="position: absolute; top: 0; right: 0; background: red; color: white; border: none; cursor: pointer;">X</button>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <em>Aucune image</em>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <div style="margin: 15px 0;">
+            <label for="images">
+                <strong>Ajouter de nouvelles images:</strong>
+            </label>
+            <input 
+                type="file" 
+                id="images" 
+                name="images[]" 
+                multiple 
+                accept="image/*"
+                style="width: 100%; max-width: 600px; padding: 8px; margin-top: 5px;"
+            >
+        </div>
+
+        <div style="margin: 15px 0;">
             <label for="changelog">
                 <strong>Description du changement (optionnel):</strong>
             </label>
@@ -92,5 +122,22 @@ require __DIR__ . '/../layouts/header.php';
         </div>
     </fieldset>
 </form>
+
+<script>
+    function deleteImage(imageId) {
+        if (!confirm('Êtes-vous sûr de vouloir supprimer cette image?')) return;
+        
+        ajax('POST', '<?= ADMIN_URL ?>/image-delete', { 
+            image_id: imageId
+        }, function(response, status) {
+            if (status === 200) {
+                showAlert('Image supprimée avec succès', 'success');
+                document.getElementById('image-' + imageId).remove();
+            } else {
+                showAlert('Erreur lors de la suppression', 'error');
+            }
+        });
+    }
+</script>
 
 <?php require __DIR__ . '/../layouts/footer.php'; ?>

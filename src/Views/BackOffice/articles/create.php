@@ -4,7 +4,7 @@ require __DIR__ . '/../layouts/header.php';
 
 <h2>Créer un Article</h2>
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     <fieldset>
         <legend>Nouvel Article</legend>
         
@@ -51,6 +51,20 @@ require __DIR__ . '/../layouts/header.php';
                 placeholder="Contenu complet de l'article"
                 style="width: 100%; max-width: 600px; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: Arial, sans-serif;"
             ></textarea>
+        </div>
+
+        <div style="margin: 15px 0;">
+            <label for="images">
+                <strong>Images (optionnelles, multiples possibles):</strong>
+            </label>
+            <input 
+                type="file" 
+                id="images" 
+                name="images[]" 
+                multiple 
+                accept="image/*"
+                style="width: 100%; max-width: 600px; padding: 8px; margin-top: 5px;"
+            >
         </div>
 
         <div style="margin: 20px 0; padding-top: 15px; border-top: 1px solid #ddd;">

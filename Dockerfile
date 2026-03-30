@@ -7,7 +7,11 @@ WORKDIR /var/www/html
 # Installer les dépendances système et l'extension PostgreSQL pour PHP
 RUN apt-get update && apt-get install -y \
     libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_pgsql gd \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Activer le module Apache Rewrite pour .htaccess

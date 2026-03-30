@@ -51,6 +51,12 @@ switch($page) {
         $controller = new AdminArticleController($pdo);
         $controller->delete($id);
         break;
+        
+    case 'image-delete':
+        require_once '../src/Controllers/BackOffice/ArticleController.php';
+        $controller = new AdminArticleController($pdo);
+        $controller->deleteImage();
+        break;
 
     case 'article-historique':
         require_once '../src/Controllers/BackOffice/ArticleController.php';

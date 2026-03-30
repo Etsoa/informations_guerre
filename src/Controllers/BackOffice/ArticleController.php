@@ -5,17 +5,23 @@ class AdminArticleController {
     private $pdo;
     private $articleModel;
     private $versionModel;
+    private $imageModel;
 
     public function __construct($pdo) {
         $this->pdo = $pdo;
         require_once __DIR__ . '/../../Models/Article.php';
         require_once __DIR__ . '/../../Models/ArticleVersion.php';
+        require_once __DIR__ . '/../../Models/Image.php';
         $this->articleModel = new Article($pdo);
         $this->versionModel = new ArticleVersion($pdo);
+        $this->imageModel = new Image($pdo);
     }
 
     public function ListerArticles() {
         $articles = $this->articleModel->getAll(100, 0);
+        foreach ($articles as &$article) {
+            $article['images'] = $this->imageModel->getByArticleId($article['id']);
+        }
         require __DIR__ . '/../../Views/BackOffice/articles/list.php';
     }
 
@@ -26,7 +32,16 @@ class AdminArticleController {
                 'description' => $_POST['description'],
                 'contenu' => $_POST['contenu']
             ];
-            $this->articleModel->create($data);
+            $articleId = $this->articleModel->create($data);
+            
+            $uploadedImages = handleImageUploads($_FILES['images'], UPLOADS_DIR);
+            foreach ($uploadedImages as $imageName) {
+                $this->imageModel->create([
+                    'nom' => $imageName,
+                    'article_id' => $articleId
+                ]);
+            }
+            
             redirect(ADMIN_URL . '/articles');
         }
 
@@ -38,6 +53,8 @@ class AdminArticleController {
         if (!$article) {
             redirect(ADMIN_URL . '/articles');
         }
+        
+        $images = $this->imageModel->getByArticleId($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [
@@ -50,10 +67,37 @@ class AdminArticleController {
 
             // Mettre à jour avec versioning
             $this->articleModel->update($id, $data, $userId, $changelog);
-            redirect(ADMIN_URL . '/articles');
+            
+            $uploadedImages = handleImageUploads($_FILES['images'], UPLOADS_DIR);
+            foreach ($uploadedImages as $imageName) {
+                $this->imageModel->create([
+                    'nom' => $imageName,
+                    'article_id' => $id
+                ]);
+            }
+            
+            redirect(ADMIN_URL . '/article-edit/' . $id);
         }
 
         require __DIR__ . '/../../Views/BackOffice/articles/edit.php';
+    }
+
+    public function deleteImage() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $imageId = $_POST['image_id'] ?? null;
+            if ($imageId) {
+                $image = $this->imageModel->getById($imageId);
+                if ($image) {
+                    $this->imageModel->delete($imageId);
+                    http_response_code(200);
+                    echo "OK";
+                    exit;
+                }
+            }
+        }
+        http_response_code(400);
+        echo "Erreur";
+        exit;
     }
 
     public function delete($id) {
