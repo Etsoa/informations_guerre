@@ -20,6 +20,9 @@ class CatalogController {
         if (!empty($categorieId)) {
             $filters['categorie_id'] = $categorieId;
         }
+        if (!empty($_GET['q'])) {
+            $filters['q'] = trim($_GET['q']);
+        }
 
         $articles = $this->articleModel->getFiltered($filters);
         foreach ($articles as &$article) {
