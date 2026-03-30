@@ -1,146 +1,149 @@
-<?php
+﻿<?php
 require __DIR__ . '/../layouts/header.php';
 ?>
 
-<div class="article-edit-container">
-    <div class="article-header">
-        <h2>Éditer Article</h2>
-        <div class="article-actions">
-            <a href="<?= ADMIN_URL ?>?page=article-historique&id=<?= $article['id'] ?>" class="btn btn-info">
-                📋 Voir l'historique
-            </a>
+<div class="page-header">
+    <h2 class="page-title"><i class="fas fa-edit"></i> editer l'article</h2>
+    <a href="<?= ADMIN_URL ?>/articles" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Retour
+    </a>
+</div>
+
+<div class="article-meta-cards">
+    <div class="meta-card">
+        <div class="meta-icon"><i class="fas fa-hashtag"></i></div>
+        <div class="meta-details">
+            <span class="meta-label">Identifiant</span>
+            <span class="meta-value"><?= htmlspecialchars($article['id']) ?></span>
         </div>
     </div>
 
-    <form method="POST" class="article-form">
-        <div class="form-group">
-            <label>Titre</label>
-            <input type="text" name="titre" value="<?= sanitize($article['titre']) ?>" required maxlength="250">
+    <div class="meta-card">
+        <div class="meta-icon"><i class="far fa-calendar-alt"></i></div>
+        <div class="meta-details">
+            <span class="meta-label">Date de Publication</span>
+            <span class="meta-value"><?= date('d/m/Y à H:i', strtotime($article['date_publication'])) ?></span>
         </div>
+    </div>
 
-        <div class="form-group">
-            <label>Description courte</label>
-            <textarea name="description" required rows="3" maxlength="500"><?= sanitize($article['description']) ?></textarea>
+    <a href="<?= ADMIN_URL ?>/article-historique/<?= $article['id'] ?>" class="meta-card clickable">
+        <div class="meta-icon"><i class="fas fa-history"></i></div>
+        <div class="meta-details">
+            <span class="meta-label">Historique et Versions</span>
+            <span class="meta-value" style="color: var(--primary-color);">Voir les modifications</span>
         </div>
-
-        <div class="form-group">
-            <label>Contenu</label>
-            <textarea name="contenu" required rows="10"><?= sanitize($article['contenu']) ?></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="changelog">Description du changement (optionnel)</label>
-            <input type="text" id="changelog" name="changelog" placeholder="Ex: Correction orthographe, Ajout de sources..." maxlength="255">
-            <small>Cette description sera enregistrée dans l'historique des versions</small>
-        </div>
-
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">✓ Sauvegarder</button>
-            <a href="<?= ADMIN_URL ?>?page=articles" class="btn btn-secondary">✗ Annuler</a>
-        </div>
-    </form>
+    </a>
 </div>
 
-<style>
-    .article-edit-container {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 20px;
-    }
+<div class="admin-card">
+    <div class="admin-card-header">
+        Modification de l'article
+    </div>
+    <div class="admin-card-body">
+        <form method="POST" enctype="multipart/form-data" onsubmit="this.querySelector('button[type=submit]').disabled=true; this.querySelector('button[type=submit]').innerHTML='<i class=\'fas fa-spinner fa-spin\'></i> Sauvegarde...';">
 
-    .article-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-        padding-bottom: 15px;
-        border-bottom: 2px solid #e0e0e0;
-    }
+            <div class="form-group">
+                <label for="titre" class="form-label">Titre de l'article <span style="color:red">*</span></label>
+                <input
+                    type="text"
+                    id="titre"
+                    name="titre"
+                    class="form-control"
+                    value="<?= htmlspecialchars($article['titre']) ?>"
+                    required
+                    maxlength="250"
+                >
+            </div>
 
-    .article-actions {
-        display: flex;
-        gap: 10px;
-    }
+            <div class="form-group">
+                <label for="description" class="form-label">Description courte (Chapeau) <span style="color:red">*</span></label>        
+                <textarea
+                    id="description"
+                    name="description"
+                    class="form-control"
+                    required
+                    rows="4"
+                    maxlength="500"
+                ><?= htmlspecialchars($article['description']) ?></textarea>
+                <small class="text-muted"><i class="fas fa-info-circle"></i> 500 caracteres maximum</small>
+            </div>
 
-    .form-group {
-        margin-bottom: 20px;
-    }
+            <div class="form-group">
+                <label for="contenu" class="form-label">Contenu complet <span style="color:red">*</span></label>
+                <textarea
+                    id="contenu"
+                    name="contenu"
+                    class="form-control"
+                    rows="8"
+                ><?= htmlspecialchars($article['contenu']) ?></textarea>
+            </div>
 
-    .form-group label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 8px;
-        color: #333;
-    }
+            <div class="form-group">
+                <label class="form-label">Auteur(s) <span style="color:red">*</span></label>
+                <div class="author-grid">
+                    <?php foreach ($auteurs as $auteur): ?>
+                        <label class="author-label" style="cursor: pointer;">
+                            <input
+                                type="checkbox"
+                                name="auteurs[]"
+                                value="<?= $auteur['id'] ?>"
+                                class="author-checkbox"
+                                <?= in_array($auteur['id'], $currentAuteursIds) ? 'checked' : '' ?>
+                            >
+                            <div class="author-card">
+                                <i class="fas fa-user-circle"></i>
+                                <span><?= htmlspecialchars($auteur['nom'] . ' ' . $auteur['prenom']) ?></span>
+                            </div>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+            </div>
 
-    .form-group input[type="text"],
-    .form-group textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-    }
+            <div class="form-group">
+                <label class="form-label">Categorie(s) <span style="color:red">*</span></label>
+                <div class="author-grid">
+                    <?php foreach ($categories as $cat): ?>
+                        <label class="author-label" style="cursor: pointer;">
+                            <input
+                                type="checkbox"
+                                name="categories[]"
+                                value="<?= $cat['id'] ?>"
+                                class="author-checkbox"
+                                <?= in_array($cat['id'], $currentCategoriesIds) ? 'checked' : '' ?>
+                            >
+                            <div class="author-card">
+                                <i class="fas fa-list-alt"></i>
+                                <span><?= htmlspecialchars($cat['nom']) ?></span>
+                            </div>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+            </div>
 
-    .form-group textarea {
-        resize: vertical;
-        min-height: 100px;
-    }
+            <div class="form-group" style="margin-top: 30px; background: var(--bg-body); padding: 20px; border-radius: 6px; border-left: 4px solid var(--accent-color);">
+                <label for="changelog" class="form-label"><i class="fas fa-clipboard-list"></i> Motif de la modification (Optionnel mais recommande)</label>
+                <input
+                    type="text"
+                    id="changelog"
+                    name="changelog"
+                    class="form-control"
+                    placeholder="Ex: Correction orthographe, Mise à jour des sources..." 
+                    maxlength="255"
+                >
+                <small class="text-muted" style="display: block; margin-top: 5px;">Cette note apparaîtra dans l'historique des versions pour faciliter le suivi.</small>
+            </div>
 
-    .form-group input[type="text"]:focus,
-    .form-group textarea:focus {
-        outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-    }
+            <div class="form-group" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; gap: 15px;">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Sauvegarder les modifications
+                </button>
+                <a href="<?= ADMIN_URL ?>/articles" class="btn btn-secondary">
+                    Annuler
+                </a>
+            </div>
 
-    .form-group small {
-        display: block;
-        margin-top: 5px;
-        color: #666;
-        font-size: 12px;
-    }
-
-    .form-actions {
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 1px solid #eee;
-        text-align: center;
-    }
-
-    .btn {
-        display: inline-block;
-        padding: 12px 20px;
-        margin: 0 5px;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: bold;
-        cursor: pointer;
-        border: none;
-        font-size: 14px;
-        transition: opacity 0.3s;
-    }
-
-    .btn-primary {
-        background: #007bff;
-        color: white;
-    }
-
-    .btn-secondary {
-        background: #6c757d;
-        color: white;
-    }
-
-    .btn-info {
-        background: #17a2b8;
-        color: white;
-    }
-
-    .btn:hover {
-        opacity: 0.8;
-    }
-</style>
+        </form>
+    </div>
+</div>
 
 <?php require __DIR__ . '/../layouts/footer.php'; ?>
-

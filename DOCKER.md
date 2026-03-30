@@ -1,24 +1,24 @@
 # Informations Guerre - Docker Setup
 
-## Démarrage rapide
+## Demarrage rapide
 
-### Prérequis
+### Prerequis
 - Docker
 - Docker Compose
 
-### Installation et démarrage
+### Installation et demarrage
 
 ```bash
-# 1. Cloner le projet (déjà fait)
+# 1. Cloner le projet (dejà fait)
 cd informations_guerre
 
-# 2. Construire et démarrer les conteneurs
+# 2. Construire et demarrer les conteneurs
 docker-compose up -d --build
 
-# 3. Vérifier que les conteneurs sont actifs
+# 3. Verifier que les conteneurs sont actifs
 docker-compose ps
 
-# 4. Accéder à l'application
+# 4. Acceder à l'application
 # - Frontend: http://localhost
 # - Admin: http://localhost/admin.php
 ```
@@ -29,7 +29,7 @@ docker-compose ps
 # Arrêter les conteneurs
 docker-compose down
 
-# Arrêter et supprimer les volumes (données)
+# Arrêter et supprimer les volumes (donnees)
 docker-compose down -v
 ```
 
@@ -37,23 +37,23 @@ docker-compose down -v
 
 ### Services
 - **PHP/Apache**: Application PHP sur le port 80
-- **PostgreSQL**: Base de données sur le port 5432
+- **PostgreSQL**: Base de donnees sur le port 5432
 
-### Initialisation de la base de données
-Les scripts SQL sont exécutés automatiquement lors du premier démarrage:
-- `database/script.sql` - Schéma et tables
-- `database/data.sql` - Données initiales
+### Initialisation de la base de donnees
+Les scripts SQL sont executes automatiquement lors du premier demarrage:
+- `database/script.sql` - Schema et tables
+- `database/data.sql` - Donnees initiales
 
 ### Volumes
-- `postgres_data` - Persistance des données PostgreSQL
+- `postgres_data` - Persistance des donnees PostgreSQL
 - `public/uploads` - Dossier d'uploads des images
 
 ## Configuration
 
 ### Variables d'environnement
-Voir `.env.example` pour la configuration. Modifier les identifiants dans `docker-compose.yml` si nécessaire.
+Voir `.env.example` pour la configuration. Modifier les identifiants dans `docker-compose.yml` si necessaire.
 
-### Accès à la base de données
+### Acces à la base de donnees
 
 #### Depuis l'application PHP
 ```php
@@ -78,12 +78,12 @@ docker-compose logs postgres -f
 docker-compose logs -f
 ```
 
-## Développement
+## Developpement
 
 ### Modifications du code
-Le code source est monté en volume, donc les modifications sont reflétées automatiquement.
+Le code source est monte en volume, donc les modifications sont refletees automatiquement.
 
-### Redémarrage d'un service
+### Redemarrage d'un service
 ```bash
 docker-compose restart php
 docker-compose restart postgres

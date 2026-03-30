@@ -4,31 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BackOffice - <?= $_GET['page'] ?? 'Admin' ?></title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/admin.css">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- TinyMCE CDN -->
+    <?php $tinyMceApiKey = getenv('TINYMCE_API_KEY') ?: 'no-api-key'; ?>
+    <script src="https://cdn.tiny.cloud/1/<?= htmlspecialchars($tinyMceApiKey) ?>/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
-<body class="admin-layout">
+<body>
     <header class="admin-header">
-        <div class="container">
-            <h1>BackOffice</h1>
-            <?php if (isset($_SESSION['user_id'])): ?>
-                <div class="user-menu">
-                    <span><?= sanitize($_SESSION['email']) ?></span>
-                    <a href="<?= ADMIN_URL ?>?page=logout" class="btn btn-danger">Déconnexion</a>
-                </div>
-            <?php endif; ?>
-        </div>
+        <h1><i class="fas fa-shield-halved"></i> BackOffice</h1>
+        <?php if (isset($_SESSION['user_id'])): ?>
+            <div class="user-controls">
+                <span><i class="fas fa-user-circle"></i> <?= sanitize($_SESSION['email']) ?></span>
+                <a href="<?= ADMIN_URL ?>/logout" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Deconnexion</a>
+            </div>
+        <?php endif; ?>
     </header>
 
     <?php if (isset($_SESSION['user_id'])): ?>
-        <aside class="sidebar">
-            <nav>
-                <ul>
-                    <li><a href="<?= ADMIN_URL ?>">Dashboard</a></li>
-                    <li><a href="<?= ADMIN_URL ?>?page=articles">Articles</a></li>
-                    <li><a href="<?= ADMIN_URL ?>?page=article-create">+ Nouvel Article</a></li>
-                </ul>
-            </nav>
-        </aside>
+        <nav class="admin-nav">
+            <ul>
+                <li><a href="<?= ADMIN_URL ?>/articles"><i class="fas fa-newspaper"></i> Articles</a></li>
+                <li><a href="<?= ADMIN_URL ?>/article-create"><i class="fas fa-plus"></i> Nouvel Article</a></li>
+            </ul>
+        </nav>
     <?php endif; ?>
 
-    <main class="admin-content">
+    <main class="admin-main">

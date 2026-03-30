@@ -1,50 +1,50 @@
-# Système de Versioning des Articles - Guide d'Utilisation
+# Systeme de Versioning des Articles - Guide d'Utilisation
 
 ## 📋 Vue d'ensemble
 
-Le système de versioning permet de conserver l'historique complet de chaque article et de restaurer des versions antérieures si nécessaire.
+Le systeme de versioning permet de conserver l'historique complet de chaque article et de restaurer des versions anterieures si necessaire.
 
-## ✨ Fonctionnalités
+## ✨ Fonctionnalites
 
 ### 1. **Sauvegarde automatique des versions**
-- À chaque modification d'un article, la version précédente est automatiquement archivée
-- Chaque version est associée à:
-  - Un numéro de version
+- À chaque modification d'un article, la version precedente est automatiquement archivee
+- Chaque version est associee à:
+  - Un numero de version
   - L'utilisateur qui a fait la modification
   - La date et l'heure
   - Une description optionnelle du changement (changelog)
 
 ### 2. **Historique des versions**
-- Accédez à l'historique complet via le bouton "📋 Voir l'historique" sur la page d'édition
+- Accedez à l'historique complet via le bouton "📋 Voir l'historique" sur la page d'edition
 - Affiche toutes les versions avec:
-  - Numéro de version
+  - Numero de version
   - Titre
   - Auteur de la modification
   - Date
   - Description du changement
 
-### 3. **Affichage détaillé d'une version**
-- Consultez le contenu exact d'une version passée
-- Visualisez les métadonnées (qui a modifié, quand, etc.)
+### 3. **Affichage detaille d'une version**
+- Consultez le contenu exact d'une version passee
+- Visualisez les metadonnees (qui a modifie, quand, etc.)
 
 ### 4. **Restauration des versions**
-- Restaurez un article à n'importe quelle version précédente
-- L'état actuel devient automatiquement une nouvelle version
-- Traçabilité complète avec archivage automatique
+- Restaurez un article à n'importe quelle version precedente
+- L'etat actuel devient automatiquement une nouvelle version
+- Traçabilite complete avec archivage automatique
 
-## 🗄️ Structure de la Base de Données
+## 🗄️ Structure de la Base de Donnees
 
 ### Table `article_versions`
 ```sql
 CREATE TABLE article_versions (
     id SERIAL PRIMARY KEY,
-    article_id INTEGER -- Référence à l'article
+    article_id INTEGER -- Reference à l'article
     titre VARCHAR(250) -- Titre de la version
     description TEXT -- Description courte
     contenu TEXT -- Contenu complet
-    version_number INTEGER -- Numéro séquentiel
-    created_at TIMESTAMP -- Date de création
-    updated_by INTEGER -- Utilisateur qui a modifié
+    version_number INTEGER -- Numero sequentiel
+    created_at TIMESTAMP -- Date de creation
+    updated_by INTEGER -- Utilisateur qui a modifie
     changelog TEXT -- Description du changement
 );
 ```
@@ -57,27 +57,27 @@ CREATE TABLE article_versions (
 ## 🔄 Flux de Travail
 
 ### Modification d'un article
-1. Accédez à la page d'édition
+1. Accedez à la page d'edition
 2. Modifiez le contenu
-3. **Optionnel:** Décrivez votre changement dans "Description du changement"
+3. **Optionnel:** Decrivez votre changement dans "Description du changement"
    - Exemple: "Correction orthographe", "Ajout sources bibliographiques"
 4. Cliquez sur "Sauvegarder"
-5. L'état précédent est automatiquement archivé
+5. L'etat precedent est automatiquement archive
 
 ### Consulter l'historique
-1. Sur la page d'édition, cliquez sur "📋 Voir l'historique"
+1. Sur la page d'edition, cliquez sur "📋 Voir l'historique"
 2. Vous voyez toutes les versions avec:
-   - Qui a modifié
+   - Qui a modifie
    - Quand
    - Quelle description de changement
 
 ### Restaurer une version
 1. Allez à "Voir l'historique"
 2. Trouvez la version à restaurer
-3. Cliquez sur "Voir" pour vérifier son contenu
+3. Cliquez sur "Voir" pour verifier son contenu
 4. Cliquez sur "Restaurer"
 5. Confirmez l'action
-6. La version est restaurée et l'état précédent est archivé
+6. La version est restauree et l'etat precedent est archive
 
 ## 📊 Cas d'usage
 
@@ -86,33 +86,33 @@ CREATE TABLE article_versions (
 - Description: "Correction typo ligne 3"
 - Sauvegardez
 
-### ✓ Restauration après modification erronée
+### ✓ Restauration apres modification erronee
 - Allez à l'historique
-- Trouvez la dernière version correcte
+- Trouvez la derniere version correcte
 - Restaurez-la
 
-### ✓ Audit et traçabilité
-- Consultez l'historique pour voir qui a modifié quoi et quand
-- Chaque modification est tracée avec nom d'utilisateur
+### ✓ Audit et traçabilite
+- Consultez l'historique pour voir qui a modifie quoi et quand
+- Chaque modification est tracee avec nom d'utilisateur
 
 ### ✓ Collaboration
 - Plusieurs auteurs peuvent modifier le même article
 - Chacun voit qui a fait quelle modification
 
-## 🚀 Implémentation Technique
+## 🚀 Implementation Technique
 
-### Modèles PHP
+### Modeles PHP
 
-#### `ArticleVersion` - Gère les opérations sur les versions
+#### `ArticleVersion` - Gere les operations sur les versions
 ```php
-- getByArticleId() - Récupère l'historique
-- create() - Crée une nouvelle version
+- getByArticleId() - Recupere l'historique
+- create() - Cree une nouvelle version
 - restore() - Restaure une version
 - getSpecificVersion() - Affiche une version
 - compareVersions() - Compare deux versions
 ```
 
-#### `Article` - Intégration du versioning
+#### `Article` - Integration du versioning
 ```php
 - update($id, $data, $userId, $changelog)
   // Maintenant accepte l'userId et le changelog
@@ -134,31 +134,31 @@ CREATE TABLE article_versions (
 
 ## 💾 Espace Disque
 
-Le système conserve 50 dernières versions par défaut (configurable).
+Le systeme conserve 50 dernieres versions par defaut (configurable).
 Chaque version stocke:
-- Titre (~250 caractères)
-- Description (~500 caractères)
+- Titre (~250 caracteres)
+- Description (~500 caracteres)
 - Contenu (~plusieurs KB)
 
 **Exemple:** Pour un article avec contenu moyen (50 KB), 50 versions = ~2.5 MB par article
 
-## 🔐 Sécurité
+## 🔐 Securite
 
 ✓ Authentification requise (session utilisateur)
-✓ Traçabilité complète (utilisateur + timestamp)
-✓ Suppression en cascade si un article est supprimé
-✓ Contrôle d'accès via le système d'authentification existant
+✓ Traçabilite complete (utilisateur + timestamp)
+✓ Suppression en cascade si un article est supprime
+✓ Contrôle d'acces via le systeme d'authentification existant
 
-## 📝 Données d'Exemple
+## 📝 Donnees d'Exemple
 
 ```sql
--- Version 1: Création
+-- Version 1: Creation
 INSERT INTO article_versions VALUES (
     1, 1, 'Mon article', 'Description', 'Contenu initial', 
-    1, CURRENT_TIMESTAMP, 1, 'Création initiale'
+    1, CURRENT_TIMESTAMP, 1, 'Creation initiale'
 );
 
--- Version 2: Première modification
+-- Version 2: Premiere modification
 INSERT INTO article_versions VALUES (
     2, 1, 'Mon article', 'Description', 'Contenu initial', 
     2, CURRENT_TIMESTAMP, 1, 'Correction orthographe'
@@ -167,26 +167,26 @@ INSERT INTO article_versions VALUES (
 -- Version 3: Restauration depuis v1
 INSERT INTO article_versions VALUES (
     3, 1, 'Mon article', 'Description', 'Contenu initial', 
-    3, CURRENT_TIMESTAMP, 2, 'Restaurée depuis version 1'
+    3, CURRENT_TIMESTAMP, 2, 'Restauree depuis version 1'
 );
 ```
 
-## ✅ Checklist - Vérification
+## ✅ Checklist - Verification
 
-- [x] Table `article_versions` créée dans SQL
-- [x] Modèle `ArticleVersion` développé
-- [x] Intégration dans le modèle `Article`
-- [x] Routes admin ajoutées
-- [x] Vues créées (historique, affichage version)
+- [x] Table `article_versions` creee dans SQL
+- [x] Modele `ArticleVersion` developpe
+- [x] Integration dans le modele `Article`
+- [x] Routes admin ajoutees
+- [x] Vues creees (historique, affichage version)
 - [x] Button "Voir l'historique" sur edit.php
 - [x] Champ "Description du changement" dans edit.php
 - [x] Restauration avec archivage automatique
 
-## 🎯 Améliorations Futures
+## 🎯 Ameliorations Futures
 
 - [ ] Comparaison diff entre deux versions
 - [ ] Prise de snapshot automatique à heure fixe
-- [ ] Limitation du nombre de versions conservées
+- [ ] Limitation du nombre de versions conservees
 - [ ] Export de l'historique en PDF
 - [ ] Notifications sur modifications
 - [ ] Timeline visuelle de l'historique

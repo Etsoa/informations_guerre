@@ -2,7 +2,7 @@
     RewriteEngine On
     RewriteBase /
     
-    # Exclure les fichiers réels et dossiers
+    # Exclure les fichiers reels et dossiers
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     
@@ -20,4 +20,5 @@
     RewriteRule ^admin/?$ admin.php [QSA,L]
     RewriteRule ^admin/([a-z-]+)/?$ admin.php?page=$1 [QSA,L]
     RewriteRule ^admin/([a-z-]+)/([0-9]+)/?$ admin.php?page=$1&id=$2 [QSA,L]
+    RewriteRule ^admin/([a-z-]+)/([0-9]+)/([0-9]+)/?$ admin.php?page=$1&id=$2&version=$3 [QSA,L]
 </IfModule>

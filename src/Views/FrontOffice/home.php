@@ -4,12 +4,12 @@ require __DIR__ . '/layouts/header.php';
 ?>
 
 <div class="hero">
-    <h1>Dernières Informations sur la Guerre en Iran</h1>
-    <p>Restez informé</p>
+    <h1>Dernieres Informations sur la Guerre en Iran</h1>
+    <p>Restez informe</p>
 </div>
 
 <section class="articles">
-    <h2>Articles Récents</h2>
+    <h2>Articles Recents</h2>
     <div class="articles-grid">
         <?php if (count($articles) > 0): ?>
             <?php foreach ($articles as $article): ?>
@@ -21,7 +21,7 @@ require __DIR__ . '/layouts/header.php';
                 </article>
             <?php endforeach; ?>
         <?php else: ?>
-            <p>Aucun article trouvé.</p>
+            <p>Aucun article trouve.</p>
         <?php endif; ?>
     </div>
 </section>

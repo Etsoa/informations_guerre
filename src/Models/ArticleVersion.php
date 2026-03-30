@@ -40,24 +40,25 @@ class ArticleVersion {
         return $result['count'];
     }
 
-    public function create($articleId, $titre, $description, $contenu, $userId, $changelog = null) {
-        // Obtenir le numéro de version suivant
+public function create($articleId, $titre, $description, $contenu, $auteursJson, $userId, $changelog = null) {
+        // Obtenir le numero de version suivant
         $sql = "SELECT MAX(version_number) as max_version FROM article_versions WHERE article_id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$articleId]);
         $result = $stmt->fetch();
         $versionNumber = ($result['max_version'] ?? 0) + 1;
 
-        // Insérer la version
-        $sql = "INSERT INTO article_versions 
-                (article_id, titre, description, contenu, version_number, updated_by, changelog)
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        // Inserer la version
+        $sql = "INSERT INTO article_versions
+                (article_id, titre, description, contenu, auteurs_json, version_number, updated_by, changelog)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             $articleId,
             $titre,
             $description,
             $contenu,
+            $auteursJson,
             $versionNumber,
             $userId,
             $changelog
@@ -73,7 +74,7 @@ class ArticleVersion {
     }
 
     public function restore($articleId, $versionNumber, $userId, $changelog = null) {
-        // Récupérer la version à restaurer
+        // R??cup??rer la version ?? restaurer
         $sql = "SELECT * FROM article_versions 
                 WHERE article_id = ? AND version_number = ?";
         $stmt = $this->pdo->prepare($sql);
@@ -84,29 +85,35 @@ class ArticleVersion {
             return false;
         }
 
-        // Récupérer l'article actuel pour l'archiver
+// Recuperer l'article actuel pour l'archiver
         require_once __DIR__ . '/Article.php';
+        require_once __DIR__ . '/Auteur.php';
         $articleModel = new Article($this->pdo);
+        $auteurModel = new Auteur($this->pdo);
+
         $current = $articleModel->getById($articleId);
 
         if ($current) {
+            $auteurs = $auteurModel->getByArticleId($articleId);
+
             // Archiver la version actuelle
             $this->create(
                 $articleId,
                 $current['titre'],
                 $current['description'],
                 $current['contenu'],
+                json_encode($auteurs),
                 $userId,
-                "Automarchivé avant restauration de v$versionNumber"
+                "Automarchive avant restauration de v$versionNumber"
             );
         }
 
         // Restaurer l'article
-        $sql = "UPDATE articles 
+        $sql = "UPDATE articles
                 SET titre = ?, description = ?, contenu = ?
                 WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
-        
+
         $success = $stmt->execute([
             $version['titre'],
             $version['description'],
@@ -114,14 +121,22 @@ class ArticleVersion {
             $articleId
         ]);
 
-        // Si succès, archiver cette action comme version
         if ($success) {
-            $changelogMsg = $changelog ?? "Restaurée depuis version $versionNumber";
+            // Restore Auteurs
+            $auteurModel->removeAllFromArticle($articleId);
+            $oldAuteurs = json_decode($version['auteurs_json'], true) ?: [];
+            foreach ($oldAuteurs as $auteur) {
+               $auteurModel->addToArticle($articleId, $auteur['id']);
+            }
+
+            // Si succes, archiver cette action comme version
+            $changelogMsg = $changelog ?? "Restauree depuis version $versionNumber";
             $this->create(
                 $articleId,
                 $version['titre'],
                 $version['description'],
                 $version['contenu'],
+                $version['auteurs_json'],
                 $userId,
                 $changelogMsg
             );
@@ -159,3 +174,4 @@ class ArticleVersion {
         ];
     }
 }
+

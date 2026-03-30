@@ -17,7 +17,7 @@ function slugify($text) {
 
 function formatDate($date) {
     $d = new DateTime($date);
-    return $d->format('d/m/Y à H:i');
+    return $d->format('d/m/Y ?? H:i');
 }
 
 function truncate($text, $length = 150) {

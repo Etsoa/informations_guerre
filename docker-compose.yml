@@ -15,7 +15,7 @@ services:
       # Montrer les scripts SQL pour initialisation
       - ./database/script.sql:/docker-entrypoint-initdb.d/01-schema.sql
       - ./database/data.sql:/docker-entrypoint-initdb.d/02-data.sql
-      # Volume de persistance des données
+      # Volume de persistance des donnees
       - postgres_data:/var/lib/postgresql/data
     networks:
       - app_network
@@ -34,7 +34,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      # Montrer le code source en direct (pour développement)
+      # Montrer le code source en direct (pour developpement)
       - .:/var/www/html
       - ./public/uploads:/var/www/html/public/uploads
     environment:

@@ -1,10 +1,10 @@
-# Stratégies de Versioning pour les Articles
+# Strategies de Versioning pour les Articles
 
-## 1. **Solution Recommandée: Table de Versioning Séparée** ⭐
+## 1. **Solution Recommandee: Table de Versioning Separee** ⭐
 
 La plus simple et la plus efficace pour votre cas.
 
-### Schéma SQL
+### Schema SQL
 ```sql
 -- Table article_versions (historique des modifications)
 CREATE TABLE article_versions (
@@ -25,14 +25,14 @@ CREATE INDEX idx_article_versions_date ON article_versions(created_at);
 
 ### Avantages
 ✓ Historique complet et auditable
-✓ Facile à implémenter
+✓ Facile à implementer
 ✓ Requêtes simples
 ✓ Performance optimale
 ✓ RGPD compliant (trace des modifications)
 
-### Inconvénients
+### Inconvenients
 ✗ Consomme plus d'espace disque
-✗ Nécessite une gestion manuelle
+✗ Necessite une gestion manuelle
 
 ---
 
@@ -40,7 +40,7 @@ CREATE INDEX idx_article_versions_date ON article_versions(created_at);
 
 Conserver les anciennes versions avec un flag.
 
-### Schéma SQL
+### Schema SQL
 ```sql
 ALTER TABLE articles ADD COLUMN version_number INTEGER DEFAULT 1;
 ALTER TABLE articles ADD COLUMN updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
@@ -54,17 +54,17 @@ CREATE INDEX idx_articles_version ON articles(id, version_number);
 ✓ Simpler
 ✓ Moins de requêtes joins
 
-### Inconvénients
+### Inconvenients
 ✗ Table articles s'agrandit rapidement
-✗ Moins de flexibilité
+✗ Moins de flexibilite
 
 ---
 
-## 3. **Event Sourcing** (Avancé)
+## 3. **Event Sourcing** (Avance)
 
-Enregistrer chaque action comme un événement.
+Enregistrer chaque action comme un evenement.
 
-### Schéma SQL
+### Schema SQL
 ```sql
 CREATE TABLE article_events (
     id SERIAL PRIMARY KEY,
@@ -78,21 +78,21 @@ CREATE TABLE article_events (
 ```
 
 ### Avantages
-✓ Traçabilité complète du processus
-✓ Recréer n'importe quel état antérieur
+✓ Traçabilite complete du processus
+✓ Recreer n'importe quel etat anterieur
 ✓ Audit trail complet
 
-### Inconvénients
-✗ Plus complexe à implémenter
-✗ Nécessite du parsing JSONB
+### Inconvenients
+✗ Plus complexe à implementer
+✗ Necessite du parsing JSONB
 
 ---
 
-## 4. **Copie Complète (Simple)**
+## 4. **Copie Complete (Simple)**
 
 Dupliquer l'article avant modification.
 
-### Schéma SQL
+### Schema SQL
 ```sql
 CREATE TABLE articles_archive (
     LIKE articles INCLUDING ALL
@@ -116,9 +116,9 @@ FOR EACH ROW EXECUTE FUNCTION archive_article();
 
 ### Avantages
 ✓ Automatique (trigger)
-✓ Archive complète
+✓ Archive complete
 
-### Inconvénients
+### Inconvenients
 ✗ Consomme beaucoup d'espace
 ✗ Pas de metadata sur la modification
 
@@ -127,17 +127,17 @@ FOR EACH ROW EXECUTE FUNCTION archive_article();
 ## Recommandation Finale
 
 **Je recommande la Solution 1 (Table de Versioning)** car:
-1. ✓ Équilibre parfait entre simplicité et fonctionnalité
-2. ✓ Facile à implémenter dans les modèles PHP
-3. ✓ Performance et flexibilité
-4. ✓ Possibilité de voir la diff entre versions
-5. ✓ Peut tracker qui a modifié et quand
+1. ✓ equilibre parfait entre simplicite et fonctionnalite
+2. ✓ Facile à implementer dans les modeles PHP
+3. ✓ Performance et flexibilite
+4. ✓ Possibilite de voir la diff entre versions
+5. ✓ Peut tracker qui a modifie et quand
 
 ---
 
-## Implémentation en PHP (Solution 1)
+## Implementation en PHP (Solution 1)
 
-### Modèle ArticleVersion
+### Modele ArticleVersion
 ```php
 class ArticleVersion {
     private $pdo;
@@ -148,14 +148,14 @@ class ArticleVersion {
 
     // Sauvegarder une version
     public function create($articleId, $titre, $description, $contenu, $userId, $changelog = null) {
-        // Obtenir le numéro de version
+        // Obtenir le numero de version
         $sql = "SELECT MAX(version_number) as max_version FROM article_versions WHERE article_id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$articleId]);
         $result = $stmt->fetch();
         $versionNumber = ($result['max_version'] ?? 0) + 1;
 
-        // Insérer la version
+        // Inserer la version
         $sql = "INSERT INTO article_versions 
                 (article_id, titre, description, contenu, version_number, updated_by, changelog)
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -171,7 +171,7 @@ class ArticleVersion {
         ]);
     }
 
-    // Récupérer l'historique
+    // Recuperer l'historique
     public function getHistory($articleId) {
         $sql = "SELECT * FROM article_versions 
                 WHERE article_id = ?
@@ -183,7 +183,7 @@ class ArticleVersion {
 
     // Restaurer une version
     public function restore($articleId, $versionNumber, $userId) {
-        // Récupérer la version
+        // Recuperer la version
         $sql = "SELECT * FROM article_versions 
                 WHERE article_id = ? AND version_number = ?";
         $stmt = $this->pdo->prepare($sql);
@@ -196,7 +196,7 @@ class ArticleVersion {
         $article = new Article($this->pdo);
         $current = $article->getById($articleId);
         $this->create($articleId, $current['titre'], $current['description'], 
-                     $current['contenu'], $userId, "Restaurée depuis v$versionNumber");
+                     $current['contenu'], $userId, "Restauree depuis v$versionNumber");
 
         // Restaurer l'article
         $sql = "UPDATE articles 
@@ -234,4 +234,4 @@ $article = new Article($pdo);
 $article->update($articleId, $data);
 ```
 
-Veux-tu que j'implémente cette solution en ajoutant les tables au script SQL et les modèles PHP?
+Veux-tu que j'implemente cette solution en ajoutant les tables au script SQL et les modeles PHP?

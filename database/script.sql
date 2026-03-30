@@ -1,5 +1,5 @@
--- Base de données: informations_guerre
--- Les tables seront créées dans la base définie par docker-compose
+-- Base de donnees: informations_guerre (Version optimisee pour TinyMCE)
+-- Les tables seront creees dans la base definie par docker-compose
 
 -- Table utilisateurs
 CREATE TABLE utilisateurs(
@@ -17,53 +17,21 @@ CREATE TABLE auteurs(
     email VARCHAR(100)
 );
 
--- Table catégories
+-- Table categories
 CREATE TABLE categories(
     id SERIAL PRIMARY KEY,
     nom VARCHAR(100) NOT NULL UNIQUE
 );
 
 -- Table articles
+-- (Les images et les sources sont maintenant gerees directement via le contenu HTML genere par TinyMCE)
 CREATE TABLE articles(
     id SERIAL PRIMARY KEY,
     titre VARCHAR(250) NOT NULL,
-    description TEXT NOT NULL,
-    contenu TEXT NOT NULL,
+    description TEXT NOT NULL, -- Utilise comme "chapeau" / resume
+    contenu TEXT NOT NULL,     -- Le contenu riche genere par TinyMCE (Rich Text HTML)
     date_publication TIMESTAMP
 );
-
--- table sources
-CREATE TABLE sources(
-    id SERIAL PRIMARY KEY,
-    article_id INTEGER NOT NULL REFERENCES articles(id),
-    nom VARCHAR(100) NOT NULL UNIQUE,
-    url VARCHAR(255) NOT NULL
-);
-
--- Table images 
-CREATE TABLE images(
-    id SERIAL PRIMARY KEY,
-    nom VARCHAR(255) NOT NULL,
-    article_id INTEGER NOT NULL REFERENCES articles(id)
-);
-
--- Table article_auteur 
-CREATE TABLE article_auteur(
-    id SERIAL PRIMARY KEY,
-    article_id INTEGER NOT NULL REFERENCES articles(id),
-    auteur_id INTEGER NOT NULL REFERENCES auteurs(id)
-);
-
--- Table article_categorie
-CREATE TABLE article_categorie(
-    id SERIAL PRIMARY KEY,
-    article_id INTEGER NOT NULL REFERENCES articles(id),
-    categorie_id INTEGER NOT NULL REFERENCES categories(id)
-);
-
--- Index pour les performances
-CREATE INDEX idx_articles_date ON articles(date_publication);
-CREATE INDEX idx_images_article ON images(article_id);
 
 -- Table article_versions (historique des modifications)
 CREATE TABLE article_versions (
@@ -72,14 +40,31 @@ CREATE TABLE article_versions (
     titre VARCHAR(250) NOT NULL,
     description TEXT NOT NULL,
     contenu TEXT NOT NULL,
+    auteurs_json TEXT,         -- Backup des auteurs au moment de la version
     version_number INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_by INTEGER REFERENCES utilisateurs(id),
     changelog TEXT
 );
 
+-- Table article_auteur (Relation Many-to-Many pour les metadonnees)
+CREATE TABLE article_auteur(
+    id SERIAL PRIMARY KEY,
+    article_id INTEGER NOT NULL REFERENCES articles(id) ON DELETE CASCADE,
+    auteur_id INTEGER NOT NULL REFERENCES auteurs(id) ON DELETE CASCADE
+);
+
+-- Table article_categorie (Relation Many-to-Many pour filtrage)
+CREATE TABLE article_categorie(
+    id SERIAL PRIMARY KEY,
+    article_id INTEGER NOT NULL REFERENCES articles(id) ON DELETE CASCADE,
+    categorie_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE CASCADE
+);
+
+-- Index pour les performances
+CREATE INDEX idx_articles_date ON articles(date_publication);
+
 -- Index pour article_versions
 CREATE INDEX idx_article_versions_article ON article_versions(article_id);
 CREATE INDEX idx_article_versions_date ON article_versions(created_at);
 CREATE INDEX idx_article_versions_version ON article_versions(article_id, version_number);
-

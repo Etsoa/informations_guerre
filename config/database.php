@@ -1,6 +1,6 @@
 <?php
-// Configuration base de données - Pattern Singleton
-// Utilise les variables d'environnement du fichier .env, sinon les valeurs par défaut
+// Configuration base de donnees - Pattern Singleton
+// Utilise les variables d'environnement du fichier .env, sinon les valeurs par defaut
 
 /**
  * Charge les variables d'environnement depuis le fichier .env
@@ -23,12 +23,12 @@ function loadEnv($filePath) {
             $key = trim($key);
             $value = trim($value);
             
-            // Supprimer les guillemets si présents
+            // Supprimer les guillemets si presents
             if (preg_match('/^"(.+)"$/', $value) || preg_match('/^\'(.+)\'$/', $value)) {
                 $value = substr($value, 1, -1);
             }
             
-            // Définir la variable d'environnement
+            // Definir la variable d'environnement
             putenv("$key=$value");
             $_ENV[$key] = $value;
         }
@@ -43,7 +43,7 @@ class Database {
     private static $instance = null;
     private $pdo;
 
-    // Constantes de configuration avec valeurs par défaut
+    // Constantes de configuration avec valeurs par defaut
     private const HOST = 'postgres';                // 'postgres' en Docker, 'localhost' en local
     private const DBNAME = 'informations_guerre';
     private const USER = 'postgres';
@@ -51,11 +51,11 @@ class Database {
     private const PORT = '5432';
 
     /**
-     * Constructeur privé pour empêcher l'instanciation directe
+     * Constructeur prive pour empêcher l'instanciation directe
      */
     private function __construct() {
         try {
-            // Récupère les variables d'environnement avec valeurs par défaut
+            // Recupere les variables d'environnement avec valeurs par defaut
             $host = getenv('DB_HOST') ?: self::HOST;
             $port = getenv('DB_PORT') ?: self::PORT;
             $dbname = getenv('DB_NAME') ?: self::DBNAME;
@@ -77,7 +77,7 @@ class Database {
     }
 
     /**
-     * Obtient l'instance unique de la base de données
+     * Obtient l'instance unique de la base de donnees
      * @return Database
      */
     public static function getInstance() {
@@ -101,19 +101,19 @@ class Database {
     private function __clone() {}
 
     /**
-     * Empêche la sérialisation de l'instance
+     * Empêche la serialisation de l'instance
      */
     public function __serialize() {
-        throw new Exception('Singleton ne peut pas être sérialisé');
+        throw new Exception('Singleton ne peut pas être serialise');
     }
 
     /**
-     * Empêche la désérialisation de l'instance
+     * Empêche la deserialisation de l'instance
      */
     public function __unserialize(array $data) {
-        throw new Exception('Singleton ne peut pas être désérialisé');
+        throw new Exception('Singleton ne peut pas être deserialise');
     }
 }
 
-// Utilisation globale - Pour compatibilité avec le code existant
+// Utilisation globale - Pour compatibilite avec le code existant
 $pdo = Database::getInstance()->getConnection();
