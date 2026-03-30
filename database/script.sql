@@ -64,4 +64,3 @@ CREATE TABLE article_categorie(
 -- Index pour les performances
 CREATE INDEX idx_articles_date ON articles(date_publication);
 CREATE INDEX idx_images_article ON images(article_id);
-

@@ -1,3 +1,8 @@
-DROP DATABASE IF EXISTS informations_guerre;
-CREATE DATABASE informations_guerre;
-\c informations_guerre;
+DROP TABLE IF EXISTS article_categorie CASCADE;
+DROP TABLE IF EXISTS article_auteur CASCADE;
+DROP TABLE IF EXISTS images CASCADE;
+DROP TABLE IF EXISTS sources CASCADE;
+DROP TABLE IF EXISTS articles CASCADE;
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS auteurs CASCADE;
+DROP TABLE IF EXISTS utilisateurs CASCADE;
