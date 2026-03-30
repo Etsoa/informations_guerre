@@ -1,31 +1,75 @@
-<?php
-require __DIR__ . '/layouts/header.php';
-?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - BackOffice</title>
+</head>
+<body>
+    <header>
+        <h1>BackOffice - Connexion</h1>
+    </header>
 
-<div class="login-form">
-    <h2>Connexion Admin</h2>
-    
-    <?php if (isset($error)): ?>
-        <div class="alert alert-error"><?= $error ?></div>
-    <?php endif; ?>
+    <main>
+        <div>
+            <h2>Authentification</h2>
+            
+            <?php if (isset($error)): ?>
+                <div style="border: 1px solid #dc3545; background: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border-radius: 4px;">
+                    <strong>Erreur:</strong> <?= htmlspecialchars($error) ?>
+                </div>
+            <?php endif; ?>
 
-    <form method="POST">
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" name="email" required>
+            <form method="POST">
+                <fieldset>
+                    <legend>Connexion Admin</legend>
+                    
+                    <div style="margin: 15px 0;">
+                        <label for="email">
+                            <strong>Email:</strong>
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required 
+                            autofocus
+                            style="width: 300px; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;"
+                        >
+                    </div>
+
+                    <div style="margin: 15px 0;">
+                        <label for="password">
+                            <strong>Mot de passe:</strong>
+                        </label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            required
+                            style="width: 300px; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;"
+                        >
+                    </div>
+
+                    <div style="margin: 20px 0;">
+                        <button 
+                            type="submit" 
+                            style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;"
+                        >
+                            → Connexion
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+
+            <h3>Identifiants de Test</h3>
+            <pre>Email: admin@test.com
+Mot de passe: password123</pre>
         </div>
-        <div class="form-group">
-            <label>Mot de passe</label>
-            <input type="password" name="password" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Connexion</button>
-    </form>
+    </main>
 
-    <p style="margin-top: 20px; font-size: 0.9em; color: #666;">
-        <strong>Identifiants de test:</strong><br>
-        Email: admin@test.com<br>
-        Mot de passe: password123
-    </p>
-</div>
-
-<?php require __DIR__ . '/layouts/footer.php'; ?>
+    <footer>
+        <p>&copy; 2026 - Informations Guerre - BackOffice</p>
+    </footer>
+</body>
+</html>

@@ -32,6 +32,19 @@ CREATE TABLE articles(
     date_publication TIMESTAMP
 );
 
+-- Table article_versions (historique des modifications)
+CREATE TABLE article_versions (
+    id SERIAL PRIMARY KEY,
+    article_id INTEGER NOT NULL REFERENCES articles(id) ON DELETE CASCADE,
+    titre VARCHAR(250) NOT NULL,
+    description TEXT NOT NULL,
+    contenu TEXT NOT NULL,
+    version_number INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_by INTEGER REFERENCES utilisateurs(id),
+    changelog TEXT
+);
+
 -- table sources
 CREATE TABLE sources(
     id SERIAL PRIMARY KEY,
@@ -64,19 +77,6 @@ CREATE TABLE article_categorie(
 -- Index pour les performances
 CREATE INDEX idx_articles_date ON articles(date_publication);
 CREATE INDEX idx_images_article ON images(article_id);
-
--- Table article_versions (historique des modifications)
-CREATE TABLE article_versions (
-    id SERIAL PRIMARY KEY,
-    article_id INTEGER NOT NULL REFERENCES articles(id) ON DELETE CASCADE,
-    titre VARCHAR(250) NOT NULL,
-    description TEXT NOT NULL,
-    contenu TEXT NOT NULL,
-    version_number INTEGER NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_by INTEGER REFERENCES utilisateurs(id),
-    changelog TEXT
-);
 
 -- Index pour article_versions
 CREATE INDEX idx_article_versions_article ON article_versions(article_id);

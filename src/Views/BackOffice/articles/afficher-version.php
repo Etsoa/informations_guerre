@@ -1,121 +1,84 @@
 <?php
-// Vue BackOffice - Affichage d'une version spécifique
-
-require __DIR__ . '/layouts/header.php';
+require __DIR__ . '/../layouts/header.php';
 ?>
 
-<div class="container">
-    <h1>Version <?php echo $version['version_number']; ?> - <?php echo htmlspecialchars($version['titre']); ?></h1>
+<h2>Version <?= $version['version_number'] ?></h2>
 
-    <div class="version-info">
-        <p>
-            <strong>Article:</strong> 
-            <a href="<?php echo ADMIN_URL . '?page=article-edit&id=' . $article['id']; ?>">
-                <?php echo htmlspecialchars($article['titre']); ?>
-            </a>
-        </p>
-        <p><strong>Version:</strong> <?php echo $version['version_number']; ?></p>
-        <p><strong>Modifié par:</strong> <?php echo htmlspecialchars($version['auteur_nom'] ?? 'Système'); ?></p>
-        <p><strong>Date:</strong> <?php echo date('d/m/Y H:i:s', strtotime($version['created_at'])); ?></p>
-        <?php if ($version['changelog']): ?>
-            <p><strong>Description du changement:</strong> <?php echo htmlspecialchars($version['changelog']); ?></p>
-        <?php endif; ?>
-    </div>
+<h3><?= htmlspecialchars($version['titre']) ?></h3>
 
-    <div class="version-content">
-        <h3>Titre</h3>
-        <p><?php echo htmlspecialchars($version['titre']); ?></p>
-
-        <h3>Description</h3>
-        <p><?php echo nl2br(htmlspecialchars($version['description'])); ?></p>
-
-        <h3>Contenu</h3>
-        <div class="content">
-            <?php echo nl2br(htmlspecialchars($version['contenu'])); ?>
-        </div>
-    </div>
-
-    <div class="actions">
-        <a href="<?php echo ADMIN_URL . '?page=article-restaurer&id=' . $article['id'] . '&version=' . $version['version_number']; ?>" 
-           class="btn btn-warning" 
-           onclick="return confirm('Restaurer cette version? L\'état actuel sera archivé.');">
-            ✓ Restaurer cette version
-        </a>
-        <a href="<?php echo ADMIN_URL . '?page=article-historique&id=' . $article['id']; ?>" class="btn btn-secondary">
-            ← Retour à l'historique
-        </a>
-        <a href="<?php echo ADMIN_URL . '?page=articles'; ?>" class="btn btn-secondary">
-            Retour à la liste
-        </a>
-    </div>
+<div style="margin: 15px 0; padding: 15px; border: 1px solid #17a2b8; background: #d1ecf1; border-radius: 4px;">
+    <p><strong>Article:</strong> <a href="<?= ADMIN_URL ?>?page=article-edit&id=<?= $article['id'] ?>"><?= htmlspecialchars($article['titre']) ?></a></p>
+    <p><strong>Version:</strong> v<?= $version['version_number'] ?></p>
+    <p><strong>Modifié par:</strong> <?= htmlspecialchars($version['auteur_nom'] ?? 'Système') ?></p>
+    <p><strong>Date:</strong> <?= date('d/m/Y H:i:s', strtotime($version['created_at'])) ?></p>
+    <?php if ($version['changelog']): ?>
+        <p><strong>Description du changement:</strong> <em><?= htmlspecialchars($version['changelog']) ?></em></p>
+    <?php endif; ?>
 </div>
 
-<style>
-    .version-info {
-        background: #f0f8ff;
-        padding: 15px;
-        border-radius: 4px;
-        margin-bottom: 20px;
-        border-left: 4px solid #17a2b8;
-    }
+<fieldset>
+    <legend>Contenu de la Version</legend>
+    
+    <div style="margin: 20px 0;">
+        <h4>Titre</h4>
+        <p><?= htmlspecialchars($version['titre']) ?></p>
+    </div>
 
-    .version-content {
-        background: white;
-        padding: 20px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        margin-bottom: 20px;
-    }
+    <div style="margin: 20px 0;">
+        <h4>Description</h4>
+        <p><?= nl2br(htmlspecialchars($version['description'])) ?></p>
+    </div>
 
-    .version-content h3 {
-        margin-top: 20px;
-        padding-top: 10px;
-        border-top: 1px solid #eee;
-        color: #333;
-    }
+    <div style="margin: 20px 0;">
+        <h4>Contenu</h4>
+        <div style="background: #f5f5f5; padding: 10px; border: 1px solid #ddd; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word;">
+            <?= nl2br(htmlspecialchars($version['contenu'])) ?>
+        </div>
+    </div>
+</fieldset>
 
-    .version-content h3:first-child {
-        margin-top: 0;
-        padding-top: 0;
-        border-top: none;
-    }
+<div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd;">
+    <button 
+        onclick="restoreVersion(<?= $article['id'] ?>, <?= $version['version_number'] ?>)"
+        style="padding: 10px 20px; background: #ffc107; color: black; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-right: 10px;"
+    >
+        ↩ Restaurer cette version
+    </button>
+    
+    <a 
+        href="<?= ADMIN_URL ?>?page=article-historique&id=<?= $article['id'] ?>"
+        style="display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;"
+    >
+        ← Retour à l'historique
+    </a>
+    
+    <a 
+        href="<?= ADMIN_URL ?>?page=articles"
+        style="display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;"
+    >
+        Retour à la liste
+    </a>
+</div>
 
-    .content {
-        background: #fafafa;
-        padding: 10px;
-        border-radius: 4px;
-        max-height: 400px;
-        overflow-y: auto;
+<script>
+    function restoreVersion(articleId, versionNumber) {
+        if (!confirm('Êtes-vous sûr de vouloir restaurer cette version? L\'état actuel sera archivé.')) {
+            return;
+        }
+        
+        ajax('POST', '<?= ADMIN_URL ?>', {
+            page: 'article-restaurer',
+            id: articleId,
+            version: versionNumber
+        }, function(response, status) {
+            if (status === 200) {
+                showAlert('Version restaurée avec succès', 'success');
+                setTimeout(() => location.href = '<?= ADMIN_URL ?>?page=article-historique&id=' + articleId, 1500);
+            } else {
+                showAlert('Erreur lors de la restauration', 'error');
+            }
+        });
     }
+</script>
 
-    .btn {
-        display: inline-block;
-        padding: 10px 15px;
-        margin: 5px;
-        text-decoration: none;
-        border-radius: 4px;
-        font-size: 14px;
-    }
-
-    .btn-warning {
-        background: #ffc107;
-        color: black;
-    }
-
-    .btn-secondary {
-        background: #6c757d;
-        color: white;
-    }
-
-    .btn:hover {
-        opacity: 0.8;
-    }
-
-    .actions {
-        margin-top: 20px;
-        padding-top: 20px;
-        text-align: center;
-    }
-</style>
-
-<?php require __DIR__ . '/layouts/footer.php'; ?>
+<?php require __DIR__ . '/../layouts/footer.php'; ?>

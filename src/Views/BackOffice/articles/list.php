@@ -1,12 +1,14 @@
 <?php
-require __DIR__ . '/layouts/header.php';
+require __DIR__ . '/../layouts/header.php';
 ?>
 
 <h2>Articles</h2>
 
-<a href="<?= ADMIN_URL ?>?page=article-create" class="btn btn-primary">+ Créer Article</a>
+<p>
+    <a href="<?= ADMIN_URL ?>?page=article-create">+ Créer un nouvel article</a>
+</p>
 
-<table class="articles-table">
+<table border="1" cellpadding="10" width="100%">
     <thead>
         <tr>
             <th>ID</th>
@@ -17,19 +19,48 @@ require __DIR__ . '/layouts/header.php';
         </tr>
     </thead>
     <tbody>
-        <?php foreach ($articles as $article): ?>
+        <?php if (!empty($articles)): ?>
+            <?php foreach ($articles as $article): ?>
+                <tr>
+                    <td><?= $article['id'] ?></td>
+                    <td><strong><?= htmlspecialchars(substr($article['titre'], 0, 50)) ?></strong></td>
+                    <td><?= htmlspecialchars(substr($article['description'], 0, 50)) ?>...</td>
+                    <td><?= date('d/m/Y H:i', strtotime($article['date_publication'])) ?></td>
+                    <td>
+                        <a href="<?= ADMIN_URL ?>?page=article-edit&id=<?= $article['id'] ?>">Éditer</a>
+                        |
+                        <a href="<?= ADMIN_URL ?>?page=article-historique&id=<?= $article['id'] ?>">Historique</a>
+                        |
+                        <button onclick="deleteArticle(<?= $article['id'] ?>)" style="background: none; border: none; color: blue; cursor: pointer; text-decoration: underline;">Supprimer</button>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
             <tr>
-                <td><?= $article['id'] ?></td>
-                <td><?= sanitize(truncate($article['titre'], 50)) ?></td>
-                <td><?= sanitize(truncate($article['description'], 50)) ?></td>
-                <td><?= formatDate($article['date_publication']) ?></td>
-                <td>
-                    <a href="<?= ADMIN_URL ?>?page=article-edit&id=<?= $article['id'] ?>" class="btn btn-small">Éditer</a>
-                    <a href="<?= ADMIN_URL ?>?page=article-delete&id=<?= $article['id'] ?>" class="btn btn-small btn-danger" onclick="return confirm('Supprimer ?')">Supprimer</a>
+                <td colspan="5" style="text-align: center; padding: 20px; font-style: italic;">
+                    Aucun article trouvé
                 </td>
             </tr>
-        <?php endforeach; ?>
+        <?php endif; ?>
     </tbody>
 </table>
 
-<?php require __DIR__ . '/layouts/footer.php'; ?>
+<script>
+    function deleteArticle(id) {
+        if (!confirm('Êtes-vous sûr de vouloir supprimer cet article?')) return;
+        
+        ajax('POST', '<?= ADMIN_URL ?>', { 
+            page: 'article-delete',
+            id: id
+        }, function(response, status) {
+            if (status === 200) {
+                showAlert('Article supprimé avec succès', 'success');
+                setTimeout(() => location.href = '<?= ADMIN_URL ?>?page=articles', 1500);
+            } else {
+                showAlert('Erreur lors de la suppression', 'error');
+            }
+        });
+    }
+</script>
+
+<?php require __DIR__ . '/../layouts/footer.php'; ?>
