@@ -1,6 +1,43 @@
 <?php
 // Configuration base de données - Pattern Singleton
-// Utilise les variables d'environnement si disponibles, sinon les valeurs par défaut
+// Utilise les variables d'environnement du fichier .env, sinon les valeurs par défaut
+
+/**
+ * Charge les variables d'environnement depuis le fichier .env
+ */
+function loadEnv($filePath) {
+    if (!file_exists($filePath)) {
+        return;
+    }
+
+    $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        // Ignorer les commentaires
+        if (strpos(trim($line), '#') === 0) {
+            continue;
+        }
+
+        // Parser les variables
+        if (strpos($line, '=') !== false) {
+            list($key, $value) = explode('=', $line, 2);
+            $key = trim($key);
+            $value = trim($value);
+            
+            // Supprimer les guillemets si présents
+            if (preg_match('/^"(.+)"$/', $value) || preg_match('/^\'(.+)\'$/', $value)) {
+                $value = substr($value, 1, -1);
+            }
+            
+            // Définir la variable d'environnement
+            putenv("$key=$value");
+            $_ENV[$key] = $value;
+        }
+    }
+}
+
+// Charger les variables du fichier .env
+$envFile = __DIR__ . '/../.env';
+loadEnv($envFile);
 
 class Database {
     private static $instance = null;
