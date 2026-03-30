@@ -44,7 +44,7 @@ docker-compose.override.yml
 .gitkeep
 
 # Uploads (user generated content - optional to ignore)
-# Décommentez si vous voulez ignorer
+# Decommentez si vous voulez ignorer
 # public/uploads/*
 
 # Tests coverage

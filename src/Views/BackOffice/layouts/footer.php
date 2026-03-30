@@ -55,6 +55,37 @@
             
             setTimeout(() => alertDiv.remove(), 5000);
         }
+
+        // Initialisation de TinyMCE
+        if (typeof tinymce !== 'undefined') {
+            tinymce.init({
+                selector: '#contenu',
+                height: 600,
+                menubar: 'file edit view insert format tools table help',
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'media', 'table', 'help', 'wordcount',
+                    'codesample', 'directionality', 'emoticons', 'nonbreaking',
+                    'pagebreak', 'quickbars', 'visualchars', 'accordion'
+                ],
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | ' +
+                    'alignleft aligncenter alignright alignjustify | ' +
+                    'bullist numlist outdent indent | link image media table | ' +
+                    'forecolor backcolor emoticons | codesample pagebreak | ' +
+                    'visualblocks preview fullscreen | removeformat | help',
+                quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+                quickbars_insert_toolbar: 'quickimage quicktable | hr pagebreak',
+                contextmenu: 'link image table configure',
+                image_advtab: true,
+                image_caption: true,
+                image_title: true,
+                automatic_uploads: true,
+                file_picker_types: 'image media',
+                content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.6; } img { max-width: 100%; height: auto; }',
+                language: 'fr_FR'
+            });
+        }
     </script>
 </body>
 </html>

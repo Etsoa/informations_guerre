@@ -33,7 +33,7 @@ require __DIR__ . '/../layouts/header.php';
     <div class="meta-card">
         <div class="meta-icon"><i class="far fa-clock"></i></div>
         <div class="meta-details">
-            <span class="meta-label">Modifié le</span>
+            <span class="meta-label">Modifie le</span>
             <span class="meta-value"><?= date('d/m/Y H:i', strtotime($version['created_at'])) ?></span>
         </div>
     </div>
@@ -42,7 +42,7 @@ require __DIR__ . '/../layouts/header.php';
         <div class="meta-icon"><i class="fas fa-user-edit"></i></div>
         <div class="meta-details">
             <span class="meta-label">Par</span>
-            <span class="meta-value"><?= htmlspecialchars($version['auteur_nom'] ?? 'Système') ?></span>
+            <span class="meta-value"><?= htmlspecialchars($version['auteur_nom'] ?? 'Systeme') ?></span>
         </div>
     </div>
 </div>
@@ -59,7 +59,7 @@ require __DIR__ . '/../layouts/header.php';
 
 <div class="admin-card" style="margin-top: 30px;">
     <div class="admin-card-header">
-        <i class="fas fa-archive"></i> Contenu de la Version archivée (v<?= $version['version_number'] ?>)
+        <i class="fas fa-archive"></i> Contenu de la Version archivee (v<?= $version['version_number'] ?>)
     </div>
     <div class="admin-card-body" style="padding: 0;">
         <table class="admin-table" style="margin: 0; box-shadow: none;">
@@ -84,8 +84,8 @@ require __DIR__ . '/../layouts/header.php';
                     <td style="font-weight: 600; color: var(--text-muted); background: var(--bg-body); border-right: 1px solid var(--border-color); vertical-align: top; padding: 20px;">
                         <i class="fas fa-paragraph" style="margin-right: 8px;"></i> Contenu complet
                     </td>
-                    <td style="padding: 20px; white-space: pre-wrap; word-wrap: break-word; font-family: 'Merriweather', serif; line-height: 1.8; color: var(--text-main); font-size: 1.05rem;">
-<?= htmlspecialchars($version['contenu']) ?>
+                      <td style="padding: 20px; word-wrap: break-word; font-family: 'Merriweather', serif; line-height: 1.8; color: var(--text-main); font-size: 1.05rem;">
+<?= $version['contenu'] // Affichage brut car le contenu vient de TinyMCE ?>
                     </td>
                 </tr>
             </tbody>
@@ -109,13 +109,13 @@ require __DIR__ . '/../layouts/header.php';
 
 <script>
     function restoreVersion(articleId, versionNumber) {
-        if (!confirm('Êtes-vous sûr de vouloir restaurer cette version ? L\'état actuel sera archivé dans l\'historique.')) {
+        if (!confirm('Êtes-vous sûr de vouloir restaurer cette version ? L\'etat actuel sera archive dans l\'historique.')) {
             return;
         }
         
         ajax('POST', '<?= ADMIN_URL ?>/article-restaurer/' + articleId + '/' + versionNumber, {}, function(response, status) {
             if (status === 200) {
-                showAlert('Version restaurée avec succès', 'success');
+                showAlert('Version restauree avec succes', 'success');
                 setTimeout(() => location.href = '<?= ADMIN_URL ?>/article-historique/' + articleId, 1500);
             } else {
                 showAlert('Erreur lors de la restauration', 'error');

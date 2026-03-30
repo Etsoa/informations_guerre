@@ -2,7 +2,7 @@
     RewriteEngine On
     RewriteBase /
     
-    # Exclure les fichiers réels et dossiers
+    # Exclure les fichiers reels et dossiers
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     

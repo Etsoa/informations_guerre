@@ -48,19 +48,12 @@ class Article {
                 $auteurs = $auteurModel->getByArticleId($id);
                 $auteursJson = json_encode($auteurs);
 
-                // Fetch sources
-                require_once __DIR__ . '/Source.php';
-                $sourceModel = new Source($this->pdo);
-                $sources = $sourceModel->getByArticleId($id);
-                $sourcesJson = json_encode($sources);
-
                 $versionModel->create(
                     $id,
                     $current['titre'],
                     $current['description'],
                     $current['contenu'],
                     $auteursJson,
-                    $sourcesJson,
                     $userId,
                     $changelog
                 );
@@ -90,4 +83,33 @@ class Article {
         $stmt->execute([$term, $term]);
         return $stmt->fetchAll();
     }
+
+    public function getFiltered($filters = []) {
+        $sql = "SELECT DISTINCT a.* FROM articles a";
+        $params = [];
+        $conditions = [];
+
+        if (!empty($filters['categorie_id'])) {
+            $sql .= " JOIN article_categorie ac ON a.id = ac.article_id";
+            $conditions[] = "ac.categorie_id = ?";
+            $params[] = $filters['categorie_id'];
+        }
+
+        if (!empty($filters['date'])) {
+            $conditions[] = "DATE(a.date_publication) = ?";
+            $params[] = $filters['date'];
+        }
+
+        if (count($conditions) > 0) {
+            $sql .= " WHERE " . implode(" AND ", $conditions);
+        }
+
+        $sql .= " ORDER BY a.date_publication DESC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
 }
+
+

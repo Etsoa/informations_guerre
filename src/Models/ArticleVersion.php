@@ -40,18 +40,18 @@ class ArticleVersion {
         return $result['count'];
     }
 
-    public function create($articleId, $titre, $description, $contenu, $auteursJson, $sourcesJson, $userId, $changelog = null) {
-        // Obtenir le num??ro de version suivant
+public function create($articleId, $titre, $description, $contenu, $auteursJson, $userId, $changelog = null) {
+        // Obtenir le numero de version suivant
         $sql = "SELECT MAX(version_number) as max_version FROM article_versions WHERE article_id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$articleId]);
         $result = $stmt->fetch();
         $versionNumber = ($result['max_version'] ?? 0) + 1;
 
-        // Ins??rer la version
-        $sql = "INSERT INTO article_versions 
-                (article_id, titre, description, contenu, auteurs_json, sources_json, version_number, updated_by, changelog)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // Inserer la version
+        $sql = "INSERT INTO article_versions
+                (article_id, titre, description, contenu, auteurs_json, version_number, updated_by, changelog)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             $articleId,
@@ -59,7 +59,6 @@ class ArticleVersion {
             $description,
             $contenu,
             $auteursJson,
-            $sourcesJson,
             $versionNumber,
             $userId,
             $changelog
@@ -86,20 +85,17 @@ class ArticleVersion {
             return false;
         }
 
-        // R?cup?rer l'article actuel pour l'archiver
+// Recuperer l'article actuel pour l'archiver
         require_once __DIR__ . '/Article.php';
         require_once __DIR__ . '/Auteur.php';
-        require_once __DIR__ . '/Source.php';
         $articleModel = new Article($this->pdo);
         $auteurModel = new Auteur($this->pdo);
-        $sourceModel = new Source($this->pdo);
 
         $current = $articleModel->getById($articleId);
 
         if ($current) {
             $auteurs = $auteurModel->getByArticleId($articleId);
-            $sources = $sourceModel->getByArticleId($articleId);
-            
+
             // Archiver la version actuelle
             $this->create(
                 $articleId,
@@ -107,18 +103,17 @@ class ArticleVersion {
                 $current['description'],
                 $current['contenu'],
                 json_encode($auteurs),
-                json_encode($sources),
                 $userId,
-                "Automarchiv? avant restauration de v$versionNumber"
+                "Automarchive avant restauration de v$versionNumber"
             );
         }
 
         // Restaurer l'article
-        $sql = "UPDATE articles 
+        $sql = "UPDATE articles
                 SET titre = ?, description = ?, contenu = ?
                 WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
-        
+
         $success = $stmt->execute([
             $version['titre'],
             $version['description'],
@@ -134,26 +129,14 @@ class ArticleVersion {
                $auteurModel->addToArticle($articleId, $auteur['id']);
             }
 
-            // Restore Sources
-            $sourceModel->deleteByArticleId($articleId);
-            $oldSources = json_decode($version['sources_json'], true) ?: [];
-            foreach ($oldSources as $source) {
-                $sourceModel->create([
-                    'article_id' => $articleId,
-                    'nom' => $source['nom'],
-                    'url' => $source['url']
-                ]);
-            }
-
-            // Si succ?s, archiver cette action comme version
-            $changelogMsg = $changelog ?? "Restaur?e depuis version $versionNumber";
+            // Si succes, archiver cette action comme version
+            $changelogMsg = $changelog ?? "Restauree depuis version $versionNumber";
             $this->create(
                 $articleId,
                 $version['titre'],
                 $version['description'],
                 $version['contenu'],
                 $version['auteurs_json'],
-                $version['sources_json'],
                 $userId,
                 $changelogMsg
             );

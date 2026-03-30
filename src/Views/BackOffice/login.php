@@ -14,7 +14,7 @@
     <main class="login-card">
         <div class="login-card-header">
             <h1><i class="fas fa-shield-halved"></i> BackOffice</h1>
-            <p>Accès sécurisé réservé aux administrateurs</p>
+            <p>Acces securise reserve aux administrateurs</p>
         </div>
         
         <?php if (isset($error)): ?>

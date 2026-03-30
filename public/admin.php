@@ -10,7 +10,7 @@ require_once '../src/Helpers/Session.php';
 $page = $_GET['page'] ?? 'login';
 $id = $_GET['id'] ?? null;
 
-// Redirection si pas connecté
+// Redirection si pas connecte
 if (!isset($_SESSION['user_id']) && $page !== 'login') {
     redirect(ADMIN_URL . '/login');
 }
@@ -50,12 +50,6 @@ switch($page) {
         require_once '../src/Controllers/BackOffice/ArticleController.php';
         $controller = new AdminArticleController($pdo);
         $controller->delete($id);
-        break;
-        
-    case 'image-delete':
-        require_once '../src/Controllers/BackOffice/ArticleController.php';
-        $controller = new AdminArticleController($pdo);
-        $controller->deleteImage();
         break;
 
     case 'article-historique':

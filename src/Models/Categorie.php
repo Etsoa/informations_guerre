@@ -42,4 +42,26 @@ class Categorie {
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([$id]);
     }
+    public function getByArticleId($articleId) {
+        $sql = "SELECT c.* FROM categories c
+                JOIN article_categorie ac ON c.id = ac.categorie_id
+                WHERE ac.article_id = ?
+                ORDER BY c.nom";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$articleId]);
+        return $stmt->fetchAll();
+    }
+
+    public function addToArticle($articleId, $categoryId) {
+        $sql = "INSERT INTO article_categorie (article_id, categorie_id) VALUES (?, ?)";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$articleId, $categoryId]);
+    }
+
+    public function removeAllFromArticle($articleId) {
+        $sql = "DELETE FROM article_categorie WHERE article_id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$articleId]);
+    }
 }
+

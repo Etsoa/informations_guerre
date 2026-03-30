@@ -32,7 +32,7 @@ class Utilisateur {
         $user = $this->getByEmail($email);
 
         if ($user) {
-            // Vérifie le mot de passe hashé OU le texte clair (utile pour les données de test non hashées)
+            // Verifie le mot de passe hashe OU le texte clair (utile pour les donnees de test non hashees)
             if (password_verify($password, $user['mot_de_passe']) || $password === $user['mot_de_passe']) {
                 return $user;
             }
