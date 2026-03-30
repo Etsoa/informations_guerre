@@ -1,29 +1,44 @@
 <?php
-$pageTitle = 'Accueil - Informations Guerre';
+$pageTitle = 'Accueil - ' . SITE_NAME;
+$pageDescription = SITE_DESCRIPTION;
 require __DIR__ . '/layouts/header.php';
 ?>
 
-<div class="hero">
-    <h1>Dernières Informations sur la Guerre en Iran</h1>
-    <p>Restez informé</p>
-</div>
+<section class="headline-block">
+    <h1>Actualites de la guerre en Iran</h1>
+    <h2 class="section-label">A la une</h2>
+    <?php if ($featuredArticle): ?>
+        <article class="headline-article">
+            <a class="headline-image" href="<?= articleUrl($featuredArticle) ?>">
+                <img src="<?= imageUrl($featuredArticle['image'] ?? null) ?>" alt="<?= sanitize($featuredArticle['titre']) ?>">
+            </a>
+            <div class="headline-content">
+                <p class="article-date"><?= formatDate($featuredArticle['date_publication']) ?></p>
+                <h3><a href="<?= articleUrl($featuredArticle) ?>"><?= sanitize($featuredArticle['titre']) ?></a></h3>
+                <p><?= sanitize($featuredArticle['description']) ?></p>
+            </div>
+        </article>
+    <?php endif; ?>
+</section>
 
-<section class="articles">
-    <h2>Articles Récents</h2>
-    <div class="articles-grid">
-        <?php if (count($articles) > 0): ?>
-            <?php foreach ($articles as $article): ?>
+<section class="latest-block" aria-labelledby="latest-title">
+    <h2 id="latest-title">Derniers Articles</h2>
+    <?php if (!empty($latestArticles)): ?>
+        <div class="latest-grid">
+            <?php foreach ($latestArticles as $article): ?>
                 <article class="article-card">
-                    <h3><a href="<?= BASE_URL ?>index.php?action=article&id=<?= $article['id'] ?>"><?= sanitize($article['titre']) ?></a></h3>
-                    <p class="date"><?= formatDate($article['date_publication']) ?></p>
-                    <p><?= sanitize(truncate($article['description'], 150)) ?></p>
-                    <a href="<?= BASE_URL ?>index.php?action=article&id=<?= $article['id'] ?>" class="read-more">Lire la suite →</a>
+                    <a class="card-image" href="<?= articleUrl($article) ?>">
+                        <img src="<?= imageUrl($article['image'] ?? null) ?>" alt="<?= sanitize($article['titre']) ?>">
+                    </a>
+                    <p class="article-date"><?= formatDateShort($article['date_publication']) ?></p>
+                    <h3><a href="<?= articleUrl($article) ?>"><?= sanitize($article['titre']) ?></a></h3>
+                    <p><?= sanitize(truncate($article['description'], 170)) ?></p>
                 </article>
             <?php endforeach; ?>
-        <?php else: ?>
-            <p>Aucun article trouvé.</p>
-        <?php endif; ?>
-    </div>
+        </div>
+    <?php else: ?>
+        <p>Aucun article disponible.</p>
+    <?php endif; ?>
 </section>
 
 <?php require __DIR__ . '/layouts/footer.php'; ?>

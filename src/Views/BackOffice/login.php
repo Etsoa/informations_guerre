@@ -23,8 +23,8 @@ require __DIR__ . '/layouts/header.php';
 
     <p style="margin-top: 20px; font-size: 0.9em; color: #666;">
         <strong>Identifiants de test:</strong><br>
-        Email: admin@test.com<br>
-        Mot de passe: password123
+        Email: admin@guerre-iran.com<br>
+        Mot de passe: admin123
     </p>
 </div>
 

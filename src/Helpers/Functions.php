@@ -78,12 +78,32 @@ function timeAgo($date) {
  * Génère une URL propre pour un article
  */
 function articleUrl($article) {
-    return BASE_URL . 'article/' . ($article['slug'] ?? $article['id']);
+    if (!isset($article['id'])) {
+        return BASE_URL;
+    }
+
+    $slug = !empty($article['titre']) ? slugify($article['titre']) : '';
+    return BASE_URL . 'article/' . (int) $article['id'] . ($slug !== '' ? '-' . $slug : '');
 }
 
 /**
  * Génère une URL propre pour une catégorie
  */
 function categoryUrl($category) {
-    return BASE_URL . 'categorie/' . ($category['slug'] ?? $category['id']);
+    if (!isset($category['id'])) {
+        return BASE_URL;
+    }
+
+    $slug = !empty($category['nom']) ? slugify($category['nom']) : '';
+    return BASE_URL . 'category/' . (int) $category['id'] . ($slug !== '' ? '-' . $slug : '');
+}
+
+/**
+ * Retourne l'URL d'image avec fallback local.
+ */
+function imageUrl(?string $imageName): string {
+    if (!empty($imageName)) {
+        return UPLOADS_URL . sanitize($imageName);
+    }
+    return BASE_URL . 'assets/images/placeholder-news.svg';
 }

@@ -29,19 +29,21 @@ class Image {
     }
 
     public function create($data) {
-        $sql = "INSERT INTO images (nom, article_id) VALUES (?, ?)";
+        $sql = "INSERT INTO images (nom, description, article_id) VALUES (?, ?, ?)";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             $data['nom'],
+            $data['description'] ?? null,
             $data['article_id']
         ]);
     }
 
     public function update($id, $data) {
-        $sql = "UPDATE images SET nom = ?, article_id = ? WHERE id = ?";
+        $sql = "UPDATE images SET nom = ?, description = ?, article_id = ? WHERE id = ?";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             $data['nom'],
+            $data['description'] ?? null,
             $data['article_id'],
             $id
         ]);

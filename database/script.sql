@@ -44,6 +44,7 @@ CREATE TABLE sources(
 CREATE TABLE images(
     id SERIAL PRIMARY KEY,
     nom VARCHAR(255) NOT NULL,
+    description TEXT,
     article_id INTEGER NOT NULL REFERENCES articles(id)
 );
 

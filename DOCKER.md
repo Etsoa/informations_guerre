@@ -20,7 +20,7 @@ docker-compose ps
 
 # 4. Accéder à l'application
 # - Frontend: http://localhost
-# - Admin: http://localhost/admin.php
+# - Admin: http://localhost/admin
 ```
 
 ### Arrêt et nettoyage

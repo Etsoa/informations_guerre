@@ -6,15 +6,18 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     
-    # FrontOffice - article/id
-    RewriteRule ^article/([0-9]+)/?$ index.php?action=article&id=$1 [QSA,L]
-    
-    # FrontOffice - article/slug
-    RewriteRule ^article/([a-z0-9-]+)/?$ index.php?action=article&slug=$1 [QSA,L]
-    
-    # Autres routes FO
+    # FrontOffice - Accueil
+    RewriteRule ^$ index.php [QSA,L]
+
+    # FrontOffice - article/12-titre-normalise (slug optionnel)
+    RewriteRule ^article/([0-9]+)(-[a-z0-9-]+)?/?$ index.php?action=article&id=$1 [QSA,L]
+
+    # FrontOffice - category/3-politique (slug optionnel)
+    RewriteRule ^category/([0-9]+)(-[a-z0-9-]+)?/?$ index.php?action=category&id=$1 [QSA,L]
+
+    # FrontOffice - recherche et endpoint AJAX
     RewriteRule ^search/?$ index.php?action=search [QSA,L]
-    RewriteRule ^category/([0-9]+)/?$ index.php?action=category&id=$1 [QSA,L]
+    RewriteRule ^search-ajax/?$ index.php?action=search-ajax [QSA,L]
     
     # BackOffice
     RewriteRule ^admin/?$ admin.php [QSA,L]

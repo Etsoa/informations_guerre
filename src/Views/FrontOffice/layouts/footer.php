@@ -1,8 +1,9 @@
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Informations Guerre. Tous droits réservés.</p>
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>&copy; 2026 InfoGuerre Iran</p>
+            <p>Projet universitaire - FrontOffice et BackOffice</p>
         </div>
     </footer>
 
