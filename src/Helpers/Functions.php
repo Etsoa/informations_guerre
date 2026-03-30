@@ -17,7 +17,7 @@ function slugify($text) {
 
 function formatDate($date) {
     $d = new DateTime($date);
-    return $d->format('d/m/Y à H:i');
+    return $d->format('d/m/Y ?? H:i');
 }
 
 function truncate($text, $length = 150) {
@@ -52,7 +52,7 @@ function compressAndResizeImage($sourcePath, $destinationPath, $maxWidth = 1200,
 
     $imageResized = imagecreatetruecolor((int)$newWidth, (int)$newHeight);
 
-    // Gérer la transparence pour PNG
+    // G??rer la transparence pour PNG
     if ($mime == 'image/png') {
         imagealphablending($imageResized, false);
         imagesavealpha($imageResized, true);
@@ -60,7 +60,7 @@ function compressAndResizeImage($sourcePath, $destinationPath, $maxWidth = 1200,
         imagefilledrectangle($imageResized, 0, 0, (int)$newWidth, (int)$newHeight, $transparent);
     }
 
-    // Créer l'image source à partir du fichier selon le type MIME
+    // Cr??er l'image source ?? partir du fichier selon le type MIME
     switch ($mime) {
         case 'image/jpeg':
             $imageSource = imagecreatefromjpeg($sourcePath);
@@ -77,14 +77,14 @@ function compressAndResizeImage($sourcePath, $destinationPath, $maxWidth = 1200,
 
     imagecopyresampled($imageResized, $imageSource, 0, 0, 0, 0, (int)$newWidth, (int)$newHeight, $width, $height);
 
-    // Sauvegarder l'image optimisée
+    // Sauvegarder l'image optimis??e
     $success = false;
     switch ($mime) {
         case 'image/jpeg':
             $success = imagejpeg($imageResized, $destinationPath, $quality); // 0-100
             break;
         case 'image/png':
-            // PNG quality est de 0 (pas de compression) à 9
+            // PNG quality est de 0 (pas de compression) ?? 9
             $pngQuality = round((100 - $quality) / 10);
             $success = imagepng($imageResized, $destinationPath, $pngQuality);
             break;
@@ -113,11 +113,11 @@ function handleImageUploads($files, $uploadDir) {
                 $newName = uniqid() . '_' . time() . '.' . $extension;
                 $destinationPath = $uploadDir . $newName;
                 
-                // On compresse et redimensionne (max 1200x800px, qualité 80%)
+                // On compresse et redimensionne (max 1200x800px, qualit?? 80%)
                 if (function_exists('imagecreatefromjpeg') && compressAndResizeImage($tmpName, $destinationPath, 1200, 800, 80)) {
                     $uploadedImages[] = $newName;
                 } elseif (move_uploaded_file($tmpName, $destinationPath)) {
-                    // Fallback si l'extension GD n'est pas disponible ou qu'elle échoue
+                    // Fallback si l'extension GD n'est pas disponible ou qu'elle ??choue
                     $uploadedImages[] = $newName;
                 }
             }

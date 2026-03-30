@@ -31,8 +31,11 @@ class Utilisateur {
     public function authenticate($email, $password) {
         $user = $this->getByEmail($email);
 
-        if ($user && password_verify($password, $user['mot_de_passe'])) {
-            return $user;
+        if ($user) {
+            // Vérifie le mot de passe hashé OU le texte clair (utile pour les données de test non hashées)
+            if (password_verify($password, $user['mot_de_passe']) || $password === $user['mot_de_passe']) {
+                return $user;
+            }
         }
         return false;
     }

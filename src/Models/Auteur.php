@@ -69,4 +69,10 @@ class Auteur {
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([$articleId, $authorId]);
     }
+
+    public function removeAllFromArticle($articleId) {
+        $sql = "DELETE FROM article_auteur WHERE article_id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([$articleId]);
+    }
 }

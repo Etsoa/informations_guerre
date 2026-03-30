@@ -40,24 +40,26 @@ class ArticleVersion {
         return $result['count'];
     }
 
-    public function create($articleId, $titre, $description, $contenu, $userId, $changelog = null) {
-        // Obtenir le numéro de version suivant
+    public function create($articleId, $titre, $description, $contenu, $auteursJson, $sourcesJson, $userId, $changelog = null) {
+        // Obtenir le num??ro de version suivant
         $sql = "SELECT MAX(version_number) as max_version FROM article_versions WHERE article_id = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$articleId]);
         $result = $stmt->fetch();
         $versionNumber = ($result['max_version'] ?? 0) + 1;
 
-        // Insérer la version
+        // Ins??rer la version
         $sql = "INSERT INTO article_versions 
-                (article_id, titre, description, contenu, version_number, updated_by, changelog)
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
+                (article_id, titre, description, contenu, auteurs_json, sources_json, version_number, updated_by, changelog)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             $articleId,
             $titre,
             $description,
             $contenu,
+            $auteursJson,
+            $sourcesJson,
             $versionNumber,
             $userId,
             $changelog
@@ -73,7 +75,7 @@ class ArticleVersion {
     }
 
     public function restore($articleId, $versionNumber, $userId, $changelog = null) {
-        // Récupérer la version à restaurer
+        // R??cup??rer la version ?? restaurer
         $sql = "SELECT * FROM article_versions 
                 WHERE article_id = ? AND version_number = ?";
         $stmt = $this->pdo->prepare($sql);
@@ -84,20 +86,30 @@ class ArticleVersion {
             return false;
         }
 
-        // Récupérer l'article actuel pour l'archiver
+        // R?cup?rer l'article actuel pour l'archiver
         require_once __DIR__ . '/Article.php';
+        require_once __DIR__ . '/Auteur.php';
+        require_once __DIR__ . '/Source.php';
         $articleModel = new Article($this->pdo);
+        $auteurModel = new Auteur($this->pdo);
+        $sourceModel = new Source($this->pdo);
+
         $current = $articleModel->getById($articleId);
 
         if ($current) {
+            $auteurs = $auteurModel->getByArticleId($articleId);
+            $sources = $sourceModel->getByArticleId($articleId);
+            
             // Archiver la version actuelle
             $this->create(
                 $articleId,
                 $current['titre'],
                 $current['description'],
                 $current['contenu'],
+                json_encode($auteurs),
+                json_encode($sources),
                 $userId,
-                "Automarchivé avant restauration de v$versionNumber"
+                "Automarchiv? avant restauration de v$versionNumber"
             );
         }
 
@@ -114,14 +126,34 @@ class ArticleVersion {
             $articleId
         ]);
 
-        // Si succès, archiver cette action comme version
         if ($success) {
-            $changelogMsg = $changelog ?? "Restaurée depuis version $versionNumber";
+            // Restore Auteurs
+            $auteurModel->removeAllFromArticle($articleId);
+            $oldAuteurs = json_decode($version['auteurs_json'], true) ?: [];
+            foreach ($oldAuteurs as $auteur) {
+               $auteurModel->addToArticle($articleId, $auteur['id']);
+            }
+
+            // Restore Sources
+            $sourceModel->deleteByArticleId($articleId);
+            $oldSources = json_decode($version['sources_json'], true) ?: [];
+            foreach ($oldSources as $source) {
+                $sourceModel->create([
+                    'article_id' => $articleId,
+                    'nom' => $source['nom'],
+                    'url' => $source['url']
+                ]);
+            }
+
+            // Si succ?s, archiver cette action comme version
+            $changelogMsg = $changelog ?? "Restaur?e depuis version $versionNumber";
             $this->create(
                 $articleId,
                 $version['titre'],
                 $version['description'],
                 $version['contenu'],
+                $version['auteurs_json'],
+                $version['sources_json'],
                 $userId,
                 $changelogMsg
             );
@@ -159,3 +191,4 @@ class ArticleVersion {
         ];
     }
 }
+

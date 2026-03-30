@@ -35,17 +35,32 @@ class Article {
     }
 
     public function update($id, $data, $userId = null, $changelog = null) {
-        // Si userId est fourni, créer une version avant la modification
+        // Si userId est fourni, cr??er une version avant la modification
         if ($userId !== null) {
             $current = $this->getById($id);
             if ($current) {
                 require_once __DIR__ . '/ArticleVersion.php';
                 $versionModel = new ArticleVersion($this->pdo);
+
+                // Fetch authors
+                require_once __DIR__ . '/Auteur.php';
+                $auteurModel = new Auteur($this->pdo);
+                $auteurs = $auteurModel->getByArticleId($id);
+                $auteursJson = json_encode($auteurs);
+
+                // Fetch sources
+                require_once __DIR__ . '/Source.php';
+                $sourceModel = new Source($this->pdo);
+                $sources = $sourceModel->getByArticleId($id);
+                $sourcesJson = json_encode($sources);
+
                 $versionModel->create(
                     $id,
                     $current['titre'],
                     $current['description'],
                     $current['contenu'],
+                    $auteursJson,
+                    $sourcesJson,
                     $userId,
                     $changelog
                 );

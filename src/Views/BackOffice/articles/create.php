@@ -54,6 +54,29 @@ require __DIR__ . '/../layouts/header.php';
         </div>
 
         <div style="margin: 15px 0;">
+            <label for="auteurs">
+                <strong>Auteur(s):</strong>
+            </label>
+            <select name="auteurs[]" id="auteurs" multiple style="width: 100%; max-width: 600px; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
+                <?php foreach ($auteurs as $auteur): ?>
+                    <option value="<?= $auteur['id'] ?>">
+                        <?= htmlspecialchars($auteur['nom'] . ' ' . $auteur['prenom']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <small>Maintenez Ctrl (Windows) ou Cmd (Mac) pour en sélectionner plusieurs</small>
+        </div>
+
+        <div style="margin: 15px 0;" id="sources-container">
+            <label><strong>Sources:</strong></label>
+            <div class="source-row" style="display: flex; gap: 10px; margin-top: 5px; max-width: 600px;">
+                <input type="text" name="source_nom[]" placeholder="Nom de la source" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <input type="url" name="source_url[]" placeholder="URL (ex: https://...)" style="flex: 2; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <button type="button" onclick="addSourceRow()" style="padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">+</button>
+            </div>
+        </div>
+
+        <div style="margin: 15px 0;">
             <label for="images">
                 <strong>Images (optionnelles, multiples possibles):</strong>
             </label>
@@ -83,5 +106,22 @@ require __DIR__ . '/../layouts/header.php';
         </div>
     </fieldset>
 </form>
+
+<script>
+function addSourceRow() {
+    const container = document.getElementById('sources-container');
+    const row = document.createElement('div');
+    row.className = 'source-row';
+    row.style = 'display: flex; gap: 10px; margin-top: 10px; max-width: 600px;';
+    
+    row.innerHTML = `
+        <input type="text" name="source_nom[]" placeholder="Nom de la source" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+        <input type="url" name="source_url[]" placeholder="URL (ex: https://...)" style="flex: 2; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+        <button type="button" onclick="this.parentElement.remove()" style="padding: 8px 12px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">-</button>
+    `;
+    
+    container.appendChild(row);
+}
+</script>
 
 <?php require __DIR__ . '/../layouts/footer.php'; ?>

@@ -15,6 +15,8 @@ require __DIR__ . '/../layouts/header.php';
             <th>Image</th>
             <th>Titre</th>
             <th>Description</th>
+            <th>Auteur(s)</th>
+            <th>Sources</th>
             <th>Date</th>
             <th>Actions</th>
         </tr>
@@ -33,6 +35,28 @@ require __DIR__ . '/../layouts/header.php';
                     </td>
                     <td><strong><?= htmlspecialchars(substr($article['titre'], 0, 50)) ?></strong></td>
                     <td><?= htmlspecialchars(substr($article['description'], 0, 50)) ?>...</td>
+                    <td>
+                        <?php if (!empty($article['auteurs'])): ?>
+                            <ul style="margin: 0; padding-left: 15px; font-size: 0.9em;">
+                                <?php foreach ($article['auteurs'] as $auteur): ?>
+                                    <li><?= htmlspecialchars($auteur['nom'] . ' ' . $auteur['prenom']) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <span style="color: #999; font-size: 0.9em;">-</span>
+                        <?php endif; ?>
+                    </td>
+                    <td>
+                        <?php if (!empty($article['sources'])): ?>
+                            <ul style="margin: 0; padding-left: 15px; font-size: 0.9em;">
+                                <?php foreach ($article['sources'] as $source): ?>
+                                    <li><a href="<?= htmlspecialchars($source['url']) ?>" target="_blank"><?= htmlspecialchars($source['nom']) ?></a></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <span style="color: #999; font-size: 0.9em;">-</span>
+                        <?php endif; ?>
+                    </td>
                     <td><?= date('d/m/Y H:i', strtotime($article['date_publication'])) ?></td>
                     <td>
                         <a href="<?= ADMIN_URL ?>/article-edit/<?= $article['id'] ?>">Éditer</a>
@@ -45,7 +69,7 @@ require __DIR__ . '/../layouts/header.php';
             <?php endforeach; ?>
         <?php else: ?>
             <tr>
-                <td colspan="6" style="text-align: center; padding: 20px; font-style: italic;">
+                <td colspan="8" style="text-align: center; padding: 20px; font-style: italic;">
                     Aucun article trouvé
                 </td>
             </tr>

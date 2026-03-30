@@ -39,6 +39,8 @@ CREATE TABLE article_versions (
     titre VARCHAR(250) NOT NULL,
     description TEXT NOT NULL,
     contenu TEXT NOT NULL,
+    auteurs_json TEXT,
+    sources_json TEXT,
     version_number INTEGER NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_by INTEGER REFERENCES utilisateurs(id),
@@ -49,7 +51,7 @@ CREATE TABLE article_versions (
 CREATE TABLE sources(
     id SERIAL PRIMARY KEY,
     article_id INTEGER NOT NULL REFERENCES articles(id),
-    nom VARCHAR(100) NOT NULL UNIQUE,
+    nom VARCHAR(100) NOT NULL,
     url VARCHAR(255) NOT NULL
 );
 

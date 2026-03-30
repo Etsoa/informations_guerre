@@ -32,6 +32,7 @@
                             type="email" 
                             id="email" 
                             name="email" 
+                            value="admin@guerre-iran.com"
                             required 
                             autofocus
                             style="width: 300px; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;"
@@ -46,6 +47,7 @@
                             type="password" 
                             id="password" 
                             name="password" 
+                            value="admin123"
                             required
                             style="width: 300px; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;"
                         >
@@ -63,8 +65,8 @@
             </form>
 
             <h3>Identifiants de Test</h3>
-            <pre>Email: admin@test.com
-Mot de passe: password123</pre>
+            <pre>Email: admin@guerre-iran.com
+Mot de passe: admin123</pre>
         </div>
     </main>
 
