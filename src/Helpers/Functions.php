@@ -35,3 +35,20 @@ function firstImageSrc($html) {
     }
     return null;
 }
+
+// Extrait toutes les sources d'images d'un contenu HTML (unique, ordre d'apparition)
+function allImageSrc($html) {
+    if (empty($html)) return [];
+    preg_match_all('/<img[^>]+src=[\"\']([^\"\']+)/i', $html, $matches);
+    if (empty($matches[1])) return [];
+    // Supprime les doublons en conservant l'ordre
+    $seen = [];
+    $result = [];
+    foreach ($matches[1] as $src) {
+        if (!isset($seen[$src])) {
+            $seen[$src] = true;
+            $result[] = $src;
+        }
+    }
+    return $result;
+}

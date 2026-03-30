@@ -250,6 +250,21 @@ body {
     margin: 10px 0 18px;
 }
 
+.article-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.article-gallery img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+}
+
 .article-date, .article-authors, .article-tags {
     color: var(--text-muted);
     font-size: 0.9rem;
