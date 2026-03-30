@@ -2,71 +2,112 @@
 require __DIR__ . '/../layouts/header.php';
 ?>
 
-<h2>Version <?= $version['version_number'] ?></h2>
-
-<h3><?= htmlspecialchars($version['titre']) ?></h3>
-
-<div style="margin: 15px 0; padding: 15px; border: 1px solid #17a2b8; background: #d1ecf1; border-radius: 4px;">
-    <p><strong>Article:</strong> <a href="<?= ADMIN_URL ?>/article-edit/<?= $article['id'] ?>"><?= htmlspecialchars($article['titre']) ?></a></p>
-    <p><strong>Version:</strong> v<?= $version['version_number'] ?></p>
-    <p><strong>Modifié par:</strong> <?= htmlspecialchars($version['auteur_nom'] ?? 'Système') ?></p>
-    <p><strong>Date:</strong> <?= date('d/m/Y H:i:s', strtotime($version['created_at'])) ?></p>
-    <?php if ($version['changelog']): ?>
-        <p><strong>Description du changement:</strong> <em><?= htmlspecialchars($version['changelog']) ?></em></p>
-    <?php endif; ?>
+<div class="page-header">
+    <h2 class="page-title"><i class="fas fa-eye"></i> Aperçu de la Version <?= $version['version_number'] ?></h2>
+    <div>
+        <a href="<?= ADMIN_URL ?>/article-historique/<?= $article['id'] ?>" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Retour à l'historique
+        </a>
+    </div>
 </div>
 
-<fieldset>
-    <legend>Contenu de la Version</legend>
-    
-    <div style="margin: 20px 0;">
-        <h4>Titre</h4>
-        <p><?= htmlspecialchars($version['titre']) ?></p>
-    </div>
-
-    <div style="margin: 20px 0;">
-        <h4>Description</h4>
-        <p><?= nl2br(htmlspecialchars($version['description'])) ?></p>
-    </div>
-
-    <div style="margin: 20px 0;">
-        <h4>Contenu</h4>
-        <div style="background: #f5f5f5; padding: 10px; border: 1px solid #ddd; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word;">
-            <?= nl2br(htmlspecialchars($version['contenu'])) ?>
+<div class="article-meta-cards" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+    <a href="<?= ADMIN_URL ?>/article-edit/<?= $article['id'] ?>" class="meta-card clickable">
+        <div class="meta-icon"><i class="fas fa-file-alt"></i></div>
+        <div class="meta-details">
+            <span class="meta-label">Article d'origine</span>
+            <span class="meta-value" style="color: var(--primary-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;" title="<?= htmlspecialchars($article['titre']) ?>">
+                <?= htmlspecialchars($article['titre']) ?>
+            </span>
         </div>
-    </div>
-</fieldset>
-
-<div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd;">
-    <button 
-        onclick="restoreVersion(<?= $article['id'] ?>, <?= $version['version_number'] ?>)"
-        style="padding: 10px 20px; background: #ffc107; color: black; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-right: 10px;"
-    >
-        ↩ Restaurer cette version
-    </button>
-    
-    <a 
-        href="<?= ADMIN_URL ?>/article-historique/<?= $article['id'] ?>"
-        style="display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;"
-    >
-        ← Retour à l'historique
     </a>
     
-    <a 
-        href="<?= ADMIN_URL ?>/articles"
-        style="display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;"
+    <div class="meta-card">
+        <div class="meta-icon"><i class="fas fa-code-branch"></i></div>
+        <div class="meta-details">
+            <span class="meta-label">Version</span>
+            <span class="meta-value">v<?= $version['version_number'] ?></span>
+        </div>
+    </div>
+    
+    <div class="meta-card">
+        <div class="meta-icon"><i class="far fa-clock"></i></div>
+        <div class="meta-details">
+            <span class="meta-label">Modifié le</span>
+            <span class="meta-value"><?= date('d/m/Y H:i', strtotime($version['created_at'])) ?></span>
+        </div>
+    </div>
+    
+    <div class="meta-card">
+        <div class="meta-icon"><i class="fas fa-user-edit"></i></div>
+        <div class="meta-details">
+            <span class="meta-label">Par</span>
+            <span class="meta-value"><?= htmlspecialchars($version['auteur_nom'] ?? 'Système') ?></span>
+        </div>
+    </div>
+</div>
+
+<?php if ($version['changelog']): ?>
+<div class="meta-card" style="margin-bottom: 25px; grid-column: 1 / -1; width: 100%;">
+    <div class="meta-icon"><i class="fas fa-comment-dots"></i></div>
+    <div class="meta-details" style="width: 100%;">
+        <span class="meta-label">Motif de la modification (Changelog)</span>
+        <span class="meta-value" style="font-style: italic; color: var(--text-main);">"<?= htmlspecialchars($version['changelog']) ?>"</span>
+    </div>
+</div>
+<?php endif; ?>
+
+<div class="admin-card">
+    <div class="admin-card-header">
+        Données archivées (Lecture seule)
+    </div>
+    <div class="admin-card-body">
+        
+        <div class="version-content">
+            <div class="version-label">Titre en v<?= $version['version_number'] ?></div>
+            <div class="version-value" style="font-size: 1.2em; font-weight: bold; color: var(--primary-color);">
+                <?= htmlspecialchars($version['titre']) ?>
+            </div>
+        </div>
+
+        <div class="version-content">
+            <div class="version-label">Description (Chapeau)</div>
+            <div class="version-value">
+                <?= nl2br(htmlspecialchars($version['description'])) ?>
+            </div>
+        </div>
+
+        <div class="version-content">
+            <div class="version-label">Contenu complet</div>
+            <div class="version-value" style="white-space: pre-wrap; word-wrap: break-word; font-family: 'Merriweather', serif; line-height: 1.8;">
+                <?= nl2br(htmlspecialchars($version['contenu'])) ?>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="form-group" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; gap: 15px;">
+    <button 
+        onclick="restoreVersion(<?= $article['id'] ?>, <?= $version['version_number'] ?>)"
+        class="btn btn-primary"
+        style="background: var(--accent-color);"
     >
-        Retour à la liste
+        <i class="fas fa-undo"></i> Restaurer l'article à cette version
+    </button>
+    
+    <a href="<?= ADMIN_URL ?>/articles" class="btn btn-secondary">
+        <i class="fas fa-list"></i> Retour à la liste globale
     </a>
 </div>
 
 <script>
     function restoreVersion(articleId, versionNumber) {
-        if (!confirm('Êtes-vous sûr de vouloir restaurer cette version? L\'état actuel sera archivé.')) {
+        if (!confirm('Êtes-vous sûr de vouloir restaurer cette version ? L\'état actuel sera archivé dans l\'historique.')) {
             return;
         }
         
-        ajax('POST', '<?= ADMIN_URL ?>/article-restaurer/' + articleId + '/' + versionNumber, null, function(response, status) {
+        ajax('POST', '<?= ADMIN_URL ?>/article-restaurer/' + articleId + '/' + versionNumber, {}, function(response, status) {
             if (status === 200) {
                 showAlert('Version restaurée avec succès', 'success');
                 setTimeout(() => location.href = '<?= ADMIN_URL ?>/article-historique/' + articleId, 1500);

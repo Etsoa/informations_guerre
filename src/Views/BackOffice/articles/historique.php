@@ -2,71 +2,111 @@
 require __DIR__ . '/../layouts/header.php';
 ?>
 
-<h2>Historique des Versions</h2>
-
-<h3>Article: <?= htmlspecialchars($article['titre']) ?></h3>
-
-<div style="margin: 15px 0; padding: 10px; border: 1px solid #17a2b8; background: #d1ecf1; border-radius: 4px;">
-    <p><strong>Article ID:</strong> <?= $article['id'] ?></p>
-    <p><strong>Versions enregistrées:</strong> <?= count($versions) ?></p>
-    <p>
-        <a href="<?= ADMIN_URL ?>/article-edit/<?= $article['id'] ?>">
-            ← Retour à l'édition
+<div class="page-header">
+    <h2 class="page-title"><i class="fas fa-history"></i> Historique des Versions</h2>
+    <div>
+        <a href="<?= ADMIN_URL ?>/article-edit/<?= $article['id'] ?>" class="btn btn-primary">
+            <i class="fas fa-edit"></i> Retour à l'édition
         </a>
-    </p>
+        <a href="<?= ADMIN_URL ?>/articles" class="btn btn-secondary">
+            <i class="fas fa-list"></i> Tous les articles
+        </a>
+    </div>
 </div>
 
-<?php if (!empty($versions)): ?>
-    <table border="1" cellpadding="10" width="100%">
-        <thead>
-            <tr>
-                <th>Version</th>
-                <th>Titre</th>
-                <th>Modifié par</th>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($versions as $version): ?>
-                <tr>
-                    <td><strong>v<?= $version['version_number'] ?></strong></td>
-                    <td><?= htmlspecialchars(substr($version['titre'], 0, 50)) ?></td>
-                    <td><?= htmlspecialchars($version['auteur_nom'] ?? 'Système') ?></td>
-                    <td><?= date('d/m/Y H:i', strtotime($version['created_at'])) ?></td>
-                    <td><em><?= htmlspecialchars($version['changelog'] ?? '-') ?></em></td>
-                    <td>
-                        <a href="<?= ADMIN_URL ?>/article-version/<?= $article['id'] ?>/<?= $version['version_number'] ?>">Voir</a>
-                        |
-                        <button 
-                            onclick="restoreVersion(<?= $article['id'] ?>, <?= $version['version_number'] ?>)"
-                            style="background: none; border: none; color: blue; cursor: pointer; text-decoration: underline;"
-                        >
-                            Restaurer
-                        </button>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-<?php else: ?>
-    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ffc107; background: #fff3cd; border-radius: 4px;">
-        <em>Aucune version enregistrée pour cet article.</em>
+<div class="article-meta-cards" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+    <div class="meta-card">
+        <div class="meta-icon"><i class="fas fa-file-alt"></i></div>
+        <div class="meta-details">
+            <span class="meta-label">Article Concerné</span>
+            <span class="meta-value"><?= htmlspecialchars($article['titre']) ?></span>
+        </div>
     </div>
-<?php endif; ?>
+    <div class="meta-card">
+        <div class="meta-icon"><i class="fas fa-layer-group"></i></div>
+        <div class="meta-details">
+            <span class="meta-label">Versions Enregistrées</span>
+            <span class="meta-value"><?= count($versions) ?> version(s)</span>
+        </div>
+    </div>
+    <div class="meta-card">
+        <div class="meta-icon"><i class="fas fa-hashtag"></i></div>
+        <div class="meta-details">
+            <span class="meta-label">Identifiant</span>
+            <span class="meta-value">#<?= $article['id'] ?></span>
+        </div>
+    </div>
+</div>
 
-<div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd;">
-    <a href="<?= ADMIN_URL ?>/articles">← Retour à la liste des articles</a>
+<div class="admin-card" style="margin-top: 20px;">
+    <div class="admin-card-header">
+        Versions précédentes
+    </div>
+    <div class="admin-card-body" style="padding: 0;">
+        <?php if (!empty($versions)): ?>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Version</th>
+                        <th>Titre enregistré</th>
+                        <th>Modifié par</th>
+                        <th>Date et Heure</th>
+                        <th>Description (Changelog)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($versions as $version): ?>
+                        <tr>
+                            <td>
+                                <span style="background: var(--bg-hover); padding: 3px 8px; border-radius: 4px; font-weight: bold; font-family: monospace;">
+                                    v<?= $version['version_number'] ?>
+                                </span>
+                            </td>
+                            <td><?= htmlspecialchars(substr($version['titre'], 0, 50)) ?>...</td>
+                            <td><i class="fas fa-user-edit text-muted"></i> <?= htmlspecialchars($version['auteur_nom'] ?? 'Système') ?></td>
+                            <td><i class="far fa-clock text-muted"></i> <?= date('d/m/Y H:i', strtotime($version['created_at'])) ?></td>
+                            <td>
+                                <?php if (!empty($version['changelog'])): ?>
+                                    <em>"<?= htmlspecialchars($version['changelog']) ?>"</em>
+                                <?php else: ?>
+                                    <span class="text-muted">-</span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <a href="<?= ADMIN_URL ?>/article-version/<?= $article['id'] ?>/<?= $version['version_number'] ?>" class="btn btn-primary" style="padding: 5px 10px; font-size: 0.9em;">
+                                        <i class="fas fa-eye"></i> Voir
+                                    </a>
+                                    <button 
+                                        onclick="restoreVersion(<?= $article['id'] ?>, <?= $version['version_number'] ?>)"
+                                        class="btn btn-primary"
+                                        style="padding: 5px 10px; font-size: 0.9em; background: var(--accent-color);"
+                                    >
+                                        <i class="fas fa-undo"></i> Restaurer
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <div style="padding: 20px; text-align: center; color: var(--text-muted);">
+                <i class="fas fa-info-circle fa-2x" style="margin-bottom: 10px;"></i><br>
+                Aucune version enregistrée pour cet article.
+            </div>
+        <?php endif; ?>
+    </div>
 </div>
 
 <script>
     function restoreVersion(articleId, versionNumber) {
-        if (!confirm('Êtes-vous sûr de vouloir restaurer cette version? L\'état actuel sera archivé.')) {
+        if (!confirm('Êtes-vous sûr de vouloir restaurer cette version ? L\'état actuel sera archivé dans l\'historique.')) {
             return;
         }
         
-        ajax('POST', '<?= ADMIN_URL ?>/article-restaurer/' + articleId + '/' + versionNumber, null, function(response, status) {
+        ajax('POST', '<?= ADMIN_URL ?>/article-restaurer/' + articleId + '/' + versionNumber, {}, function(response, status) {
             if (status === 200) {
                 showAlert('Version restaurée avec succès', 'success');
                 setTimeout(() => location.href = '<?= ADMIN_URL ?>/article-historique/' + articleId, 1500);

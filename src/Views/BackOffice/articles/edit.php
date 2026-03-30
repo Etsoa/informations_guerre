@@ -2,193 +2,275 @@
 require __DIR__ . '/../layouts/header.php';
 ?>
 
-<h2>Éditer Article</h2>
-
-<div style="margin: 15px 0; padding: 10px; border: 1px solid #17a2b8; background: #d1ecf1; border-radius: 4px;">
-    <strong>Article ID:</strong> <?= $article['id'] ?><br>
-    <strong>Créé le:</strong> <?= date('d/m/Y H:i', strtotime($article['date_publication'])) ?>
-    <div style="margin-top: 10px;">
-        <a href="<?= ADMIN_URL ?>/article-historique/<?= $article['id'] ?>" style="color: #0c5460; text-decoration: underline;">
-            📋 Voir l'historique des versions
-        </a>
-    </div>
+<div class="page-header">
+    <h2 class="page-title"><i class="fas fa-edit"></i> Éditer l'article</h2>
+    <a href="<?= ADMIN_URL ?>/articles" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Retour
+    </a>
 </div>
 
-<form method="POST" enctype="multipart/form-data">
-    <fieldset>
-        <legend>Modification d'Article</legend>
-        
-        <div style="margin: 15px 0;">
-            <label for="titre">
-                <strong>Titre:</strong>
-            </label>
-            <input 
-                type="text" 
-                id="titre" 
-                name="titre" 
-                value="<?= htmlspecialchars($article['titre']) ?>" 
-                required 
-                maxlength="250"
-                style="width: 100%; max-width: 600px; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
-            >
+<div class="article-meta-cards">
+    <div class="meta-card">
+        <div class="meta-icon"><i class="fas fa-hashtag"></i></div>
+        <div class="meta-details">
+            <span class="meta-label">Identifiant</span>
+            <span class="meta-value"><?= htmlspecialchars($article['id']) ?></span>
         </div>
-
-        <div style="margin: 15px 0;">
-            <label for="description">
-                <strong>Description courte:</strong>
-            </label>
-            <textarea 
-                id="description" 
-                name="description" 
-                required 
-                rows="3" 
-                maxlength="500"
-                style="width: 100%; max-width: 600px; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: Arial, sans-serif;"
-            ><?= htmlspecialchars($article['description']) ?></textarea>
-            <small>500 caractères maximum</small>
+    </div>
+    
+    <div class="meta-card">
+        <div class="meta-icon"><i class="far fa-calendar-alt"></i></div>
+        <div class="meta-details">
+            <span class="meta-label">Date de Publication</span>
+            <span class="meta-value"><?= date('d/m/Y à H:i', strtotime($article['date_publication'])) ?></span>
         </div>
+    </div>
 
-        <div style="margin: 15px 0;">
-            <label for="contenu">
-                <strong>Contenu:</strong>
-            </label>
-            <textarea 
-                id="contenu" 
-                name="contenu" 
-                required 
-                rows="12"
-                style="width: 100%; max-width: 600px; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: Arial, sans-serif;"
-            ><?= htmlspecialchars($article['contenu']) ?></textarea>
+    <a href="<?= ADMIN_URL ?>/article-historique/<?= $article['id'] ?>" class="meta-card clickable">
+        <div class="meta-icon"><i class="fas fa-history"></i></div>
+        <div class="meta-details">
+            <span class="meta-label">Historique et Versions</span>
+            <span class="meta-value" style="color: var(--primary-color);">Voir les modifications</span>
         </div>
+    </a>
+</div>
 
-        <div style="margin: 15px 0;">
-            <label for="auteurs">
-                <strong>Auteur(s):</strong>
-            </label>
-            <select name="auteurs[]" id="auteurs" multiple style="width: 100%; max-width: 600px; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;">
-                <?php foreach ($auteurs as $auteur): ?>
-                    <option value="<?= $auteur['id'] ?>" <?= in_array($auteur['id'], $currentAuteursIds) ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($auteur['nom'] . ' ' . $auteur['prenom']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <small>Maintenez Ctrl (Windows) ou Cmd (Mac) pour en sélectionner plusieurs</small>
-        </div>
-
-        <div style="margin: 15px 0;" id="sources-container">
-            <label><strong>Sources:</strong></label>
+<div class="admin-card">
+    <div class="admin-card-header">
+        Modification de l'article
+    </div>
+    <div class="admin-card-body">
+        <form method="POST" enctype="multipart/form-data">
             
-            <?php if (!empty($articleSources)): ?>
-                <?php foreach ($articleSources as $index => $source): ?>
-                    <div class="source-row" style="display: flex; gap: 10px; margin-top: 5px; max-width: 600px;">
-                        <input type="text" name="source_nom[]" value="<?= htmlspecialchars($source['nom']) ?>" placeholder="Nom de la source" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                        <input type="url" name="source_url[]" value="<?= htmlspecialchars($source['url']) ?>" placeholder="URL (ex: https://...)" style="flex: 2; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                        <?php if ($index === 0): ?>
-                            <button type="button" onclick="addSourceRow()" style="padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">+</button>
-                        <?php else: ?>
-                            <button type="button" onclick="this.parentElement.remove()" style="padding: 8px 12px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">-</button>
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="source-row" style="display: flex; gap: 10px; margin-top: 5px; max-width: 600px;">
-                    <input type="text" name="source_nom[]" placeholder="Nom de la source" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                    <input type="url" name="source_url[]" placeholder="URL (ex: https://...)" style="flex: 2; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-                    <button type="button" onclick="addSourceRow()" style="padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">+</button>
-                </div>
-            <?php endif; ?>
-        </div>
+            <div class="form-group">
+                <label for="titre" class="form-label">Titre de l'article <span style="color:red">*</span></label>
+                <input 
+                    type="text" 
+                    id="titre" 
+                    name="titre" 
+                    class="form-control"
+                    value="<?= htmlspecialchars($article['titre']) ?>" 
+                    required 
+                    maxlength="250"
+                >
+            </div>
 
-        <div style="margin: 15px 0;">
-            <label><strong>Images Actuelles:</strong></label>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
-                <?php if (!empty($images)): ?>
-                    <?php foreach ($images as $img): ?>
-                        <div id="image-<?= $img['id'] ?>" style="position: relative; border: 1px solid #ddd; padding: 5px; border-radius: 4px;">
-                            <img src="<?= UPLOADS_URL . htmlspecialchars($img['nom']) ?>" alt="Image" style="max-height: 100px; display: block;">
-                            <button type="button" onclick="deleteImage(<?= $img['id'] ?>)" style="position: absolute; top: 0; right: 0; background: red; color: white; border: none; cursor: pointer;">X</button>
+            <div class="form-group">
+                <label for="description" class="form-label">Description courte (Chapeau) <span style="color:red">*</span></label>
+                <textarea 
+                    id="description" 
+                    name="description" 
+                    class="form-control"
+                    required 
+                    rows="4" 
+                    maxlength="500"
+                ><?= htmlspecialchars($article['description']) ?></textarea>
+                <small class="text-muted"><i class="fas fa-info-circle"></i> 500 caractères maximum</small>
+            </div>
+
+            <div class="form-group">
+                <label for="contenu" class="form-label">Contenu complet <span style="color:red">*</span></label>
+                <textarea 
+                    id="contenu" 
+                    name="contenu" 
+                    class="form-control"
+                    required 
+                    rows="8"
+                ><?= htmlspecialchars($article['contenu']) ?></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Auteur(s) <span style="color:red">*</span></label>
+                <div class="author-grid">
+                    <?php foreach ($auteurs as $auteur): ?>
+                        <label class="author-label" style="cursor: pointer;">
+                            <input 
+                                type="checkbox" 
+                                name="auteurs[]" 
+                                value="<?= $auteur['id'] ?>" 
+                                class="author-checkbox" 
+                                <?= in_array($auteur['id'], $currentAuteursIds) ? 'checked' : '' ?>
+                            >
+                            <div class="author-card">
+                                <i class="fas fa-user-circle"></i>
+                                <span><?= htmlspecialchars($auteur['nom'] . ' ' . $auteur['prenom']) ?></span>
+                            </div>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <div class="form-group" id="sources-container">
+                <label class="form-label">Sources de l'information</label>
+                
+                <?php if (!empty($articleSources)): ?>
+                    <?php foreach ($articleSources as $index => $source): ?>
+                        <div class="source-row form-row" style="margin-bottom: 10px;">
+                            <input type="text" name="source_nom[]" value="<?= htmlspecialchars($source['nom']) ?>" class="form-control" placeholder="Nom du média" style="flex: 1;">
+                            <input type="url" name="source_url[]" value="<?= htmlspecialchars($source['url']) ?>" class="form-control" placeholder="Lien URL" style="flex: 2;">
+                            <?php if ($index === 0): ?>
+                                <button type="button" onclick="addSourceRow()" class="btn btn-primary" title="Ajouter une source"><i class="fas fa-plus"></i></button>
+                            <?php else: ?>
+                                <button type="button" onclick="this.parentElement.remove()" class="btn btn-danger-solid" title="Retirer"><i class="fas fa-minus"></i></button>
+                            <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <em>Aucune image</em>
+                    <div class="source-row form-row" style="margin-bottom: 10px;">
+                        <input type="text" name="source_nom[]" class="form-control" placeholder="Nom du média" style="flex: 1;">
+                        <input type="url" name="source_url[]" class="form-control" placeholder="Lien URL" style="flex: 2;">
+                        <button type="button" onclick="addSourceRow()" class="btn btn-primary" title="Ajouter une source"><i class="fas fa-plus"></i></button>
+                    </div>
                 <?php endif; ?>
             </div>
-        </div>
 
-        <div style="margin: 15px 0;">
-            <label for="images">
-                <strong>Ajouter de nouvelles images:</strong>
-            </label>
-            <input 
-                type="file" 
-                id="images" 
-                name="images[]" 
-                multiple 
-                accept="image/*"
-                style="width: 100%; max-width: 600px; padding: 8px; margin-top: 5px;"
-            >
-        </div>
+            <div class="form-group">
+                <label class="form-label">Images Actuelles</label>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px;">
+                    <?php if (!empty($images)): ?>
+                        <?php foreach ($images as $img): ?>
+                            <div id="image-<?= $img['id'] ?>" class="image-preview-wrapper">
+                                <img src="<?= UPLOADS_URL . htmlspecialchars($img['nom']) ?>" alt="Image de l'article">
+                                <button type="button" class="btn-delete-img" onclick="deleteImage(<?= $img['id'] ?>)" title="Supprimer l'image">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <em class="text-muted">Aucune image associée pour le moment</em>
+                    <?php endif; ?>
+                </div>
+            </div>
 
-        <div style="margin: 15px 0;">
-            <label for="changelog">
-                <strong>Description du changement (optionnel):</strong>
-            </label>
-            <input 
-                type="text" 
-                id="changelog" 
-                name="changelog" 
-                placeholder="Ex: Correction orthographe, Ajout de sources..." 
-                maxlength="255"
-                style="width: 100%; max-width: 600px; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"
-            >
-            <small>Cette description sera enregistrée dans l'historique des versions</small>
-        </div>
+            <div class="form-group">
+                <label class="form-label">Ajouter de nouvelles images (Optionnel)</label>
+                <div class="upload-zone" id="drop-zone" onclick="document.getElementById('images').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Glissez-déposez vos nouvelles images ici</p>
+                    <span>ou cliquez pour parcourir vos fichiers</span>
+                    <input 
+                        type="file" 
+                        id="images" 
+                        name="images[]" 
+                        multiple 
+                        accept="image/*"
+                        style="display: none;"
+                        onchange="handleFiles(this.files)"
+                    >
+                </div>
+                <div class="preview-container" id="preview-container"></div>
+            </div>
 
-        <div style="margin: 20px 0; padding-top: 15px; border-top: 1px solid #ddd;">
-            <button 
-                type="submit" 
-                style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin-right: 10px;"
-            >
-                ✓ Sauvegarder les modifications
-            </button>
-            <a 
-                href="<?= ADMIN_URL ?>/articles"
-                style="display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-size: 14px;"
-            >
-                ✗ Annuler
-            </a>
-        </div>
-    </fieldset>
-</form>
+            <div class="form-group" style="margin-top: 30px; background: var(--bg-body); padding: 20px; border-radius: 6px; border-left: 4px solid var(--accent-color);">
+                <label for="changelog" class="form-label"><i class="fas fa-clipboard-list"></i> Motif de la modification (Optionnel mais recommandé)</label>
+                <input 
+                    type="text" 
+                    id="changelog" 
+                    name="changelog" 
+                    class="form-control"
+                    placeholder="Ex: Correction orthographe, Mise à jour des sources..." 
+                    maxlength="255"
+                >
+                <small class="text-muted" style="display: block; margin-top: 5px;">Cette note apparaîtra dans l'historique des versions pour faciliter le suivi.</small>
+            </div>
+
+            <div class="form-group" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; gap: 15px;">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Sauvegarder les modifications
+                </button>
+                <a href="<?= ADMIN_URL ?>/articles" class="btn btn-secondary">
+                    Annuler
+                </a>
+            </div>
+            
+        </form>
+    </div>
+</div>
 
 <script>
     function addSourceRow() {
         const container = document.getElementById('sources-container');
         const row = document.createElement('div');
-        row.className = 'source-row';
-        row.style = 'display: flex; gap: 10px; margin-top: 10px; max-width: 600px;';
+        row.className = 'source-row form-row';
+        row.style.marginBottom = '10px';
         
         row.innerHTML = `
-            <input type="text" name="source_nom[]" placeholder="Nom de la source" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-            <input type="url" name="source_url[]" placeholder="URL (ex: https://...)" style="flex: 2; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
-            <button type="button" onclick="this.parentElement.remove()" style="padding: 8px 12px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer;">-</button>
+            <input type="text" name="source_nom[]" class="form-control" placeholder="Nom du média" style="flex: 1;">
+            <input type="url" name="source_url[]" class="form-control" placeholder="Lien URL" style="flex: 2;">
+            <button type="button" onclick="this.parentElement.remove()" class="btn btn-danger-solid" title="Retirer">
+                <i class="fas fa-minus"></i>
+            </button>
         `;
         
         container.appendChild(row);
     }
 
     function deleteImage(imageId) {
-        if (!confirm('Êtes-vous sûr de vouloir supprimer cette image?')) return;
+        if (!confirm('Êtes-vous sûr de vouloir supprimer définitivement cette image ?')) return;
         
         ajax('POST', '<?= ADMIN_URL ?>/image-delete', { 
             image_id: imageId
         }, function(response, status) {
             if (status === 200) {
                 showAlert('Image supprimée avec succès', 'success');
-                document.getElementById('image-' + imageId).remove();
+                const el = document.getElementById('image-' + imageId);
+                if(el) el.remove();
             } else {
                 showAlert('Erreur lors de la suppression', 'error');
             }
+        });
+    }
+
+    // Drag and Drop Logic pour les nouvelles images
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('images');
+
+    if (dropZone) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.remove('dragover');
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            fileInput.files = files;
+            handleFiles(files);
+        }, false);
+    }
+
+    function handleFiles(files) {
+        const previewContainer = document.getElementById('preview-container');
+        previewContainer.innerHTML = '';
+        
+        Array.from(files).forEach(file => {
+            if (!file.type.startsWith('image/')) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const div = document.createElement('div');
+                div.className = 'preview-item';
+                div.innerHTML = `<img src="${e.target.result}" alt="Preview" title="${file.name}">`;
+                previewContainer.appendChild(div);
+            };
+            reader.readAsDataURL(file);
         });
     }
 </script>
