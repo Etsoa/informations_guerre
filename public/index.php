@@ -11,6 +11,18 @@ $action = $_GET['action'] ?? 'home';
 $id = $_GET['id'] ?? null;
 
 switch($action) {
+    case 'infos':
+        require_once '../src/Controllers/FrontOffice/CatalogController.php';
+        $controller = new CatalogController($pdo);
+        $controller->liste();
+        break;
+
+    case 'infos-categorie':
+        require_once '../src/Controllers/FrontOffice/CatalogController.php';
+        $controller = new CatalogController($pdo);
+        $controller->liste($id);
+        break;
+
     case 'article':
         require_once '../src/Controllers/FrontOffice/ArticleController.php';
         $controller = new ArticleController($pdo);
