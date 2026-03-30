@@ -1,6 +1,17 @@
 <?php
-$pageTitle = 'Accueil - ' . SITE_NAME;
-$pageDescription = SITE_DESCRIPTION;
+// Utiliser les variables définies par le contrôleur
+// $pageTitle et $pageDescription sont déjà définies par HomeController
+// $articles, $featuredArticle, $latestArticles aussi
+// $categories aussi
+
+// Si pageTitle n'est pas encore défini (cas rare), le définir
+if (!isset($pageTitle)) {
+    $pageTitle = 'Accueil - ' . SITE_NAME;
+}
+if (!isset($pageDescription)) {
+    $pageDescription = SITE_DESCRIPTION;
+}
+
 require __DIR__ . '/layouts/header.php';
 ?>
 

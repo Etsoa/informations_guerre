@@ -15,10 +15,18 @@ function sanitize($data) {
  * Génère un slug à partir d'un texte (supporte les accents français)
  */
 function slugify($text) {
-    // Translitérer les caractères accentués
-    $text = transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $text);
-    if ($text === false) {
-        // Fallback si intl n'est pas disponible
+    // Translitérer les caractères accentués (fallback si intl n'est pas présent)
+    if (function_exists('transliterator_transliterate')) {
+        $text = transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $text);
+        if ($text === false) {
+            $text = strtolower($text);
+            $text = strtr($text, [
+                'à'=>'a','â'=>'a','ä'=>'a','é'=>'e','è'=>'e','ê'=>'e','ë'=>'e',
+                'î'=>'i','ï'=>'i','ô'=>'o','ö'=>'o','ù'=>'u','û'=>'u','ü'=>'u',
+                'ÿ'=>'y','ç'=>'c','œ'=>'oe','æ'=>'ae'
+            ]);
+        }
+    } else {
         $text = strtolower($text);
         $text = strtr($text, [
             'à'=>'a','â'=>'a','ä'=>'a','é'=>'e','è'=>'e','ê'=>'e','ë'=>'e',

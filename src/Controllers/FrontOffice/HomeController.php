@@ -18,22 +18,29 @@ class HomeController {
     }
 
     public function index() {
-        $articles = $this->articleModel->getAll(7, 0);
-        $categories = $this->categorieModel->getAllWithCount();
+        try {
+            // Récupérer tous les articles pour la page d'accueil
+            $totalArticles = (int) $this->articleModel->countAll();
+            $articles = $this->articleModel->getAll($totalArticles > 0 ? $totalArticles : 10, 0);
+            $categories = $this->categorieModel->getAllWithCount();
 
-        // Charger la première image pour chaque article
-        foreach ($articles as &$article) {
-            $images = $this->imageModel->getByArticleId($article['id']);
-            $article['image'] = $images[0]['nom'] ?? null;
+            // Charger la première image pour chaque article
+            foreach ($articles as &$article) {
+                $images = $this->imageModel->getByArticleId($article['id']);
+                $article['image'] = $images[0]['nom'] ?? null;
+            }
+
+            // Séparer article principal et reste
+            $featuredArticle = $articles[0] ?? null;
+            $latestArticles = array_slice($articles, 1);
+            
+            $pageTitle = SITE_NAME . ' - ' . SITE_DESCRIPTION;
+            $pageDescription = SITE_DESCRIPTION;
+
+            require __DIR__ . '/../../Views/FrontOffice/home.php';
+        } catch (Exception $e) {
+            error_log("HomeController Error: " . $e->getMessage());
+            echo "<!-- Error: " . htmlspecialchars($e->getMessage()) . " -->";
         }
-
-        // Séparer article principal et reste
-        $featuredArticle = $articles[0] ?? null;
-        $latestArticles = array_slice($articles, 1);
-        
-        $pageTitle = SITE_NAME . ' - ' . SITE_DESCRIPTION;
-        $pageDescription = SITE_DESCRIPTION;
-
-        require __DIR__ . '/../../Views/FrontOffice/home.php';
     }
 }

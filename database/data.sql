@@ -39,7 +39,7 @@ INSERT INTO articles (titre, description, contenu, date_publication) VALUES
 Les experts en géopolitique soulignent que cette crise ne se limite pas à un seul pays mais implique une reconfiguration complète des alliances régionales. Les États-Unis, la Russie et la Chine suivent de près l''évolution de la situation.
 
 La population civile, prise en étau entre les différentes factions, subit les conséquences directes de cette escalade. Les organisations humanitaires alertent sur la nécessité d''un cessez-le-feu immédiat pour permettre l''acheminement de l''aide.',
-NOW() - INTERVAL '1 day'
+'2026-03-29 10:00:00'
 ),
 
 (
@@ -50,7 +50,7 @@ NOW() - INTERVAL '1 day'
 Selon les premières informations, l''explosion aurait été entendue dans un rayon de plusieurs kilomètres. Les services de secours ont été déployés sur place dans les minutes suivant le blast.
 
 Aucune information officielle n''a encore été confirmée par le gouvernement iranien, mais plusieurs médias internationaux rapportent des versions contradictoires des événements. Les agences de renseignement occidentales analysent les images satellites de la zone.',
-NOW() - INTERVAL '2 days'
+'2026-03-28 14:30:00'
 ),
 
 (
@@ -61,7 +61,7 @@ NOW() - INTERVAL '2 days'
 Les investisseurs adoptent une posture de plus en plus prudente face à l''incertitude géopolitique. Les valeurs refuges comme l''or enregistrent des hausses record, tandis que les devises des pays émergents subissent une pression à la baisse.
 
 Les analystes économiques estiment que si le conflit devait se prolonger au-delà de six mois, les répercussions sur l''économie mondiale pourraient entraîner une récession dans plusieurs pays européens fortement dépendants des importations énergétiques.',
-NOW() - INTERVAL '3 days'
+'2026-03-27 09:15:00'
 ),
 
 (
@@ -72,7 +72,7 @@ NOW() - INTERVAL '3 days'
 Le Secrétaire général des Nations Unies a convoqué une session extraordinaire du Conseil de sécurité. Parallèlement, l''Union européenne a nommé un envoyé spécial pour la médiation dans le conflit.
 
 Les initiatives de paix se multiplient : la Suisse propose ses bons offices pour accueillir des négociations, tandis que le Sultanat d''Oman travaille en coulisses à rapprocher les positions des différentes parties. La route vers la paix reste semée d''obstacles mais l''espoir d''un accord n''est pas totalement éteint.',
-NOW() - INTERVAL '4 days'
+'2026-03-26 11:45:00'
 ),
 
 (
@@ -83,7 +83,7 @@ NOW() - INTERVAL '4 days'
 Le Haut Commissariat des Nations Unies pour les réfugiés (HCR) estime que plus de deux millions de personnes ont été déplacées depuis le début des hostilités. Les camps de réfugiés aux frontières sont saturés et les conditions sanitaires se détériorent rapidement.
 
 Médecins Sans Frontières appelle la communauté internationale à agir de toute urgence pour établir des corridors humanitaires et garantir l''accès aux soins pour les populations les plus vulnérables.',
-NOW() - INTERVAL '5 days'
+'2026-03-25 16:20:00'
 ),
 
 (
@@ -94,7 +94,7 @@ NOW() - INTERVAL '5 days'
 Les nouvelles sanctions prévoient le gel des avoirs de plusieurs hauts responsables iraniens ainsi que l''interdiction de voyage vers les pays signataires. Le secteur pétrolier, principale source de revenus du pays, est particulièrement ciblé.
 
 Les économistes débattent de l''efficacité réelle de ces sanctions. Si elles exercent une pression indéniable, certains experts estiment qu''elles pourraient renforcer le sentiment national et consolider le pouvoir en place plutôt que de favoriser le changement espéré.',
-NOW() - INTERVAL '6 days'
+'2026-03-24 13:00:00'
 ),
 
 (
@@ -105,7 +105,7 @@ NOW() - INTERVAL '6 days'
 Ce déploiement massif de forces soulève des inquiétudes quant au risque d''incident militaire qui pourrait déclencher une escalade incontrôlable. Les experts en stratégie militaire appellent à la mise en place de mécanismes de déconfliction pour éviter tout accident.
 
 Le détroit d''Ormuz, par lequel transite près d''un cinquième du pétrole mondial, reste au cœur des préoccupations. Toute perturbation du trafic maritime dans cette zone aurait des conséquences catastrophiques sur l''approvisionnement énergétique mondial.',
-NOW() - INTERVAL '7 days'
+'2026-03-23 08:30:00'
 );
 
 -- =========================

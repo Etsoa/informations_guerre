@@ -8,7 +8,7 @@ require_once '../src/Helpers/Functions.php';
 require_once '../src/Helpers/Session.php';
 
 $action = $_GET['action'] ?? 'home';
-$id = isset($_GET['id']) ? (int) $_GET['id'] : null;
+$id = $_GET['id'] ?? null;
 
 switch($action) {
     case 'article':
