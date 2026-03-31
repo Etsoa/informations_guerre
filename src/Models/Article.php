@@ -100,6 +100,13 @@ class Article {
             $params[] = $filters['date'];
         }
 
+        if (!empty($filters['q'])) {
+            $conditions[] = "(a.titre ILIKE ? OR a.description ILIKE ?)";
+            $term = '%' . $filters['q'] . '%';
+            $params[] = $term;
+            $params[] = $term;
+        }
+
         if (count($conditions) > 0) {
             $sql .= " WHERE " . implode(" AND ", $conditions);
         }

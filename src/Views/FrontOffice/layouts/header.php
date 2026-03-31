@@ -12,10 +12,11 @@
         <nav class="navbar">
             <div class="container">
                 <div class="logo">
-                    <h1><a href="<?= BASE_URL ?>">Infos Guerre</a></h1>
+                    <h1><a href="<?= BASE_URL ?>"><span class="logo-badge">IG</span> Infos Guerre</a></h1>
                 </div>
                 <ul class="nav-links">
                     <li><a href="<?= BASE_URL ?>">Accueil</a></li>
+                    <li><a href="<?= BASE_URL ?>infos">Dossiers</a></li>
                     <li><a href="<?= ADMIN_URL ?>?page=login">Admin</a></li>
                 </ul>
             </div>
