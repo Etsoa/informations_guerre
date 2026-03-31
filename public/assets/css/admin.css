@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
     --primary-color: #10223d; /* Dark Navy Blue - matching FrontOffice */
@@ -910,4 +910,209 @@ textarea.form-control {
     color: #666;
     font-family: Arial, sans-serif;
 }
+
+/* ==========================================================================
+   Responsive & Mobile (Lighthouse Optimized)
+   ========================================================================== */
+
+/* Hamburger Admin Styles (Not in media query but mobile-first styling logic or displayed none) */
+.mobile-menu-toggle-admin,
+.admin-nav-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+.mobile-menu-toggle-admin .hamburger,
+.admin-nav-toggle .hamburger,
+.mobile-menu-toggle-admin .hamburger::before,
+.admin-nav-toggle .hamburger::before,
+.mobile-menu-toggle-admin .hamburger::after,
+.admin-nav-toggle .hamburger::after {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--primary-color);
+    transition: transform 0.3s ease;
+    position: relative;
+}
+.mobile-menu-toggle-admin .hamburger::before,
+.admin-nav-toggle .hamburger::before,
+.mobile-menu-toggle-admin .hamburger::after,
+.admin-nav-toggle .hamburger::after {
+    content: '';
+    position: absolute;
+}
+.mobile-menu-toggle-admin .hamburger::before,
+.admin-nav-toggle .hamburger::before { top: -8px; }
+.mobile-menu-toggle-admin .hamburger::after,
+.admin-nav-toggle .hamburger::after { bottom: -8px; }
+
+.mobile-menu-toggle-admin.active .hamburger,
+.admin-nav-toggle.active .hamburger { background-color: transparent; }
+.mobile-menu-toggle-admin.active .hamburger::before,
+.admin-nav-toggle.active .hamburger::before { transform: rotate(45deg); top: 0; }
+.mobile-menu-toggle-admin.active .hamburger::after,
+.admin-nav-toggle.active .hamburger::after { transform: rotate(-45deg); bottom: 0; }
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: auto;
+}
+
+@media (max-width: 768px) {
+    .admin-header {
+        flex-direction: column;
+        padding: 15px;
+        gap: 0;
+        align-items: stretch;
+    }
+    .logo-container {
+        width: 100%;
+    }
+    .mobile-menu-toggle-admin {
+        display: block;
+    }
+    .user-controls {
+        display: none;
+        flex-direction: column;
+        margin-top: 15px;
+        align-items: stretch;
+        width: 100%;
+    }
+    .user-controls.active {
+        display: flex;
+    }
+    .user-controls span {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .admin-nav {
+        display: none;
+        padding: 0;
+        overflow-x: visible;
+    }
+    .admin-nav.active {
+        display: block;
+    }
+    .admin-nav ul {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .admin-nav li {
+        margin-right: 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .admin-nav a {
+        display: block;
+        padding: 15px;
+        text-align: center;
+    }
+    .admin-main {
+        padding: 15px;
+    }
+    .page-title {
+        font-size: 1.6rem;
+    }
+    .page-header {
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    .page-header .btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        box-sizing: border-box; /* Ensures padding doesn't overflow on full-width */
+    }
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px !important;
+        box-sizing: border-box;
+    }
+    .filter-form .select-filter, .filter-form .date-filter, .filter-form .form-group {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+    .filter-form .form-group.btn-group-filter {
+        flex-direction: column;
+        height: auto;
+    }
+    .filter-form .btn-group-filter .btn {
+        width: 100%;
+    }
+    .admin-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 15px;
+    }
+    .admin-card-body {
+        padding: 15px !important;
+        overflow-x: auto;
+    }
+    .admin-card-footer {
+        flex-direction: column;
+        align-items: stretch !important;
+        padding: 15px;
+    }
+    .admin-card-footer .btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .admin-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+    .tinymce-content img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    .btn, .chip, .form-control {
+        min-height: 44px;
+    }
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    .page-header .btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+    .tox-tinymce {
+        min-width: 0 !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+    }
+    .filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .filter-form .select-filter, .filter-form .date-filter, .filter-form .form-group {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+    .filter-form .form-group.btn-group-filter {
+        flex-direction: column;
+        height: auto;
+    }
+    .filter-form .btn-group-filter .btn {
+        width: 100%;
+    }
+}
+
+
+
 

@@ -2,9 +2,9 @@
 require __DIR__ . '/../layouts/header.php';
 ?>
 
-<div class="page-header">
+<div class="page-header" style="overflow: hidden; box-sizing: border-box;">
     <h2 class="page-title">Dernieres publications</h2>
-    <a href="<?= ADMIN_URL ?>/article-create" class="btn btn-primary">
+    <a href="<?= ADMIN_URL ?>/article-create" class="btn btn-primary" style="box-sizing: border-box;">
         <i class="fas fa-plus"></i> Nouvel article
     </a>
 </div>
@@ -36,13 +36,13 @@ require __DIR__ . '/../layouts/header.php';
     <?php if (!empty($articles)): ?>
         <?php foreach ($articles as $article): ?>
             <article class="admin-card">
-                <!-- En-tête de l'article -->
+                <!-- En-tï¿½te de l'article -->
                 <div class="admin-card-header article-list-header">
                     <h3 class="article-list-title">
                         <?= htmlspecialchars($article['titre']) ?>
                     </h3>
                     <div class="article-list-meta">
-                        <span><i class="far fa-calendar-alt"></i> Publie le <?= date('d M Y à H:i', strtotime($article['date_publication'])) ?></span>
+                        <span><i class="far fa-calendar-alt"></i> Publie le <?= date('d M Y ï¿½ H:i', strtotime($article['date_publication'])) ?></span>
                         <?php if (!empty($article['auteurs'])): ?>
                             <span class="separator">|</span>
                             <span>
@@ -96,7 +96,7 @@ require __DIR__ . '/../layouts/header.php';
 
 <script>
     function deleteArticle(id) {
-        if (!confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) return;
+        if (!confirm('ï¿½tes-vous sï¿½r de vouloir supprimer cet article ?')) return;
 
         ajax('POST', '<?= ADMIN_URL ?>/article-delete/' + id, null, function(response, status) {
             if (status === 200) {

@@ -15,6 +15,9 @@
                 <div class="logo">
                     <h1><a href="<?= BASE_URL ?>"><span class="logo-badge">IG</span> Infos Guerre</a></h1>
                 </div>
+                <button class="mobile-menu-toggle" aria-label="Basculer le menu">
+                    <span class="hamburger"></span>
+                </button>
                 <ul class="nav-links">
                     <li><a href="<?= BASE_URL ?>">Accueil</a></li>
                     <li><a href="<?= BASE_URL ?>infos">Dossiers</a></li>

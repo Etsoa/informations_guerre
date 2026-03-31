@@ -4,6 +4,7 @@
         <p>&copy; <?= date('Y') ?> - Informations Guerre - BackOffice</p>
     </footer>
 
+    <script src="/assets/js/main.js"></script>
     <script>
         // AJAX Helper function
         function ajax(method, url, data = null, callback = null) {
