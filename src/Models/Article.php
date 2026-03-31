@@ -101,8 +101,9 @@ class Article {
         }
 
         if (!empty($filters['q'])) {
-            $conditions[] = "(a.titre ILIKE ? OR a.description ILIKE ?)";
+            $conditions[] = "(a.titre ILIKE ? OR a.description ILIKE ? OR a.contenu ILIKE ?)";
             $term = '%' . $filters['q'] . '%';
+            $params[] = $term;
             $params[] = $term;
             $params[] = $term;
         }

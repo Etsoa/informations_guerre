@@ -9,19 +9,19 @@ require __DIR__ . '/layouts/header.php';
     <h2 class="page-title">
         <?= !empty($activeCategory) ? 'Articles : ' . sanitize($activeCategory['nom']) : 'Tous les articles' ?>
     </h2>
-    <form method="GET" action="<?= BASE_URL ?>infos" class="filter-form">
+    <form method="GET" action="<?= BASE_URL ?>infos<?= !empty($activeCategory) ? '/categorie/' . $activeCategory['id'] : '' ?>" class="filter-form">
         <div class="form-group">
             <label for="q" class="form-label">Recherche</label>
-            <input type="text" id="q" name="q" value="<?= sanitize($_GET['q'] ?? '') ?>" class="form-control" placeholder="Mot cle (titre ou resume)">
+            <input type="text" id="q" name="q" value="<?= sanitize($_GET['q'] ?? '') ?>" class="form-control" placeholder="Mot cle (titre, resume ou contenu)">
         </div>
         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Rechercher</button>
     </form>
 </section>
 
 <div class="chip-row" style="margin-bottom: 30px;">
-    <a class="chip <?= empty($activeCategory) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos">Toutes</a>
+    <a class="chip <?= empty($activeCategory) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos<?= !empty($_GET['q']) ? '?q=' . urlencode($_GET['q']) : '' ?>">Toutes</a>
     <?php foreach ($categories as $cat): ?>
-        <a class="chip <?= (!empty($activeCategory) && $activeCategory['id'] === $cat['id']) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos/categorie/<?= $cat['id'] ?>">
+        <a class="chip <?= (!empty($activeCategory) && $activeCategory['id'] === $cat['id']) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos/categorie/<?= $cat['id'] ?><?= !empty($_GET['q']) ? '?q=' . urlencode($_GET['q']) : '' ?>">
             <?= sanitize($cat['nom']) ?>
         </a>
     <?php endforeach; ?>
