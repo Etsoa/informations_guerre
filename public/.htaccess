@@ -9,11 +9,11 @@
     # Nouveau site public
     RewriteRule ^infos/?$ index.php?action=infos [QSA,L]
     RewriteRule ^infos/categorie/([0-9]+)/?$ index.php?action=infos-categorie&id=$1 [QSA,L]
-    RewriteRule ^infos/fiche/([0-9]+)/?$ index.php?action=article&id=$1 [QSA,L]
+    RewriteRule ^infos/fiche/([0-9]+)($|/.*$) index.php?action=article&id=$1 [QSA,L]
     
     # BackOffice
     RewriteRule ^admin/?$ admin.php [QSA,L]
     RewriteRule ^admin/([a-z-]+)/?$ admin.php?page=$1 [QSA,L]
-    RewriteRule ^admin/([a-z-]+)/([0-9]+)/?$ admin.php?page=$1&id=$2 [QSA,L]
-    RewriteRule ^admin/([a-z-]+)/([0-9]+)/([0-9]+)/?$ admin.php?page=$1&id=$2&version=$3 [QSA,L]
+    RewriteRule ^admin/([a-z-]+)/([0-9]+)/([0-9]+)($|/.*$) admin.php?page=$1&id=$2&version=$3 [QSA,L]
+    RewriteRule ^admin/([a-z-]+)/([0-9]+)($|/.*$) admin.php?page=$1&id=$2 [QSA,L]
 </IfModule>

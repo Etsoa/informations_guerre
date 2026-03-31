@@ -18,23 +18,23 @@ require __DIR__ . '/layouts/header.php';
     </form>
 </section>
 
-<?php if (!empty($articles)): ?>
-    <div class="chip-row">
-        <a class="chip <?= empty($activeCategory) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos">Toutes</a>
-        <?php foreach ($categories as $cat): ?>
-            <a class="chip <?= (!empty($activeCategory) && $activeCategory['id'] === $cat['id']) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos/categorie/<?= $cat['id'] ?>">
-                <?= sanitize($cat['nom']) ?>
-            </a>
-        <?php endforeach; ?>
-    </div>
+<div class="chip-row" style="margin-bottom: 30px;">
+    <a class="chip <?= empty($activeCategory) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos">Toutes</a>
+    <?php foreach ($categories as $cat): ?>
+        <a class="chip <?= (!empty($activeCategory) && $activeCategory['id'] === $cat['id']) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos/categorie/<?= $cat['id'] ?>">
+            <?= sanitize($cat['nom']) ?>
+        </a>
+    <?php endforeach; ?>
+</div>
 
+<?php if (!empty($articles)): ?>
     <div class="articles-list">
         <?php foreach ($articles as $article): ?>
             <article class="admin-card">
                 <!-- En-tête de l'article -->
                 <div class="admin-card-header article-list-header">
                     <h3 class="article-list-title">
-                        <a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>">
+                        <a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>/<?= slugify($article['titre']) ?>">
                             <?= sanitize($article['titre']) ?>
                         </a>
                     </h3>
@@ -72,7 +72,7 @@ require __DIR__ . '/layouts/header.php';
 
                 <!-- Lien de lecture complet -->
                 <div class="admin-card-footer article-list-footer" style="justify-content: flex-end;">
-                    <a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>" class="btn btn-primary" style="display: flex; align-items: center; gap: 8px;">
+                    <a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>/<?= slugify($article['titre']) ?>" class="btn btn-primary" style="display: flex; align-items: center; gap: 8px;">
                         Lire l'article complet <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
@@ -84,3 +84,4 @@ require __DIR__ . '/layouts/header.php';
 <?php endif; ?>
 
 <?php require __DIR__ . '/layouts/footer.php'; ?>
+

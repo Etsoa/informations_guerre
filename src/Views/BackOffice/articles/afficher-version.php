@@ -5,14 +5,14 @@ require __DIR__ . '/../layouts/header.php';
 <div class="page-header">
     <h2 class="page-title"><i class="fas fa-eye"></i> Aperçu de la Version <?= $version['version_number'] ?></h2>
     <div>
-        <a href="<?= ADMIN_URL ?>/article-historique/<?= $article['id'] ?>" class="btn btn-secondary">
+        <a href="<?= ADMIN_URL ?>/article-historique/<?= $article['id'] ?>/<?= slugify($article['titre']) ?>" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Retour à l'historique
         </a>
     </div>
 </div>
 
 <div class="article-meta-cards" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
-    <a href="<?= ADMIN_URL ?>/article-edit/<?= $article['id'] ?>" class="meta-card clickable">
+    <a href="<?= ADMIN_URL ?>/article-edit/<?= $article['id'] ?>/<?= slugify($article['titre']) ?>" class="meta-card clickable">
         <div class="meta-icon"><i class="fas fa-file-alt"></i></div>
         <div class="meta-details">
             <span class="meta-label">Article d'origine</span>
@@ -116,7 +116,7 @@ require __DIR__ . '/../layouts/header.php';
         ajax('POST', '<?= ADMIN_URL ?>/article-restaurer/' + articleId + '/' + versionNumber, {}, function(response, status) {
             if (status === 200) {
                 showAlert('Version restauree avec succes', 'success');
-                setTimeout(() => location.href = '<?= ADMIN_URL ?>/article-historique/' + articleId, 1500);
+                setTimeout(() => location.href = '<?= ADMIN_URL ?>/article-historique/' + articleId + '/<?= slugify($article['titre']) ?>', 1500);
             } else {
                 showAlert('Erreur lors de la restauration', 'error');
             }

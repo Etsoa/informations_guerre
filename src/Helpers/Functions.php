@@ -11,10 +11,26 @@ function sanitize($data) {
 }
 
 function slugify($text) {
-    $text = preg_replace('/[^a-z0-9]+/i', '-', $text);
-    return strtolower(trim($text, '-'));
+    if (function_exists('transliterator_transliterate')) {
+        $text = transliterator_transliterate('Any-Latin; Latin-ASCII; Lower()', $text);
+    } else {
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+    }
+    
+    $text = str_replace(["'", "`", "^", "~", '"'], '', $text);
+    
+    $text = strtolower(trim($text));
+    
+    $stopWords = ['le', 'la', 'les', 'l', 'un', 'une', 'des', 'du', 'de', 'd', 'et', 'ou', 'mais', 'en', 'pour', 'dans', 'sur', 'a', 'au', 'aux', 'ce', 'cet', 'cette', 'ces'];
+    
+    $words = preg_split('/[^a-z0-9]+/i', $text, -1, PREG_SPLIT_NO_EMPTY);
+    
+    $filteredWords = array_filter($words, function($w) use ($stopWords) {
+        return !in_array($w, $stopWords);
+    });
+    
+    return implode('+', $filteredWords);
 }
-
 function formatDate($date) {
     $d = new DateTime($date);
     return $d->format('d/m/Y ?? H:i');

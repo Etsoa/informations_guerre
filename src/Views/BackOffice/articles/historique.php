@@ -5,7 +5,7 @@ require __DIR__ . '/../layouts/header.php';
 <div class="page-header">
     <h2 class="page-title"><i class="fas fa-history"></i> Historique des Versions</h2>
     <div>
-        <a href="<?= ADMIN_URL ?>/article-edit/<?= $article['id'] ?>" class="btn btn-primary">
+        <a href="<?= ADMIN_URL ?>/article-edit/<?= $article['id'] ?>/<?= slugify($article['titre']) ?>" class="btn btn-primary">
             <i class="fas fa-edit"></i> Retour à l'edition
         </a>
         <a href="<?= ADMIN_URL ?>/articles" class="btn btn-secondary">
@@ -75,7 +75,7 @@ require __DIR__ . '/../layouts/header.php';
                             </td>
                             <td>
                                 <div style="display: flex; gap: 8px; align-items: center;">
-                                    <a href="<?= ADMIN_URL ?>/article-version/<?= $article['id'] ?>/<?= $version['version_number'] ?>" class="btn btn-primary" style="padding: 5px 10px; font-size: 0.9em;">
+                                    <a href="<?= ADMIN_URL ?>/article-version/<?= $article['id'] ?>/<?= $version['version_number'] ?>/<?= slugify($article['titre']) ?>" class="btn btn-primary" style="padding: 5px 10px; font-size: 0.9em;">
                                         <i class="fas fa-eye"></i> Voir
                                     </a>
                                     <button 
@@ -109,7 +109,7 @@ require __DIR__ . '/../layouts/header.php';
         ajax('POST', '<?= ADMIN_URL ?>/article-restaurer/' + articleId + '/' + versionNumber, {}, function(response, status) {
             if (status === 200) {
                 showAlert('Version restauree avec succes', 'success');
-                setTimeout(() => location.href = '<?= ADMIN_URL ?>/article-historique/' + articleId, 1500);
+                setTimeout(() => location.href = '<?= ADMIN_URL ?>/article-historique/' + articleId + '/<?= slugify($article['titre']) ?>', 1500);
             } else {
                 showAlert('Erreur lors de la restauration', 'error');
             }
@@ -118,3 +118,5 @@ require __DIR__ . '/../layouts/header.php';
 </script>
 
 <?php require __DIR__ . '/../layouts/footer.php'; ?>
+
+

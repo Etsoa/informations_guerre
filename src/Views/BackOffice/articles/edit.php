@@ -1,4 +1,4 @@
-ï»¿<?php
+<?php
 require __DIR__ . '/../layouts/header.php';
 ?>
 
@@ -22,11 +22,11 @@ require __DIR__ . '/../layouts/header.php';
         <div class="meta-icon"><i class="far fa-calendar-alt"></i></div>
         <div class="meta-details">
             <span class="meta-label">Date de Publication</span>
-            <span class="meta-value"><?= date('d/m/Y Ã  H:i', strtotime($article['date_publication'])) ?></span>
+            <span class="meta-value"><?= date('d/m/Y à H:i', strtotime($article['date_publication'])) ?></span>
         </div>
     </div>
 
-    <a href="<?= ADMIN_URL ?>/article-historique/<?= $article['id'] ?>" class="meta-card clickable">
+    <a href="<?= ADMIN_URL ?>/article-historique/<?= $article['id'] ?>/<?= slugify($article['titre']) ?>" class="meta-card clickable">
         <div class="meta-icon"><i class="fas fa-history"></i></div>
         <div class="meta-details">
             <span class="meta-label">Historique et Versions</span>
@@ -127,10 +127,10 @@ require __DIR__ . '/../layouts/header.php';
                     id="changelog"
                     name="changelog"
                     class="form-control"
-                    placeholder="Ex: Correction orthographe, Mise Ã  jour des sources..." 
+                    placeholder="Ex: Correction orthographe, Mise à jour des sources..." 
                     maxlength="255"
                 >
-                <small class="text-muted" style="display: block; margin-top: 5px;">Cette note apparaÃ®tra dans l'historique des versions pour faciliter le suivi.</small>
+                <small class="text-muted" style="display: block; margin-top: 5px;">Cette note apparaîtra dans l'historique des versions pour faciliter le suivi.</small>
             </div>
 
             <div class="form-group" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; gap: 15px;">

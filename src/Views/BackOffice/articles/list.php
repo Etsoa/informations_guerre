@@ -1,4 +1,4 @@
-ï»¿<?php
+<?php
 require __DIR__ . '/../layouts/header.php';
 ?>
 
@@ -36,13 +36,13 @@ require __DIR__ . '/../layouts/header.php';
     <?php if (!empty($articles)): ?>
         <?php foreach ($articles as $article): ?>
             <article class="admin-card">
-                <!-- En-tÃªte de l'article -->
+                <!-- En-tête de l'article -->
                 <div class="admin-card-header article-list-header">
                     <h3 class="article-list-title">
                         <?= htmlspecialchars($article['titre']) ?>
                     </h3>
                     <div class="article-list-meta">
-                        <span><i class="far fa-calendar-alt"></i> Publie le <?= date('d M Y Ã  H:i', strtotime($article['date_publication'])) ?></span>
+                        <span><i class="far fa-calendar-alt"></i> Publie le <?= date('d M Y à H:i', strtotime($article['date_publication'])) ?></span>
                         <?php if (!empty($article['auteurs'])): ?>
                             <span class="separator">|</span>
                             <span>
@@ -75,10 +75,10 @@ require __DIR__ . '/../layouts/header.php';
 
                 <!-- Boutons d'action -->
                 <div class="admin-card-footer article-list-footer">
-                    <a href="<?= ADMIN_URL ?>/article-edit/<?= $article['id'] ?>" class="btn btn-secondary">
+                    <a href="<?= ADMIN_URL ?>/article-edit/<?= $article['id'] ?>/<?= slugify($article['titre']) ?>" class="btn btn-secondary">
                         <i class="fas fa-edit"></i> Modifier
                     </a>
-                    <a href="<?= ADMIN_URL ?>/article-historique/<?= $article['id'] ?>" class="btn btn-warning">
+                    <a href="<?= ADMIN_URL ?>/article-historique/<?= $article['id'] ?>/<?= slugify($article['titre']) ?>" class="btn btn-warning">
                         <i class="fas fa-history"></i> Historique
                     </a>
                     <button onclick="deleteArticle(<?= $article['id'] ?>)" class="btn btn-danger-solid">
@@ -96,7 +96,7 @@ require __DIR__ . '/../layouts/header.php';
 
 <script>
     function deleteArticle(id) {
-        if (!confirm('ÃŠtes-vous sÃ»r de vouloir supprimer cet article ?')) return;
+        if (!confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) return;
 
         ajax('POST', '<?= ADMIN_URL ?>/article-delete/' + id, null, function(response, status) {
             if (status === 200) {

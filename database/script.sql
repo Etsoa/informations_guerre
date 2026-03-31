@@ -24,7 +24,6 @@ CREATE TABLE categories(
 );
 
 -- Table articles
--- (Les images et les sources sont maintenant gerees directement via le contenu HTML genere par TinyMCE)
 CREATE TABLE articles(
     id SERIAL PRIMARY KEY,
     titre VARCHAR(250) NOT NULL,
@@ -52,21 +51,6 @@ CREATE TABLE article_auteur(
     id SERIAL PRIMARY KEY,
     article_id INTEGER NOT NULL REFERENCES articles(id) ON DELETE CASCADE,
     auteur_id INTEGER NOT NULL REFERENCES auteurs(id) ON DELETE CASCADE
-);
-
--- Table sources (liens vers sources externes par article)
-CREATE TABLE sources(
-    id SERIAL PRIMARY KEY,
-    article_id INTEGER NOT NULL REFERENCES articles(id) ON DELETE CASCADE,
-    nom VARCHAR(150) NOT NULL,
-    url TEXT NOT NULL
-);
-
--- Table images (fichiers associes aux articles)
-CREATE TABLE images(
-    id SERIAL PRIMARY KEY,
-    nom VARCHAR(200) NOT NULL,
-    article_id INTEGER NOT NULL REFERENCES articles(id) ON DELETE CASCADE
 );
 
 -- Table article_categorie (Relation Many-to-Many pour filtrage)

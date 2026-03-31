@@ -21,7 +21,7 @@ require __DIR__ . '/layouts/header.php';
                     <!-- En-tête de l'article -->
                     <div class="admin-card-header article-list-header">
                         <h3 class="article-list-title">
-                            <a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>">
+                            <a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>/<?= slugify($article['titre']) ?>">
                                 <?= sanitize($article['titre']) ?>
                             </a>
                         </h3>
@@ -59,7 +59,7 @@ require __DIR__ . '/layouts/header.php';
 
                     <!-- Lien de lecture complet -->
                     <div class="admin-card-footer article-list-footer" style="justify-content: flex-end;">
-                        <a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>" class="btn btn-primary" style="display: flex; align-items: center; gap: 8px;">
+                        <a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>/<?= slugify($article['titre']) ?>" class="btn btn-primary" style="display: flex; align-items: center; gap: 8px;">
                             Lire l'article complet <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
@@ -72,3 +72,4 @@ require __DIR__ . '/layouts/header.php';
 </section>
 
 <?php require __DIR__ . '/layouts/footer.php'; ?>
+

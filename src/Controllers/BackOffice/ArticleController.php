@@ -152,3 +152,4 @@ class AdminArticleController {
         require __DIR__ . '/../../Views/BackOffice/articles/afficher-version.php';
     }
 }
+
