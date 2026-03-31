@@ -3,7 +3,7 @@ require __DIR__ . '/../layouts/header.php';
 ?>
 
 <div class="page-header">
-    <h2 class="page-title"><i class="fas fa-pen-square"></i> RÃ©diger un nouvel article</h2>
+    <h2 class="page-title"><i class="fas fa-pen-square"></i> Rediger un nouvel article</h2>
     <a href="<?= ADMIN_URL ?>/articles" class="btn btn-secondary">
         <i class="fas fa-arrow-left"></i> Retour Ã  la liste
     </a>
@@ -38,7 +38,7 @@ require __DIR__ . '/../layouts/header.php';
                     required 
                     rows="3" 
                     maxlength="500"
-                    placeholder="RÃ©sumÃ© de l'article en quelques lignes"
+                    placeholder="Resume de l'article en quelques lignes"
                 ></textarea>
                 <small class="text-muted"><i class="fas fa-info-circle"></i> 500 caractÃ¨res maximum</small>
             </div>
@@ -50,7 +50,7 @@ require __DIR__ . '/../layouts/header.php';
                     name="contenu" 
                     class="form-control"
                     rows="8"
-                    placeholder="DÃ©veloppez votre article ici..."
+                    placeholder="Developpez votre article ici..."
                 ></textarea>
             </div>
 
@@ -70,7 +70,7 @@ require __DIR__ . '/../layouts/header.php';
             </div>
 
             <div class="form-group">
-                <label class="form-label">CatÃ©gorie(s)</label>
+                <label class="form-label">Categorie(s)</label>
                 <div class="author-grid">
                     <?php foreach ($categories as $cat): ?>
                         <label class="author-label" style="cursor: pointer;">

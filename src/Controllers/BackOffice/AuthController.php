@@ -31,6 +31,6 @@ class AuthController {
 
     public function logout() {
         session_destroy();
-        redirect(BASE_URL);
+        require __DIR__ . '/../../Views/BackOffice/login.php';
     }
 }
