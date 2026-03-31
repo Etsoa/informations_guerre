@@ -1,15 +1,15 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-    --primary-color: #0f2027; /* Dark Navy Blue */
-    --secondary-color: #203a43; /* Medium Navy */
-    --accent-color: #2c5364; /* Lighter Navy */
+    --primary-color: #10223d; /* Dark Navy Blue - matching FrontOffice */
+    --secondary-color: #19375c; /* Medium Navy - matching FrontOffice */
+    --accent-color: #234c7a; /* Lighter Navy - matching FrontOffice */
     --text-main: #333333;
     --text-muted: #6c757d;
     --text-light: #ffffff;
-    --bg-body: #f4f6f9;
+    --bg-body: #f5f7fb;
     --bg-surface: #ffffff;
-    --border-color: #e2e8f0;
+    --border-color: #d8e1ec;
     
     --success-color: #28a745;
     --success-bg: #d4edda;
@@ -744,11 +744,11 @@ textarea.form-control {
 }
 
 .btn-secondary {
-    background-color: #64748b;
+    background-color: var(--secondary-color);
     color: white;
 }
 .btn-secondary:hover {
-    background-color: #475569;
+    background-color: var(--accent-color);
     color: white;
 }
 

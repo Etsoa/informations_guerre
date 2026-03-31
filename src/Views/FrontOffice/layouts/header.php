@@ -6,6 +6,7 @@
     <meta name="description" content="Informations sur la guerre en Iran">
     <title><?= sanitize($pageTitle ?? 'Informations Guerre - Iran') ?></title>
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/admin.css">
 </head>
 <body>
     <header>

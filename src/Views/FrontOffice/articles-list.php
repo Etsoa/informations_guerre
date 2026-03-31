@@ -6,80 +6,81 @@ require __DIR__ . '/layouts/header.php';
 ?>
 
 <section class="page-header">
-    <div>
-        <h2 class="page-title">Articles</h2>
-        <p class="page-subtitle">Liste publique, lecture seule</p>
-    </div>
+    <h2 class="page-title">
+        <?= !empty($activeCategory) ? 'Articles : ' . sanitize($activeCategory['nom']) : 'Tous les articles' ?>
+    </h2>
     <form method="GET" action="<?= BASE_URL ?>infos" class="filter-form">
         <div class="form-group">
             <label for="q" class="form-label">Recherche</label>
             <input type="text" id="q" name="q" value="<?= sanitize($_GET['q'] ?? '') ?>" class="form-control" placeholder="Mot cle (titre ou resume)">
         </div>
+        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Rechercher</button>
     </form>
 </section>
 
-<section class="catalog-list">
-    <h3 class="section-title"><?= !empty($activeCategory) ? 'Articles : ' . sanitize($activeCategory['nom']) : 'Tous les articles' ?></h3>
+<?php if (!empty($articles)): ?>
+    <div class="chip-row">
+        <a class="chip <?= empty($activeCategory) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos">Toutes</a>
+        <?php foreach ($categories as $cat): ?>
+            <a class="chip <?= (!empty($activeCategory) && $activeCategory['id'] === $cat['id']) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos/categorie/<?= $cat['id'] ?>">
+                <?= sanitize($cat['nom']) ?>
+            </a>
+        <?php endforeach; ?>
+    </div>
 
-    <?php if (!empty($articles)): ?>
-        <div class="chip-row">
-            <a class="chip <?= empty($activeCategory) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos">Toutes</a>
-            <?php foreach ($categories as $cat): ?>
-                <a class="chip <?= (!empty($activeCategory) && $activeCategory['id'] === $cat['id']) ? 'chip-active' : '' ?>" href="<?= BASE_URL ?>infos/categorie/<?= $cat['id'] ?>">
-                    <?= sanitize($cat['nom']) ?>
-                </a>
-            <?php endforeach; ?>
-        </div>
-
-        <div class="article-grid">
-            <?php foreach ($articles as $article): ?>
-                <?php $thumb = firstImageSrc($article['contenu'] ?? ''); ?>
-                <article class="article-card">
-                    <?php if ($thumb): ?>
-                        <img class="article-thumb" src="<?= $thumb ?>" alt="Illustration article">
-                    <?php endif; ?>
-
-                    <header class="article-list-header">
-                        <h3>
-                            <a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>">
-                                <?= sanitize($article['titre']) ?>
-                            </a>
-                        </h3>
-                        <div class="article-meta-row">
-                            <span class="article-date">Publie le <?= formatDate($article['date_publication']) ?></span>
-                            <?php if (!empty($article['auteurs'])): ?>
-                                <span class="separator">|</span>
-                                <span class="article-authors">
-                                    <?php
-                                        $authorNames = array_map(function($a) {
-                                            return sanitize($a['nom'] . ' ' . $a['prenom']);
-                                        }, $article['auteurs']);
-                                        echo implode(', ', $authorNames);
-                                    ?>
-                                </span>
-                            <?php endif; ?>
-                            <?php if (!empty($article['categories'])): ?>
-                                <span class="separator">|</span>
-                                <span class="article-tags">
-                                    <?php foreach ($article['categories'] as $cat): ?>
-                                        <span class="tag">#<?= sanitize($cat['nom']) ?></span>
-                                    <?php endforeach; ?>
-                                </span>
-                            <?php endif; ?>
-                        </div>
-                    </header>
-
-                    <p class="article-description"><?= sanitize(truncate($article['description'], 180)) ?></p>
-
-                    <div class="card-footer-inline">
-                        <a class="btn-link" href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>">Lire l'article</a>
+    <div class="articles-list">
+        <?php foreach ($articles as $article): ?>
+            <article class="admin-card">
+                <!-- En-tête de l'article -->
+                <div class="admin-card-header article-list-header">
+                    <h3 class="article-list-title">
+                        <a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>">
+                            <?= sanitize($article['titre']) ?>
+                        </a>
+                    </h3>
+                    <div class="article-list-meta">
+                        <span><i class="far fa-calendar-alt"></i> Publie le <?= formatDate($article['date_publication']) ?></span>
+                        <?php if (!empty($article['auteurs'])): ?>
+                            <span class="separator">|</span>
+                            <span>
+                                <i class="fas fa-pen-nib"></i>
+                                <?php
+                                    $authorNames = array_map(function($a) { return sanitize($a['nom'] . ' ' . $a['prenom']); }, $article['auteurs']);
+                                    echo implode(', ', $authorNames);
+                                ?>
+                            </span>
+                        <?php endif; ?>
+                        <?php if (!empty($article['categories'])): ?>
+                            <span class="separator">|</span>
+                            <span>
+                                <i class="fas fa-list-alt"></i>
+                                <?php
+                                    $catNames = array_map(function($c) { return sanitize($c['nom']); }, $article['categories']);
+                                    echo implode(', ', $catNames);
+                                ?>
+                            </span>
+                        <?php endif; ?>
                     </div>
-                </article>
-            <?php endforeach; ?>
-        </div>
-    <?php else: ?>
-        <p>Aucun article disponible pour le moment.</p>
-    <?php endif; ?>
-</section>
+                </div>
+
+                <!-- Contenu de l'article -->
+                <div class="admin-card-body article-render" style="padding: 30px;">
+                    <div class="tinymce-content">
+                        <?= $article['contenu'] ?>
+                    </div>
+                </div>
+
+                <!-- Lien de lecture complet -->
+                <div class="admin-card-footer article-list-footer" style="justify-content: flex-end;">
+                    <a href="<?= BASE_URL ?>infos/fiche/<?= $article['id'] ?>" class="btn btn-primary" style="display: flex; align-items: center; gap: 8px;">
+                        Lire l'article complet <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </article>
+        <?php endforeach; ?>
+    </div>
+<?php else: ?>
+    <p>Aucun article disponible pour le moment.</p>
+<?php endif; ?>
 
 <?php require __DIR__ . '/layouts/footer.php'; ?>
